@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "semantic-kernel-sampler-python"
+version = "0.1.0"
+description = "semantic-kernel sampler"
+authors = ["percebus <some@email.com>"]
+license = "SEE LICENSE IN LICENSE.md"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.8.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
