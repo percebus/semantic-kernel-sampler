@@ -1,0 +1,6 @@
+@SemanticKernelSampler.DotNet.WebApp_HostAddress = http://localhost:5280
+
+GET {{SemanticKernelSampler.DotNet.WebApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
