@@ -112,23 +112,6 @@ jobs:
         run: pypyr ci lint=False
         working-directory: ./python
 
-      - name: Publish test-results.xml Summary
-        if: always()
-        uses: pmeier/pytest-results-action@main
-        with:
-          path: test-results.xml
-          summary: true
-          display-options: fEX
-          fail-on-empty: true
-          title: Test results
-
-      - name: Publish test-results.xml
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          files: |
-            test-results.xml
-
   dotnet_build:
     name: dotnet build
     runs-on: ubuntu-latest
