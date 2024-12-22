@@ -149,7 +149,7 @@ jobs:
           path: ./dotnet/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   mvn_verify:
-    name: java build
+    name: mvn verify
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK @ ${{ env.JAVA_VERSION }}
