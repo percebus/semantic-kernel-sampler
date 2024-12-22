@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "semantic-kernel sampler"
 authors = ["percebus <some@email.com>"]
 license = "SEE LICENSE IN LICENSE.md"
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
