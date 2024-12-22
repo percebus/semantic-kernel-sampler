@@ -170,6 +170,12 @@ jobs:
         run: mvn ${{ env.MAVEN_CLI_OPTS }} verify
         working-directory: ./java
 
+      - name: target.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: SemanticKernelSampler.Java.WebApp.zip
+          path: ./java/target
+
   # TODO: dockerize
   #
   # docker_compose:
