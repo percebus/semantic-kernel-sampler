@@ -157,8 +157,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.DOTNET_CONFIGURATION }}
-          path: ./WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
-          working-directory: ./dotnet
+          path: ./dotnet/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   # TODO: dockerize
   #
