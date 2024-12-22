@@ -7,7 +7,7 @@ PIP_CLI_OPTS=""
 requirements="requirements.txt"
 if [[ "$target_config" == "release" ]]; then
     echo "Installing ONLY prd requirements..."
-    requirements="requirements.release.txt"
+    requirements="requirements.min.txt"
 else
     PIP_CLI_OPTS="-e"
     echo "Installing everything..."
