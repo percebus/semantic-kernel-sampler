@@ -101,7 +101,7 @@ jobs:
         working-directory: ./python
 
       - name: pip install
-        run: bash scripts/pip/install.ba.sh
+        run: bash scripts/setup.ba.sh
         working-directory: ./python
 
       - name: lint
