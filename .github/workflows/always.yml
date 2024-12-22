@@ -1,0 +1,138 @@
+name: Verify
+on:
+  push:
+
+env:
+  NODE_VERSION: 22
+
+  REPOSITORY_NAME: ${{ github.event.repository.name }}
+
+  DOCKER_BUILDKIT: 1
+  DOCKER_TAG_VERSION: latest
+
+  DOTNET_PROJECT: ./dotnet
+  DOTNET_VERSION: 8
+  DOTNET_TARGET_FRAMEWORK: net8.0
+  DOTNET_CONFIGURATION: Release
+
+jobs:
+  npm_test_projects:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 6
+      matrix:
+        project:
+          - rest-app
+
+    env:
+      WORKSPACE: ./node/${{ matrix.project }}
+      NPM_CLI_OPTS: --prefix ./node/${{ matrix.project }}
+    name: npm test ${{ matrix.project }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: ls
+        run: ls -la ./node/${{ matrix.project }}
+
+      - name: setup node @ ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: setup
+        run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
+      - name: npm install
+        run: npm ci ${{ env.NPM_CLI_OPTS }}
+      - name: ls node_modules
+        run: ls -la ${{ env.WORKSPACE }}/node_modules
+
+      - name: npm test
+        run: npm test ${{ env.NPM_CLI_OPTS }}
+
+  npm_test:
+    name: npm test
+    runs-on: ubuntu-latest
+    needs:
+      - npm_test_projects
+      - yarn_test_projects
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: ls
+        run: ls -la
+
+      - name: setup node @ ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: setup
+        run: npm run setup:ci --if-present
+      - name: npm install
+        run: npm ci
+      - name: ls node_modules
+        run: ls -la ./node_modules
+
+      - name: npm test
+        run: npm test
+
+  dotnet_build:
+    name: dotnet build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: ls
+        run: ls -la
+
+      - name: setup .NET@${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: dotnet restore
+        run: dotnet restore ${{ env.DOTNET_PROJECT }}
+      - name: dotnet build
+        run: dotnet build ${{ env.DOTNET_PROJECT }} --no-restore --configuration ${{ env.DOTNET_CONFIGURATION }}
+
+      - name: SemanticKernelSampler.DotNet.WebApp.zip
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.DOTNET_CONFIGURATION }}
+          path: ${{ env.DOTNET_PROJECT }}/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
+
+  docker_compose:
+    name: docker compose
+    needs: npm_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: docker compose build
+        run: docker compose build
+
+  docker_root_matrix:
+    name: docker build --target
+    if: github.ref == 'refs/heads/main'
+    needs: docker_compose
+    continue-on-error: true
+    strategy:
+      max-parallel: 10
+      matrix:
+        DOCKER_TARGET:
+          - root
+          #
+          # These are tested by docker compose
+          - rest-app
+          # TODO add each package
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: "docker build: ${{ matrix.DOCKER_TARGET }}"
+        run: |
+          docker build . \
+            --target ${{ matrix.DOCKER_TARGET }} \
+            --tag ${{ env.REPOSITORY_NAME }}.${{ matrix.DOCKER_TARGET }}:${{ env.DOCKER_TAG_VERSION }}
