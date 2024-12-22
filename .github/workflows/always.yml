@@ -136,10 +136,10 @@ jobs:
         run: dotnet build ${{ env.DOTNET_PROJECT }} --no-restore --configuration ${{ env.DOTNET_CONFIGURATION }}
         working-directory: ./dotnet
 
-      - name: SemanticKernelSampler.DotNet.WebApp.zip
+      - name: bin.zip
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.DOTNET_CONFIGURATION }}
+          name: SemanticKernelSampler.DotNet.WebApp.zip
           path: ./dotnet/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   # TODO: dockerize
