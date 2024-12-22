@@ -26,6 +26,9 @@ python -m pip install --upgrade --verbose pip
 python -m pip install --upgrade --verbose --requirement requirements.upgrade.txt
 bash ${SCRIPTS_PATH}/pipx/install.ba.sh
 
+# poetry
+bash ${SCRIPTS_PATH}/poetry/plugin/add.ba.sh
+
 python -m pip install --verbose --requirement ${requirements}
 python -m pip install --verbose ${PIP_CLI_OPTS} .
 
