@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "JCystems",
+      "headerDecoration": "-----------------------------------------------------------------------",
+      "copyrightText": "See LICENSE file in the project root for full license information."
+    },
+    "namingRules": {}
+  }
+}
