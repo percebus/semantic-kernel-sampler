@@ -12,6 +12,17 @@ flask = "^3.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
+pyclean = "^3.0.0"
+pydantic = "^2.10.4"
+pydantic-settings = "^2.7.0"
+pyhamcrest = "^2.1.0"
+pylint = "^3.3.2"
+pypyr = "^5.9.1"
+pyright = "^1.1.391"
+pytest = "^8.3.4"
+pytest-bdd = "^8.1.0"
+pytest-cov = "^6.0.0"
+pytest-dotenv = "^0.5.2"
 ruff = "^0.8.4"
 
 [build-system]

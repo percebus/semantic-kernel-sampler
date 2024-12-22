@@ -1,0 +1,15 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= pypyr build ==============================================="
+
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= poetry export requirements(all|min).txt ==================="
+  - name: pypyr.steps.shell
+    in:
+      cmd: poetry export --no-interaction --format requirements.txt --output requirements.all.txt --with dev
+  - name: pypyr.steps.shell
+    in:
+      cmd: poetry export --no-interaction --format requirements.txt --output requirements.min.txt
