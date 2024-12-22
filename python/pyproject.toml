@@ -10,7 +10,6 @@ readme = "README.md"
 python = "^3.10"
 flask = "^3.1.0"
 
-
 [tool.poetry.group.dev.dependencies]
 pyclean = "^3.0.0"
 pydantic = "^2.10.4"
@@ -24,6 +23,31 @@ pytest-bdd = "^8.1.0"
 pytest-cov = "^6.0.0"
 pytest-dotenv = "^0.5.2"
 ruff = "^0.8.4"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+defineConstant = { DEBUG = true }
+typeCheckingMode = "strict"
+include = ["src"]
+strict = ["src"]
+# stubPath = "src/stubs" # TODO?
+# ignore = ["src/oldstuff"] # NOTE what is the difference between exclude and ignore?
+exclude = [
+    ".venv",
+    "typings",
+    "**/__pycache__",
+    "**/test*.py",
+]
+
+[tool.coverage.run]
+omit = [
+    # "**/tests/**",
+]
+
+[virtualenvs]
+create = true
+in-project = true
 
 [build-system]
 requires = ["poetry-core"]
