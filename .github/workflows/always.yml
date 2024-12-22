@@ -3,17 +3,27 @@ on:
   push:
 
 env:
-  NODE_VERSION: 22
-
   REPOSITORY_NAME: ${{ github.event.repository.name }}
 
-  DOCKER_BUILDKIT: 1
-  DOCKER_TAG_VERSION: latest
+  ARCHITECTURE: x64
 
-  DOTNET_PROJECT: ./dotnet/SemanticKernelSampler.DotNet.sln
+  # node & npm
+  NODE_VERSION: 22
+
+  # python
+  PYTHON_VERSION: 3.11.9
+  PYRIGHT_PYTHON_FORCE_VERSION: latest
+
+  # .NET
+  DOTNET_PROJECT: ./*.sln
   DOTNET_VERSION: 8
   DOTNET_TARGET_FRAMEWORK: net8.0
   DOTNET_CONFIGURATION: Release
+
+  # Dockerfile(s) & docker compose
+  DOCKER_BUILDKIT: 1
+  DOCKER_TAG_VERSION: latest
+
 
 jobs:
   npm_test_projects:
@@ -74,65 +84,122 @@ jobs:
       - name: npm test
         run: npm test
 
+  python_test:
+    name: python test
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup python @ ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          architecture: ${{ env.ARCHITECTURE }}
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: ls
+        run: ls -la
+        working-directory: ./python
+
+      - name: pip install
+        run: bash scripts/pip/install.ba.sh
+        working-directory: ./python
+
+      - name: lint
+        run: pypyr lint stats=True
+        working-directory: ./python
+
+      - name: test
+        run: pypyr ci lint=False
+        working-directory: ./python
+
+      - name: Publish test-results.xml Summary
+        if: always()
+        uses: pmeier/pytest-results-action@main
+        with:
+          path: test-results.xml
+          summary: true
+          display-options: fEX
+          fail-on-empty: true
+          title: Test results
+
+      - name: Publish test-results.xml
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            test-results.xml
+
+
   dotnet_build:
     name: dotnet build
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: ls
-        run: ls -la
-
-      - name: setup .NET@${{ env.DOTNET_VERSION }}
+      - name: setup .NET @ ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: ls
+        run: ls -la
+        working-directory: ./dotnet
+
       - name: dotnet restore
         run: dotnet restore ${{ env.DOTNET_PROJECT }}
+        working-directory: ./dotnet
+
       - name: dotnet build
         run: dotnet build ${{ env.DOTNET_PROJECT }} --no-restore --configuration ${{ env.DOTNET_CONFIGURATION }}
+        working-directory: ./dotnet
 
       - name: SemanticKernelSampler.DotNet.WebApp.zip
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.DOTNET_CONFIGURATION }}
-          path: dotnet/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
+          path: ./WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
+          working-directory: ./dotnet
 
-  docker_compose:
-    name: docker compose
-    needs:
-      - npm_test
-      - dotnet_build
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
 
-      - name: docker compose build
-        run: docker compose build
+  # TODO: dockerize
+  #
+  # docker_compose:
+  #   name: docker compose
+  #   needs:
+  #     - npm_test
+  #     - dotnet_build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v4
 
-  docker_root_matrix:
-    name: docker build --target
-    if: github.ref == 'refs/heads/main'
-    needs: docker_compose
-    continue-on-error: true
-    strategy:
-      max-parallel: 10
-      matrix:
-        DOCKER_TARGET:
-          - root
-          #
-          # These are tested by docker compose
-          - rest-app
-          # TODO add each package
+  #     - name: docker compose build
+  #       run: docker compose build
 
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
+  # docker_root_matrix:
+  #   name: docker build --target
+  #   if: github.ref == 'refs/heads/main'
+  #   needs: docker_compose
+  #   continue-on-error: true
+  #   strategy:
+  #     max-parallel: 10
+  #     matrix:
+  #       DOCKER_TARGET:
+  #         - root
+  #         #
+  #         # These are tested by docker compose
+  #         - rest-app
+  #         # TODO add each package
 
-      - name: "docker build: ${{ matrix.DOCKER_TARGET }}"
-        run: |
-          docker build . \
-            --target ${{ matrix.DOCKER_TARGET }} \
-            --tag ${{ env.REPOSITORY_NAME }}.${{ matrix.DOCKER_TARGET }}:${{ env.DOCKER_TAG_VERSION }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: "docker build: ${{ matrix.DOCKER_TARGET }}"
+  #       run: |
+  #         docker build . \
+  #           --target ${{ matrix.DOCKER_TARGET }} \
+  #           --tag ${{ env.REPOSITORY_NAME }}.${{ matrix.DOCKER_TARGET }}:${{ env.DOCKER_TAG_VERSION }}
