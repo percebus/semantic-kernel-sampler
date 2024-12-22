@@ -1,0 +1,26 @@
+# Docker
+# Dockerfile # TODO
+.dockerignore
+
+# git
+.git
+.gitignore
+
+# IDEs
+.idea/
+.vscode/
+
+# packages
+node_modules/
+
+# CI/CD
+.github/
+
+# python
+__pycache__/
+.pytest_cache/
+.venv/
+
+# .NET
+bin/
+obj/

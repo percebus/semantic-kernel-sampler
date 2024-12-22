@@ -1,0 +1,39 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= pypyr lint ================================================"
+  - name: pypyr.steps.default
+    comment: set default values for optional cli inputs
+    in:
+      defaults:
+        path: .
+        stats: False
+        PYLINT_CLI_ARGS: ""
+
+  - name: pypyr.steps.set
+    run: "{stats}"
+    in:
+      set:
+        PYLINT_CLI_ARGS: "--report y"
+
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "=== ruff check =============================================="
+  - name: pypyr.steps.shell
+    in:
+      cmd: python -m ruff check {path}
+
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "=== pyright ================================================="
+  - name: pypyr.steps.shell
+    in:
+      cmd: python -m pyright --warnings
+
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "=== pylint =================================================="
+  - name: pypyr.steps.shell
+    in:
+      cmd: "python -m pylint {PYLINT_CLI_ARGS} src"

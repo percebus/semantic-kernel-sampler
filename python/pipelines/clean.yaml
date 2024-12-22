@@ -1,0 +1,9 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= pypyr clean =================================================="
+
+  - name: pypyr.steps.shell
+    in:
+      cmd: "python -m pyclean ."

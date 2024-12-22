@@ -1,0 +1,25 @@
+{
+  "name": "rest-app",
+  "version": "0.1.0",
+  "description": "rest-app",
+  "scripts": {
+    "prettier": "prettier .",
+    "prettier:write": "npm run prettier -- --write",
+    "prettier:check": "npm run prettier -- --check",
+    "lint": "npm run prettier:check",
+    "style": "npm run prettier:write",
+    "poststyle": "npm run lint",
+    "pretest": "npm run lint",
+    "test": "exit 0",
+    "json-server:blog": "json-server ./db/blog.json5",
+    "start": "npm run json-server:blog"
+  },
+  "author": "JCystems",
+  "license": "SEE LICENSE IN ../../LICENSE.md",
+  "dependencies": {
+    "json-server": "^1.0.0-beta.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
+}

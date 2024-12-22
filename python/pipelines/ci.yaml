@@ -1,0 +1,20 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= pypyr ci =================================================="
+  - name: pypyr.steps.default
+    comment: set default values for optional cli inputs
+    in:
+      defaults:
+        path: .
+        clean: True
+        style: False
+        lint: True
+        test: True
+        integration: False
+        stats: True
+
+  - name: pypyr.steps.shell
+    in:
+      cmd: "python -m pypyr qa path={path} clean={clean} style={style} lint={lint} test={test} integration={integration} stats={stats}"
