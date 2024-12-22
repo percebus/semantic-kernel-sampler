@@ -137,7 +137,7 @@ jobs:
         working-directory: ./dotnet
 
       - name: bin.zip
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SemanticKernelSampler.DotNet.WebApp.zip
           path: ./dotnet/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
