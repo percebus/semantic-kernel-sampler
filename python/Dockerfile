@@ -3,10 +3,10 @@ WORKDIR /usr/app
 COPY . .
 
 FROM base AS dev
-RUN bash scripts/pip/install.ba.sh
+RUN bash scripts/setup.ba.sh
 
 FROM dev AS test
-RUN pypyr ci npm=False stats=False
+RUN pypyr ci stats=False
 
 # TODO use light image. alpine?
 FROM base AS release
