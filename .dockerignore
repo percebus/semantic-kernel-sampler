@@ -24,3 +24,6 @@ __pycache__/
 # .NET
 bin/
 obj/
+
+# Java
+target/

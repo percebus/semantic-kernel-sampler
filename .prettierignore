@@ -7,6 +7,9 @@ __pycache__/
 bin/
 obj/
 
+# Java
+target/
+
 # default # SRC: https://prettier.io/docs/en/ignore.html
 **/.git
 **/.svn
