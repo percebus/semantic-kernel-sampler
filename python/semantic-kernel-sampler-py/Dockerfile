@@ -1,6 +1,7 @@
 FROM python:3.12.5 AS base
 WORKDIR /usr/app
 COPY . .
+RUN bash scripts/bash/clean.ba.sh
 
 FROM base AS dev
 RUN bash scripts/setup.ba.sh
