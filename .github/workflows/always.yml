@@ -1,4 +1,4 @@
-name: Verify
+name: Verification
 on:
   push:
 
@@ -104,19 +104,19 @@ jobs:
 
       - name: ls
         run: ls -la
-        working-directory: ./python
+        working-directory: ./python/semantic-kernel-sampler-py
 
       - name: pip install
         run: bash scripts/pip/install.ba.sh
-        working-directory: ./python
+        working-directory: ./python/semantic-kernel-sampler-py
 
       - name: lint
         run: pypyr lint stats=True
-        working-directory: ./python
+        working-directory: ./python/semantic-kernel-sampler-py
 
       - name: test
         run: pypyr ci lint=False
-        working-directory: ./python
+        working-directory: ./python/semantic-kernel-sampler-py
 
   dotnet_build:
     name: dotnet build
