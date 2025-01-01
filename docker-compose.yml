@@ -11,7 +11,7 @@ services:
 
   python-app:
     build:
-      context: ./python
+      context: ./python/semantic-kernel-sampler-py
       target: release
     # TODO
     # ports:
