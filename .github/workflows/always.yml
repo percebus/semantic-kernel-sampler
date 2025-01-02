@@ -176,43 +176,17 @@ jobs:
           name: SemanticKernelSampler.Java.WebApp.zip
           path: ./java/target
 
-  # TODO: dockerize
-  #
-  # docker_compose:
-  #   name: docker compose
-  #   needs:
-  #     - npm_test
-  #     - dotnet_build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout
-  #       uses: actions/checkout@v4
+  docker_compose_build:
+    name: docker compose build
+    needs:
+      - npm_test
+      - dotnet_build
+      - python_test
+      - mvn_verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
 
-  #     - name: docker compose build
-  #       run: docker compose build
-
-  # docker_root_matrix:
-  #   name: docker build --target
-  #   if: github.ref == 'refs/heads/main'
-  #   needs: docker_compose
-  #   continue-on-error: true
-  #   strategy:
-  #     max-parallel: 10
-  #     matrix:
-  #       DOCKER_TARGET:
-  #         - root
-  #         #
-  #         # These are tested by docker compose
-  #         - rest-app
-  #         # TODO add each package
-
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: "docker build: ${{ matrix.DOCKER_TARGET }}"
-  #       run: |
-  #         docker build . \
-  #           --target ${{ matrix.DOCKER_TARGET }} \
-  #           --tag ${{ env.REPOSITORY_NAME }}.${{ matrix.DOCKER_TARGET }}:${{ env.DOCKER_TAG_VERSION }}
+      - name: docker compose build
+        run: docker compose build
