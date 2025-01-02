@@ -5,7 +5,6 @@ RUN ls -la
 
 
 FROM base AS project
-
 ARG DOTNET_CONFIGURATION=Release
 ARG DOTNET_PROJECTS="./SemanticKernelSampler.DotNet.sln"
 ARG DOTNET_TEST_FILTER="TestCategory!=Integration & TestCategory!=Flaky"
@@ -21,7 +20,7 @@ RUN dotnet test $DOTNET_PROJECTS --filter "$DOTNET_TEST_FILTER"
 
 
 FROM project AS publish
-RUN dotnet publish "./WebApp/SemanticKernelSampler.DotNet.WebApp.csproj" --configuration $DOTNET_CONFIGURATION --property:PublishDir=/app/publish
+RUN dotnet publish ./WebApp/SemanticKernelSampler.Dotnet.WebApp.csproj --configuration $DOTNET_CONFIGURATION --property:PublishDir=/app/publish
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS webapp
