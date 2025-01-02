@@ -31,7 +31,7 @@ env:
   DOCKER_TAG_VERSION: latest
 
 jobs:
-  npm_test_projects:
+  node_projects_npm_test:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
@@ -67,7 +67,7 @@ jobs:
   npm_test:
     name: npm test
     runs-on: ubuntu-latest
-    needs: npm_test_projects
+    needs: node_projects_npm_test
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -89,9 +89,14 @@ jobs:
       - name: npm test
         run: npm test
 
-  python_test:
-    name: python test
+  python_projects_test:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 6
+      matrix:
+        project:
+          - semantic-kernel-sampler-py
+    name: pypyr ci @ ${{ matrix.project }}
     steps:
       - name: setup python @ ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v5
@@ -104,19 +109,19 @@ jobs:
 
       - name: ls
         run: ls -la
-        working-directory: ./python/semantic-kernel-sampler-py
+        working-directory: ./python/${{ matrix.project }}
 
       - name: pip install
         run: bash scripts/pip/install.ba.sh
-        working-directory: ./python/semantic-kernel-sampler-py
+        working-directory: ./python/${{ matrix.project }}
 
       - name: lint
         run: pypyr lint stats=True
-        working-directory: ./python/semantic-kernel-sampler-py
+        working-directory: ./python/${{ matrix.project }}
 
       - name: test
         run: pypyr ci lint=False
-        working-directory: ./python/semantic-kernel-sampler-py
+        working-directory: ./python/${{ matrix.project }}
 
   dotnet_build:
     name: dotnet build
@@ -178,12 +183,12 @@ jobs:
 
   docker_compose_build:
     name: docker compose build
+    runs-on: ubuntu-latest
     needs:
       - npm_test
       - dotnet_build
-      - python_test
+      - python_projects_test
       - mvn_verify
-    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
