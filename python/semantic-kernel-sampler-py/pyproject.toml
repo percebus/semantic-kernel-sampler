@@ -5,8 +5,6 @@ description = "semantic-kernel sampler"
 authors = [
     {name = "JCystems"}
 ]
-license = {text = "SEE LICENSE IN ../../LICENSE.md"}
-readme = "../../README.md"
 requires-python = ">=3.10"
 dependencies = [
     "pydantic (>=2.10.4,<3.0.0)",
