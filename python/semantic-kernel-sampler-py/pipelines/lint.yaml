@@ -17,23 +17,33 @@ steps:
       set:
         PYLINT_CLI_ARGS: "--report y"
 
+  - name: pypyr.steps.call
+    in:
+      call:
+        - ruff
+        - pyright
+        - pylint
+
+ruff:
   - name: pypyr.steps.echo
     in:
       echoMe: "=== ruff check =============================================="
   - name: pypyr.steps.shell
     in:
-      cmd: python -m ruff check {path}
+      cmd: ruff check {path}
 
+pyright:
   - name: pypyr.steps.echo
     in:
       echoMe: "=== pyright ================================================="
   - name: pypyr.steps.shell
     in:
-      cmd: python -m pyright --warnings
+      cmd: pyright --warnings
 
+pylint:
   - name: pypyr.steps.echo
     in:
       echoMe: "=== pylint =================================================="
   - name: pypyr.steps.shell
     in:
-      cmd: "python -m pylint {PYLINT_CLI_ARGS} src"
+      cmd: "pylint {PYLINT_CLI_ARGS} src"

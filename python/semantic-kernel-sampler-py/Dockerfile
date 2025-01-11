@@ -4,7 +4,7 @@ COPY . .
 RUN bash scripts/bash/clean.ba.sh
 
 FROM base AS dev
-RUN bash scripts/setup.ba.sh
+RUN bash scripts/install.ba.sh
 
 FROM dev AS test
 RUN pypyr ci stats=False

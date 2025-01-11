@@ -112,14 +112,14 @@ jobs:
         working-directory: ./python/${{ matrix.project }}
 
       - name: pip install
-        run: bash scripts/pip/install.ba.sh
+        run: bash scripts/install.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
-      - name: lint
+      - name: pypyr lint
         run: pypyr lint stats=True
         working-directory: ./python/${{ matrix.project }}
 
-      - name: test
+      - name: pypyr test
         run: pypyr ci lint=False
         working-directory: ./python/${{ matrix.project }}
 
