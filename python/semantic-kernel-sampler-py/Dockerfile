@@ -1,4 +1,4 @@
-FROM python:3.12.5 AS base
+FROM python:3.12.8 AS base
 WORKDIR /usr/app
 COPY . .
 RUN bash scripts/bash/clean.ba.sh
