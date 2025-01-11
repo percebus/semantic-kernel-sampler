@@ -1,25 +1,26 @@
-[tool.poetry]
-name = "semantic-kernel-sampler-python"
+[project]
+name = "semantic-kernel-sampler-py"
 version = "0.1.0"
 description = "semantic-kernel sampler"
-authors = ["percebus <some@email.com>"]
-license = "SEE LICENSE IN LICENSE.md"
-packages = [{include = "src"}]
+authors = [
+    {name = "JCystems"}
+]
+license = {text = "SEE LICENSE IN ../../LICENSE.md"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy (>=2.0.0,<3.0.0)",
+    "pydantic (>=2.10.4,<3.0.0)",
+    "pydantic-settings (>=2.7.0,<3.0.0)"
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-flask = "^3.1.0"
+[tool.poetry]
 
 [tool.poetry.group.dev.dependencies]
-pyclean = "^3.0.0"
-pydantic = "^2.10.4"
-pydantic-settings = "^2.7.0"
 pyhamcrest = "^2.1.0"
 pylint = "^3.3.2"
-pypyr = "^5.9.1"
 pyright = "^1.1.391"
 pytest = "^8.3.4"
-pytest-bdd = "^8.1.0"
 pytest-cov = "^6.0.0"
 pytest-dotenv = "^0.5.2"
 ruff = "^0.8.4"
@@ -50,5 +51,5 @@ create = true
 in-project = true
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
