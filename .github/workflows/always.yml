@@ -112,7 +112,7 @@ jobs:
         working-directory: ./python/${{ matrix.project }}
 
       - name: pip install
-        run: bash scripts/pip/install.ba.sh
+        run: bash scripts/install.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
       - name: lint
