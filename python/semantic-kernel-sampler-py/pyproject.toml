@@ -6,15 +6,15 @@ authors = [
     {name = "JCystems"}
 ]
 license = {text = "SEE LICENSE IN ../../LICENSE.md"}
-readme = "README.md"
+readme = "../../README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "numpy (>=2.0.0,<3.0.0)",
     "pydantic (>=2.10.4,<3.0.0)",
     "pydantic-settings (>=2.7.0,<3.0.0)"
 ]
 
 [tool.poetry]
+packages = [{include = "src"}]
 
 [tool.poetry.group.dev.dependencies]
 pyhamcrest = "^2.1.0"
