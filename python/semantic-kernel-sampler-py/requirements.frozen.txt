@@ -1,0 +1,4 @@
+click==8.1.7
+colorama==0.4.6
+packaging==23.2
+userpath==1.9.1

@@ -13,14 +13,16 @@ steps:
 
   - name: pypyr.steps.call
     in:
-      call: style
+      call:
+        - poetry_sort
+        - ruff
 
   - name: pypyr.steps.shell
     run: "{lint}"
     in:
-      cmd: "python -m pypyr lint path={path} stats={stats}"
+      cmd: "pypyr lint path={path} stats={stats}"
 
-style:
+poetry_sort:
   - name: pypyr.steps.echo
     in:
       echoMe: "=== poetry sort ========================================"
@@ -28,16 +30,17 @@ style:
     in:
       cmd: poetry sort
 
+ruff:
   - name: pypyr.steps.echo
     in:
       echoMe: "=== ruff check --fix ========================================="
   - name: pypyr.steps.shell
     in:
-      cmd: python -m ruff check --fix {path}
+      cmd: ruff check --fix {path}
 
   - name: pypyr.steps.echo
     in:
       echoMe: "=== ruff format --fix ========================================"
   - name: pypyr.steps.shell
     in:
-      cmd: python -m ruff format {path}
+      cmd: ruff format {path}

@@ -17,13 +17,13 @@ steps:
   - name: pypyr.steps.shell
     run: "{lint}"
     in:
-      cmd: "python -m pypyr lint path={path} stats={stats}"
+      cmd: "pypyr lint path={path} stats={stats}"
 
   - name: pypyr.steps.call
     in:
-      call: test
+      call: pytest
 
-test:
+pytest:
   - name: pypyr.steps.set
     run: "{stats}"
     in:
@@ -41,4 +41,4 @@ test:
       echoMe: "=== pytest:{markers} ======================================="
   - name: pypyr.steps.shell
     in:
-      cmd: python -m pytest {PYTEST_CLI_ARGS} -m "{markers}" --junit-xml=test-results.xml
+      cmd: pytest {PYTEST_CLI_ARGS} -m "{markers}" --junit-xml=test-results.xml

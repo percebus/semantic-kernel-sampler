@@ -1,0 +1,44 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= pypyr lock ==============================================="
+  - name: pypyr.steps.default
+    comment: set default values for optional cli inputs
+    in:
+      defaults:
+        freeze: False # FIXME sometimes it gets stuck when running locally
+
+  - name: pypyr.steps.call
+    in:
+      call:
+        - poetry_lock
+        - poetry_export
+        - pip_freeze
+
+poetry_lock:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= poetry lock ============================================="
+  - name: pypyr.steps.shell
+    in:
+      cmd: poetry lock
+
+poetry_export:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= poetry export requirements(cli|dev|main).txt ============"
+  - name: pypyr.steps.shell
+    foreach: ["cli", "main", "dev"]
+    in:
+      cmd: poetry export --no-interaction --format requirements.txt --output requirements.poetry.{i}.txt --only {i}
+
+pip_freeze:
+  - name: pypyr.steps.echo
+    run: "{freeze}"
+    in:
+      echoMe: "= pip freeze =============================================="
+  - name: pypyr.steps.shell
+    run: "{freeze}"
+    in:
+      cmd: bash scripts/pip/freeze.ba.sh
