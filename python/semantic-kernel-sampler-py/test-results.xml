@@ -1,1 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="0.196" timestamp="2024-12-22T08:48:55.501055-06:00" hostname="DESKTOP-SACB1K4"><testcase classname="tests.test_basic" name="test__true_is_true" time="0.002" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="5" time="0.373" timestamp="2025-01-11T14:43:32.442350-06:00" hostname="DESKTOP-SACB1K4"><testcase classname="tests.rest.models.test__request" name="test__request__message__empty" time="0.001" /><testcase classname="tests.rest.models.test__request" name="test__request__message__what_time_is_it" time="0.000" /><testcase classname="tests.rest.models.test__response" name="test__request__message__empty" time="0.001"><failure message="pydantic_core._pydantic_core.ValidationError: 2 validation errors for Response&#10;id&#10;  Field required [type=missing, input_value={'request': Request(id=UU...5788b587'), message='')}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;message&#10;  Field required [type=missing, input_value={'request': Request(id=UU...5788b587'), message='')}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing">def test__request__message__empty():
+        oRequest = Request(message="")
+&gt;       oResponse = Response(request=oRequest)
+
+tests\rest\models\test__response.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Response(), data = {'request': Request(id=UUID('bb946f77-20e5-45be-b0d3-5ee95788b587'), message='')}
+
+    def __init__(self, **data: Any) -&gt; None:
+&gt;       super().__init__(**data)
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for Response
+E       id
+E         Field required [type=missing, input_value={'request': Request(id=UU...5788b587'), message='')}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.10/v/missing
+E       message
+E         Field required [type=missing, input_value={'request': Request(id=UU...5788b587'), message='')}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.10/v/missing
+
+src\semantic_kernel_sampler\rest\models\response.py:15: ValidationError</failure></testcase><testcase classname="tests.rest.models.test__response" name="test__request__message__what_time_is_it" time="0.001"><failure message="pydantic_core._pydantic_core.ValidationError: 2 validation errors for Response&#10;id&#10;  Field required [type=missing, input_value={'request': Request(id=UU...age='What time is it?')}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;message&#10;  Field required [type=missing, input_value={'request': Request(id=UU...age='What time is it?')}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing">def test__request__message__what_time_is_it():
+        oRequest = Request(message="What time is it?")
+&gt;       oResponse = Response(request=oRequest)
+
+tests\rest\models\test__response.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Response(), data = {'request': Request(id=UUID('3e53f864-ca7d-4668-853d-9db5ae0bb04e'), message='What time is it?')}
+
+    def __init__(self, **data: Any) -&gt; None:
+&gt;       super().__init__(**data)
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for Response
+E       id
+E         Field required [type=missing, input_value={'request': Request(id=UU...age='What time is it?')}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.10/v/missing
+E       message
+E         Field required [type=missing, input_value={'request': Request(id=UU...age='What time is it?')}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.10/v/missing
+
+src\semantic_kernel_sampler\rest\models\response.py:15: ValidationError</failure></testcase><testcase classname="tests.test_basic" name="test__true_is_true" time="0.000" /></testsuite></testsuites>
