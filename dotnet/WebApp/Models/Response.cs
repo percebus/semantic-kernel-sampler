@@ -2,7 +2,7 @@
 {
     public class Response
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
 
         public string? Message { get; set; } = null;
 
