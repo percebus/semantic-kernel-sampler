@@ -1,5 +1,6 @@
 test*.xml
 junit*.xml
+__tests__/semantic-app/config/environment/environment.js
 
 ##############################
 ### VisualStuduo.gitignore ### SRC: https://github.com/github/gitignore/blob/main/VisualStudio.gitignore

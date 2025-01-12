@@ -1,11 +1,11 @@
 describe("POST /api/messages", () => {
-  const config = require("../../config/environment/local"),
-  { v4: uuidv4 } = require("uuid");
+  const config = require("../../config/environment/environment"),
+    { v4: uuidv4 } = require("uuid");
 
   const frisby = config.frisby,
-  schemas = {
-    Response: require("../../models/Response.joi")
-  }
+    schemas = {
+      Response: require("../../models/Response.joi"),
+    };
 
   Object.entries(config.endpoints).forEach(([app_name, url]) => {
     describe(`${app_name}: ${url}`, () => {
