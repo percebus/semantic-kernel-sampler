@@ -30,4 +30,4 @@ COPY --from=publish /app/publish .
 RUN ls -la
 EXPOSE 8080
 EXPOSE 8081
-ENTRYPOINT ["dotnet", "JCystems.SemanticKernelSampler.DotNet.WebApp.dll"]
+ENTRYPOINT ["dotnet", "JCystems.SemanticKernelSampler.Dotnet.WebApp.dll"]
