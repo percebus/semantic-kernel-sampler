@@ -13,9 +13,8 @@ services:
     build:
       context: ./python/semantic-kernel-sampler-py
       target: release
-    # TODO
-    # ports:
-    #   - 8082:3000
+    ports:
+      - 8082:5000
 
   dotnet-app:
     build:

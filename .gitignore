@@ -1,4 +1,5 @@
 test*.xml
+junit*.xml
 
 ##############################
 ### VisualStuduo.gitignore ### SRC: https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
