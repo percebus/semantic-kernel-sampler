@@ -23,7 +23,7 @@
     "sub:rest-app": "npm --prefix ./node/rest-app",
     "sub:rest-app:test": "npm run sub:rest-app -- test",
     "pretest": "npm run lint",
-    "test": "npm run jest:ci:unit && sub:rest-app:test",
+    "test": "npm run jest:ci:unit && npm run sub:rest-app:test",
     "predev": "npm run style",
     "dev": "bash scripts/node/packages/task.ba.sh test",
     "docker:compose:up": "docker compose up --build",
