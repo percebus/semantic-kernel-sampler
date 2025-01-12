@@ -15,7 +15,7 @@ describe("POST /api/messages", () => {
         return frisby
           .post(url, request, { json: true })
           .expect("status", 200)
-          .expect("jsonTypes", "request", schemas.Response);
+          .expect("jsonTypes", schemas.Response);
       });
     });
   });
