@@ -9,14 +9,14 @@ services:
 
   # TODO typescript-app:
 
-  python-app:
+  semantic-app-python:
     build:
       context: ./python/semantic-kernel-sampler-py
       target: release
     ports:
       - 8082:5000
 
-  dotnet-app:
+  semantic-app-dotnet:
     build:
       context: ./dotnet
       target: webapp
