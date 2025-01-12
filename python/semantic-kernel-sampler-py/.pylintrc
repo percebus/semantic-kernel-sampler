@@ -8,6 +8,9 @@ disable=
     C0114, # missing-module-docstring
     C0115, # missing-class-docstring
     C0116, # missing-function-docstring
+    W0221, # arguments-differ
+    E1101, # no-member
+    W0613, # unused-argument
 
 [FORMAT]
 max-line-length=150

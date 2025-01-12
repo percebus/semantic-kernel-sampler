@@ -24,12 +24,12 @@ steps:
   - name: pypyr.steps.shell
     run: "{style}"
     in:
-      cmd: "pypyr style path={path} npm={npm} lint=False"
+      cmd: "pypyr style path={path} lint=False"
 
   - name: pypyr.steps.shell
     run: "{lint}"
     in:
-      cmd: "pypyr lint path={path} npm={npm} stats={stats}"
+      cmd: "pypyr lint path={path} stats={stats}"
 
   - name: pypyr.steps.shell
     run: "{test}"
