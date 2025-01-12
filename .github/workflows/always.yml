@@ -1,4 +1,4 @@
-name: Verification
+name: "[C]ontinuous [I]ntegration"
 on:
   push:
 
