@@ -1,4 +1,4 @@
-describe("rest-app", () => {
+describe("rest-app/", () => {
   const config = require("../config"),
     environment = require("../../config/environments/environment"),
     { v4: uuidv4 } = require("uuid");
@@ -21,7 +21,7 @@ describe("rest-app", () => {
   });
 
   // FIXME
-  xdescribe("/posts/-1: PUT", () => {
+  xdescribe("posts/-1: PUT", () => {
     const postId = "-1";
     const url = `${environment["rest-app"].url}/posts/${postId}`;
     const newPost = { id: postId, title: "Some new TEST title", views: 0 };
@@ -60,7 +60,9 @@ describe("rest-app", () => {
     });
   });
 
-  describe("/posts/: POST", () => {
+  // XXX it modifies the db/blog.json
+  // FIXME we should be using PUT, but it returns 404
+  xdescribe("posts/: POST", () => {
     const url = `${environment["rest-app"].url}/posts/`;
     const newPost = { title: "Some new TEST title", views: 0 };
 

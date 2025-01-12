@@ -1,5 +1,5 @@
-describe("semantic-app", () => {
-  describe("POST /api/messages", () => {
+describe("semantic-app/", () => {
+  describe("POST api/messages", () => {
     const config = require("../config"),
       environment = require("../../config/environments/environment"),
       { v4: uuidv4 } = require("uuid");
