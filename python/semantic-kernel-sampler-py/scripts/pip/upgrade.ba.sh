@@ -6,7 +6,7 @@ set -v
 python -m pip install --verbose --upgrade pip
 
 # pip upgrades pipx
-python -m pip install --verbose --upgrade --requirement ../requirements.upgrade.txt
+python -m pip install --verbose --upgrade --requirement requirements.upgrade.txt
 
 set +v
 set +e
