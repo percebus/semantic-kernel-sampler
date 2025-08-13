@@ -8,11 +8,10 @@ echo "target_config:'${target_config}'"
 scripts_path="$(dirname "$(readlink -f "$0")")"
 echo "Script directory: ${scripts_path}"
 
-set -v
+set -x
 
 # Upgrades top-level dependencies, like pipx
 bash ${scripts_path}/pip/upgrade.ba.sh
-
 pipx ensurepath
 
 # pipx installs CLI executables, like poetry
@@ -22,10 +21,10 @@ bash ${scripts_path}/pipx/install.ba.sh
 bash ${scripts_path}/uv/tool/install.ba.sh ${target_config}
 
 # uv sync
-bash ${scripts_path}/uv/sync.ba.sh ${target_config}
+uvx -- pypyr sync
 
 # uv build
-bash ${scripts_path}/uv/build.ba.sh ${target_config}
+uvx -- pypyr build
 
-set +v
+set +x
 set +e

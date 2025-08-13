@@ -1,0 +1,21 @@
+context_parser: pypyr.parser.keyvaluepairs
+steps:
+  - name: pypyr.steps.echo
+    in:
+      echoMe: "= uv build =================================================="
+  - name: pypyr.steps.default
+    comment: set default values for optional cli inputs
+    in:
+      defaults:
+        path: .
+        sync: True
+        release: False
+
+  - name: pypyr.steps.shell
+    run: "{sync}"
+    in:
+      cmd: "uvx -- pypyr sync path={path} release={release}"
+
+  - name: pypyr.steps.shell
+    in:
+      cmd: uv build --all-packages --wheel

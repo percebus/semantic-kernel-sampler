@@ -10,6 +10,8 @@ steps:
       defaults:
         path: .
         clean: True
+        sync: True
+        build: True
         style: True
         lint: True
         test: True
@@ -19,24 +21,34 @@ steps:
   - name: pypyr.steps.shell
     run: "{clean}"
     in:
-      cmd: "pypyr clean path={path}"
+      cmd: "uvx -- pypyr clean path={path}"
+
+  - name: pypyr.steps.shell
+    run: "{sync}"
+    in:
+      cmd: "uvx -- pypyr sync path={path} release=False"
+
+  - name: pypyr.steps.shell
+    run: "{build}"
+    in:
+      cmd: "uvx -- pypyr build path={path} sync=False"
 
   - name: pypyr.steps.shell
     run: "{style}"
     in:
-      cmd: "pypyr style path={path} lint=False"
+      cmd: "uvx -- pypyr style path={path} lint=False"
 
   - name: pypyr.steps.shell
     run: "{lint}"
     in:
-      cmd: "pypyr lint path={path} stats={stats}"
+      cmd: "uvx -- pypyr lint path={path} stats={stats}"
 
   - name: pypyr.steps.shell
     run: "{test}"
     in:
-      cmd: "pypyr test path={path} lint=False stats={stats}"
+      cmd: "uvx -- pypyr test path={path} lint=False stats={stats}"
 
   - name: pypyr.steps.shell
     run: "{integration}"
     in:
-      cmd: "pypyr test path={path} integration=True stats=False lint=False"
+      cmd: "uvx -- pypyr test path={path} integration=True stats=False lint=False"
