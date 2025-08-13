@@ -37,7 +37,7 @@ extend-select = ["C4", "SIM", "TCH"]
 
 fixable = ["ALL"]
 ignore = [
-    "TD",  # TODO
     "D1",  # Missing docstring
+    "TD",  # TODO
     "TID252", # "Prefer absolute imports over relative imports from parent modules"
 ]

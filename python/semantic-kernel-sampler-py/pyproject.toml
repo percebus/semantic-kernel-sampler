@@ -8,24 +8,26 @@ authors = [
 ]
 requires-python = ">=3.10,<4.0.0"
 dependencies = [
+    "a2a-sdk (>=0.3.1,<0.4.0)",
     "asyncio (>=3.4.3,<4.0.0)",
     "flask (>=3.1.0,<4.0.0)",
+    "lagom (>=2.7.7,<3.0.0)",
     "pydantic (>=2.10.4,<3.0.0)",
     "pydantic-settings (>=2.7.0,<3.0.0)",
-    "semantic-kernel (==0.4.6.dev0)",
+    "semantic-kernel (>=1.35.2,<2.0.0)",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pyhamcrest>=2.1.0",
-    "pytest-cov>=6.2.1",
-    "pytest-dotenv>=0.5.2",
-    "pytest>=8.4.1",
+    "pyhamcrest (>=2.1.0,<3.0.0)",
+    "pytest (>=8.4.1,<9.0.0)",
+    "pytest-cov (>=6.2.1,<7.0.0)",
+    "pytest-dotenv (>=0.5.2,<0.6.0)",
 ]
 cli = [
-    "pylint>=3.3.8",
-    "pyright>=1.1.403",
-    "ruff>=0.12.8",
+    "pylint (>=3.3.8,<4.0.0)",
+    "pyright (>=1.1.403,<2.0.0)",
+    "ruff (>=0.12.8,<0.13.0)",
 ]
 
 
