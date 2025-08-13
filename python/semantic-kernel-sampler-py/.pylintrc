@@ -3,13 +3,14 @@
 ignore-patterns=.+.pyi
 
 disable=
-    W0511, # fixme
     C0103, # invalid-name
     C0114, # missing-module-docstring
     C0115, # missing-class-docstring
     C0116, # missing-function-docstring
-    W0221, # arguments-differ
     E1101, # no-member
+    R0903, # too-few-public-methods
+    W0221, # arguments-differ
+    W0511, # fixme
     W0613, # unused-argument
 
 [FORMAT]
