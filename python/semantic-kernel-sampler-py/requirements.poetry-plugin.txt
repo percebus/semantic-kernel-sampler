@@ -1,2 +1,0 @@
-poetry-plugin-sort
-poetry-plugin-export

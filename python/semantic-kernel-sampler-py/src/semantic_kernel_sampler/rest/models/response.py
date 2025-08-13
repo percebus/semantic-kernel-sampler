@@ -3,8 +3,8 @@ from uuid import UUID, uuid4
 
 from pydantic import Field
 
-from src.semantic_kernel_sampler.rest.models.output import OutputModel
-from src.semantic_kernel_sampler.rest.models.request import RequestModel
+from semantic_kernel_sampler.rest.models.output import OutputModel
+from semantic_kernel_sampler.rest.models.request import RequestModel
 
 
 class ResponseModel(OutputModel):

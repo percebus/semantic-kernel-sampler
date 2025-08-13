@@ -1,6 +1,7 @@
 [project]
 name = "semantic-kernel-sampler-py"
 version = "0.1.0"
+readme = "README.md"
 description = "semantic-kernel sampler"
 authors = [
     {name = "JCystems"}
@@ -14,19 +15,19 @@ dependencies = [
     "semantic-kernel (==0.4.6.dev0)"
 ]
 
-[tool.poetry]
-packages = [{include = "src"}]
+[project.optional-dependencies]
+dev = [
+    "pyhamcrest>=2.1.0",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "pytest-dotenv>=0.5.2",
+]
+cli = [
+    "pylint>=3.3.8",
+    "pyright>=1.1.403",
+    "ruff>=0.12.8",
+]
 
-[tool.poetry.group.dev.dependencies]
-pyhamcrest = "^2.1.0"
-pytest = "^8.3.4"
-pytest-cov = "^6.0.0"
-pytest-dotenv = "^0.5.2"
-
-[tool.poetry.group.cli.dependencies]
-pylint = "^3.3.2"
-pyright = "^1.1.391"
-ruff = "^0.8.4"
 
 [tool.pyright]
 venvPath = "."
@@ -46,13 +47,14 @@ exclude = [
 
 [tool.coverage.run]
 omit = [
-    # "**/tests/**",
+    "**/tests/**",
 ]
 
-[virtualenvs]
-create = true
-in-project = true
-
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/semantic_kernel_sampler"
+]

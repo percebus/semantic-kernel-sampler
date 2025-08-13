@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING
 
 from flask import Flask, request
 
-from src.semantic_kernel_sampler.rest.models.request import RequestModel
-from src.semantic_kernel_sampler.rest.models.response import ResponseModel
+from semantic_kernel_sampler.rest.models.request import RequestModel
+from semantic_kernel_sampler.rest.models.response import ResponseModel
 
 if TYPE_CHECKING:
     from flask.wrappers import Response as FlaskResponse

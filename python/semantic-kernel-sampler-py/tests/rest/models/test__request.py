@@ -1,6 +1,6 @@
 from hamcrest import assert_that, equal_to
 
-from src.semantic_kernel_sampler.rest.models.request import RequestModel
+from semantic_kernel_sampler.rest.models.request import RequestModel
 
 
 def test__request__message__empty():
