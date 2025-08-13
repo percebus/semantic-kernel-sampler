@@ -41,4 +41,4 @@ pytest:
       echoMe: "=== pytest:{markers} ======================================="
   - name: pypyr.steps.shell
     in:
-      cmd: pytest {PYTEST_CLI_ARGS} -m "{markers}" --junit-xml=test-results.xml
+      cmd: uv run -- pytest {PYTEST_CLI_ARGS} -m "{markers}" --junit-xml=test-results.xml
