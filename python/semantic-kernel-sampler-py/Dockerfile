@@ -10,6 +10,7 @@ FROM dev AS test
 RUN pypyr ci stats=False
 
 # TODO use light image. alpine?
-FROM base AS release
-RUN bash scripts/pip/install.ba.sh 'release'
+# FROM base AS release  # FIXME
+# RUN uv sync --locked
+FROM dev as release
 CMD [ "python", "src/semantic_kernel_sampler/" ]
