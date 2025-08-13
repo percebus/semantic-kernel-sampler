@@ -30,7 +30,7 @@ ruff:
       echoMe: "=== ruff check =============================================="
   - name: pypyr.steps.shell
     in:
-      cmd: ruff check {path}
+      cmd: uv run -- ruff check {path}
 
 pyright:
   - name: pypyr.steps.echo
