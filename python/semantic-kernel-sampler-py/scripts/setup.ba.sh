@@ -20,8 +20,6 @@ bash ${scripts_path}/pipx/install.ba.sh
 bash ${scripts_path}/uv/tool/install.ba.sh ${target_config}
 
 # uv sync
-uvx -- pypyr sync
-
 # uv build
 uvx -- pypyr build
 
