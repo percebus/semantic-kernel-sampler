@@ -13,8 +13,6 @@ set -v
 # Upgrades top-level dependencies, like pipx
 bash ${scripts_path}/pip/upgrade.ba.sh
 
-pipx ensurepath
-
 # pipx installs CLI executables, like poetry
 bash ${scripts_path}/pipx/install.ba.sh
 
