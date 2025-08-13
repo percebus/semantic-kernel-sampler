@@ -5,6 +5,7 @@ from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
+from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
@@ -16,12 +17,6 @@ from semantic_kernel_sampler.plugins.math import MathPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
 
-def create_azure_prompt_execution_settings(c: ReadableContainer) -> AzureChatPromptExecutionSettings:
-    settings = AzureChatPromptExecutionSettings()
-    settings.function_choice_behavior = c[FunctionChoiceBehavior]
-    return settings
-
-
 def create_kernel(c: ReadableContainer) -> Kernel:
     kernel = Kernel()
 
@@ -29,25 +24,36 @@ def create_kernel(c: ReadableContainer) -> Kernel:
     for plugin in plugins:
         kernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
 
+    oAzureChatCompletion = c[AzureChatCompletion]
+    kernel.add_service(oAzureChatCompletion)
+
     return kernel
 
 
 container = Container()
 
-load_dotenv_files()
+load_dotenv_files()   # TODO move to a __main__.py?
+
 container[Config] = Singleton(Config())
 container[Settings] = lambda c: c[Config].settings
 container[AzureOpenAISettings] = lambda c: c[Settings].azure_openai
 
-container[MathPlugin] = lambda c: MathPlugin()
-container[LightPlugin] = lambda c: LightPlugin()
-container[list[PluginProtocol]] = lambda c: [c[MathPlugin], c[LightPlugin]]
+container[MathPlugin] = lambda: MathPlugin()
+container[LightPlugin] = lambda: LightPlugin()
+container[list[PluginProtocol]] = lambda c: [
+    c[MathPlugin],
+    c[LightPlugin]
+]
 
-container[ChatHistory] = lambda c: ChatHistory()
+container[ChatHistory] = ChatHistory
 
-container[FunctionChoiceBehavior] = lambda c: FunctionChoiceBehavior.Auto()  # type: ignore
-container[AzureChatPromptExecutionSettings] = Singleton(AzureChatPromptExecutionSettings)
+container[FunctionChoiceBehavior] = Singleton(FunctionChoiceBehavior.Auto)  # type: ignore  # FIXME?
+container[PromptExecutionSettings] = lambda c: AzureChatPromptExecutionSettings(function_choice_behavior=c[FunctionChoiceBehavior])
 
-container[AzureChatCompletion] = lambda c: AzureChatCompletion(**c[AzureOpenAISettings])  # type: ignore
+container[AzureChatCompletion] = lambda c: AzureChatCompletion(
+    base_url=c[AzureOpenAISettings].base_url,
+    api_key=c[AzureOpenAISettings].api_key,
+    deployment_name=c[AzureOpenAISettings].deployment_name,
+    api_version=c[AzureOpenAISettings].api_version)
 
 container[Kernel] = create_kernel
