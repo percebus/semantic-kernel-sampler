@@ -17,7 +17,7 @@ steps:
   - name: pypyr.steps.shell
     run: "{lint}"
     in:
-      cmd: "pypyr lint path={path} stats={stats}"
+      cmd: "uvx -- pypyr lint path={path} stats={stats}"
 
   - name: pypyr.steps.call
     in:
@@ -41,4 +41,4 @@ pytest:
       echoMe: "=== pytest:{markers} ======================================="
   - name: pypyr.steps.shell
     in:
-      cmd: pytest {PYTEST_CLI_ARGS} -m "{markers}" --junit-xml=test-results.xml
+      cmd: uv run -- pytest {PYTEST_CLI_ARGS} -m "{markers}" --junit-xml=test-results.xml

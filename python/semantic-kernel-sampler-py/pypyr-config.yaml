@@ -4,6 +4,8 @@ shortcuts:
     args:
       path: .
       clean: False
+      sync: True
+      build: True
       style: True
       lint: True
       test: True
@@ -15,6 +17,8 @@ shortcuts:
     args:
       path: .
       clean: True
+      sync: True
+      build: True
       style: False
       lint: True
       test: True

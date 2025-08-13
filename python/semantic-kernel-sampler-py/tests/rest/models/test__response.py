@@ -1,7 +1,7 @@
 from hamcrest import assert_that, equal_to, is_, not_none  # type: ignore
 
-from src.semantic_kernel_sampler.rest.models.request import RequestModel
-from src.semantic_kernel_sampler.rest.models.response import ResponseModel
+from semantic_kernel_sampler.rest.models.request import RequestModel
+from semantic_kernel_sampler.rest.models.response import ResponseModel
 
 
 def test__request__message__empty():

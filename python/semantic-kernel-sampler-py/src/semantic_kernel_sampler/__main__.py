@@ -1,4 +1,4 @@
-from src.semantic_kernel_sampler.rest import __main__ as api
+from semantic_kernel_sampler.rest import __main__ as api
 
 
 def run() -> None:

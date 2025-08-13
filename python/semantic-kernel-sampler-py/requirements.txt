@@ -1,3 +1,0 @@
--r requirements.poetry.cli.txt
--r requirements.poetry.main.txt
--r requirements.poetry.dev.txt

@@ -1,4 +1,4 @@
-from src.semantic_kernel_sampler.rest.routes.messages import api
+from semantic_kernel_sampler.rest.routes.messages import api
 
 
 def run() -> None:

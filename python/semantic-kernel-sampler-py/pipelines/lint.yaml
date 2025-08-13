@@ -30,7 +30,7 @@ ruff:
       echoMe: "=== ruff check =============================================="
   - name: pypyr.steps.shell
     in:
-      cmd: ruff check {path}
+      cmd: uv run -- ruff check {path}
 
 pyright:
   - name: pypyr.steps.echo
@@ -38,7 +38,7 @@ pyright:
       echoMe: "=== pyright ================================================="
   - name: pypyr.steps.shell
     in:
-      cmd: pyright --warnings
+      cmd: uv run -- pyright --warnings
 
 pylint:
   - name: pypyr.steps.echo
@@ -46,4 +46,4 @@ pylint:
       echoMe: "=== pylint =================================================="
   - name: pypyr.steps.shell
     in:
-      cmd: "pylint {PYLINT_CLI_ARGS} src"
+      cmd: "uv run -- pylint {PYLINT_CLI_ARGS} src"
