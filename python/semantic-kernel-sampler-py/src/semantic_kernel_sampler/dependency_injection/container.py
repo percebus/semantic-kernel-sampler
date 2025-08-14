@@ -59,11 +59,8 @@ container[Config] = Singleton(Config())
 container[Settings] = lambda c: c[Config].settings
 container[AzureOpenAISettings] = lambda c: c[Settings].azure_openai
 
-oMathPlugin = MathPlugin()
-container[MathPlugin] = oMathPlugin
-
-oLightPlugin = LightPlugin()
-container[LightPlugin] = oLightPlugin
+container[MathPlugin] = MathPlugin
+container[LightPlugin] = LightPlugin
 
 container[list[PluginProtocol]] = lambda c: [c[MathPlugin], c[LightPlugin]]
 
