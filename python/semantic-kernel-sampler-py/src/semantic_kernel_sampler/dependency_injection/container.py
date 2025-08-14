@@ -6,12 +6,12 @@ from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChat
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
+from semantic_kernel_sampler.agents.light.plugin import LightPlugin
+from semantic_kernel_sampler.agents.math.plugin import MathPlugin
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.plugins.light import LightPlugin
-from semantic_kernel_sampler.plugins.math import MathPlugin
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
@@ -20,9 +20,10 @@ from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 def createKernel(c: ReadableContainer) -> Kernel:
     oKernel = Kernel()
 
-    plugins = c[list[PluginProtocol]]
-    for plugin in plugins:
-        oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
+    # NOTE: Plugins will be set on each Agent now
+    # plugins = c[list[PluginProtocol]]
+    # for plugin in plugins:
+    #     oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
 
     oAzureChatCompletion = c[AzureChatCompletion]
     oKernel.add_service(oAzureChatCompletion)

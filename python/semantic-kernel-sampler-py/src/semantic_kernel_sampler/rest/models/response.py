@@ -8,8 +8,11 @@ from semantic_kernel_sampler.rest.models.request import RequestModel
 
 
 class ResponseModel(OutputModel):
+    # TODO? Use a2a.RequestContext instead?
     request: RequestModel = Field()
+
     id: UUID = Field(init=False, default_factory=uuid4)
+
     message: Optional[str] = Field(default=None)
 
     def model_post_init(self, __context: Any) -> None:  # type: ignore
