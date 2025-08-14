@@ -34,7 +34,7 @@ async def post_async():
 
     oKernel: Kernel = container[Kernel]
     oPromptExecutionSettings: PromptExecutionSettings = container[AzureChatPromptExecutionSettings]
-    oPromptExecutionSettings.function_choice_behavior = FunctionChoiceBehavior.Auto()  # type: ignore # XXX FIXME
+    # oPromptExecutionSettings.function_choice_behavior = FunctionChoiceBehavior.Auto()  # type: ignore # XXX FIXME
 
     oResponse: ResponseModel = ResponseModel(request=_request)
     oAzureChatCompletion: AzureChatCompletion = container[AzureChatCompletion]

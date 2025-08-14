@@ -61,7 +61,7 @@ container[list[PluginProtocol]] = lambda c: [c[MathPlugin], c[LightPlugin]]
 
 container[ChatHistory] = createChatHistory
 
-container[FunctionChoiceBehavior] = Singleton(FunctionChoiceBehavior.Auto)  # type: ignore  # FIXME?
+container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto() # pyright: ignore[reportUnknownMemberType]
 container[PromptExecutionSettings] = lambda c: AzureChatPromptExecutionSettings(function_choice_behavior=c[FunctionChoiceBehavior])
 
 container[AzureChatCompletion] = lambda c: AzureChatCompletion(
@@ -112,4 +112,4 @@ container[A2AStarletteApplication] = lambda c: A2AStarletteApplication(
 # fmt: on
 
 
-container[Starlette] = lambda c: c[A2AStarletteApplication].build()
+container[Starlette] = lambda c: c[A2AStarletteApplication].build()   # type: ignore  # FIXME

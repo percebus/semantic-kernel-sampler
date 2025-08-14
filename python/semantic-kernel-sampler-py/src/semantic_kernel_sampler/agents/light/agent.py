@@ -67,8 +67,8 @@ authenticated_agent_card: AgentCard = public_agent_card.model_copy( # type: igno
 @dataclass
 class LightAgent(ChatSemanticAgentBase):
     def __post_init__(self):
-        self.agent_card__public = public_agent_card
-        self.agent_card__authenticated = authenticated_agent_card
+        self.agent_card = public_agent_card
+        self.extended_agent_card = authenticated_agent_card
         self.system_prompt = dedent("""
             You are a helpful Light Switch assistant.
             You will only use the registered plugin(s).
