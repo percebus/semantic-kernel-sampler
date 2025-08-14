@@ -1,6 +1,11 @@
 name: "[C]ontinuous [I]ntegration"
+
 on:
   push:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 
 env:
   REPOSITORY_NAME: ${{ github.event.repository.name }}

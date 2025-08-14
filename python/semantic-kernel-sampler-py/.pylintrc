@@ -1,6 +1,6 @@
 [MASTER]
 # RegEx
-ignore-patterns=.+.pyi
+ignore-patterns=.+.(pyi|as-is.py)
 
 disable=
     C0103, # invalid-name
@@ -8,6 +8,7 @@ disable=
     C0115, # missing-class-docstring
     C0116, # missing-function-docstring
     E1101, # no-member
+    R0902, # too-many-instance-attributes
     R0903, # too-few-public-methods
     W0221, # arguments-differ
     W0511, # fixme
