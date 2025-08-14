@@ -44,25 +44,36 @@ def createKernel(c: ReadableContainer) -> Kernel:
 
 def createChatHistory(c: ReadableContainer) -> ChatHistory:
     oChatHistory = ChatHistory()
+
+    # NOTE: Moved inside each Agent
+    # oChatHistory.add_system_message("You are a helpful assistant.")
+
     return oChatHistory
 
 
 container = Container()
 
 load_dotenv_files()  # TODO move to a __main__.py?
-
+# TODO? Remove all default_factory and initialize here?
 container[Config] = Singleton(Config())
 container[Settings] = lambda c: c[Config].settings
 container[AzureOpenAISettings] = lambda c: c[Settings].azure_openai
 
-container[MathPlugin] = MathPlugin
-container[LightPlugin] = LightPlugin
+oMathPlugin = MathPlugin()
+container[MathPlugin] = oMathPlugin
+
+oLightPlugin = LightPlugin()
+container[LightPlugin] = oLightPlugin
+
 container[list[PluginProtocol]] = lambda c: [c[MathPlugin], c[LightPlugin]]
 
 container[ChatHistory] = createChatHistory
 
-container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto() # pyright: ignore[reportUnknownMemberType]
-container[PromptExecutionSettings] = lambda c: AzureChatPromptExecutionSettings(function_choice_behavior=c[FunctionChoiceBehavior])
+container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto()  # pyright: ignore[reportUnknownMemberType]
+
+container[PromptExecutionSettings] = lambda c: AzureChatPromptExecutionSettings(
+    function_choice_behavior=FunctionChoiceBehavior.Auto() # pyright: ignore[reportUnknownMemberType]
+)
 
 container[AzureChatCompletion] = lambda c: AzureChatCompletion(
     base_url=c[AzureOpenAISettings].base_url,
@@ -79,7 +90,8 @@ container[LightAgent] = lambda c: LightAgent(
     chat_history=c[ChatHistory],
     azure_chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
-    plugins=list[c[LightPlugin]])  # pyright: ignore[reportArgumentType]
+    # plugins=list[oLightPlugin]  # pyright: ignore[reportArgumentType]  # FIXME
+)
 # fmt: on
 
 # fmt: off
@@ -88,7 +100,8 @@ container[MathAgent] = lambda c: MathAgent(
     chat_history=c[ChatHistory],
     azure_chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
-    plugins=list[c[MathPlugin]])  # pyright: ignore[reportArgumentType]
+    # plugins=list[oMathPlugin]  # pyright: ignore[reportArgumentType]  # FIXME
+)
 # fmt: on
 
 # The main (and only) agent
@@ -112,4 +125,4 @@ container[A2AStarletteApplication] = lambda c: A2AStarletteApplication(
 # fmt: on
 
 
-container[Starlette] = lambda c: c[A2AStarletteApplication].build()   # type: ignore  # FIXME
+container[Starlette] = lambda c: c[A2AStarletteApplication].build()  # type: ignore  # FIXME

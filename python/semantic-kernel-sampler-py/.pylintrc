@@ -1,6 +1,6 @@
 [MASTER]
 # RegEx
-ignore-patterns=.+.pyi
+ignore-patterns=.+.(pyi|as-is.py)
 
 disable=
     C0103, # invalid-name

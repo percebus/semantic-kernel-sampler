@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, ClassVar, Optional
 
 from a2a.types import AgentCard
 from semantic_kernel import Kernel
@@ -42,6 +42,9 @@ class SemanticAgentBase(ABC, AgentProtocol):
 
 @dataclass
 class ChatSemanticAgentBase(ABC, AgentProtocol):
+
+    plugins: ClassVar[list[PluginProtocol]] = []
+
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()
@@ -50,19 +53,15 @@ class ChatSemanticAgentBase(ABC, AgentProtocol):
 
     prompt_execution_settings: PromptExecutionSettings = field()
 
-    plugins: list[PluginProtocol] = field(default_factory=list)  # type: ignore # FIXME
-
-    system_prompt: str = field(init=False)
+    system_message: str = field(init=False)
 
     agent_card: AgentCard = field(init=False)
 
     extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
 
     def __post_init__(self):
-        self.prompt_execution_settings.function_choice_behavior = FunctionChoiceBehavior.Auto()  # type: ignore # XXX FIXME
-
-        if self.system_prompt:
-            self.chat_history.add_system_message(self.system_prompt)
+        if self.system_message:
+            self.chat_history.add_system_message(self.system_message)
 
         for plugin in self.plugins:
             self.kernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
