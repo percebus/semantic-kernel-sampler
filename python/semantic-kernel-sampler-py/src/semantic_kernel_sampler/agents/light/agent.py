@@ -69,10 +69,7 @@ authenticated_agent_card: AgentCard = public_agent_card.model_copy( # type: igno
 
 @dataclass
 class LightAgent(ChatSemanticAgentBase):
-
-    plugins: ClassVar[list[PluginProtocol]] = [
-        LightPlugin()
-    ]
+    plugins: ClassVar[list[PluginProtocol]] = [LightPlugin()]
 
     def __post_init__(self):
         self.agent_card = public_agent_card

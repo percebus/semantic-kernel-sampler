@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, ClassVar, Optional
 
 from a2a.types import AgentCard
 from semantic_kernel import Kernel
-from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
@@ -42,7 +41,6 @@ class SemanticAgentBase(ABC, AgentProtocol):
 
 @dataclass
 class ChatSemanticAgentBase(ABC, AgentProtocol):
-
     plugins: ClassVar[list[PluginProtocol]] = []
 
     kernel: Kernel = field()

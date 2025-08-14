@@ -72,7 +72,7 @@ container[ChatHistory] = createChatHistory
 container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto()  # pyright: ignore[reportUnknownMemberType]
 
 container[PromptExecutionSettings] = lambda c: AzureChatPromptExecutionSettings(
-    function_choice_behavior=FunctionChoiceBehavior.Auto() # pyright: ignore[reportUnknownMemberType]
+    function_choice_behavior=c[FunctionChoiceBehavior]  # pyright: ignore[reportUnknownMemberType]
 )
 
 container[AzureChatCompletion] = lambda c: AzureChatCompletion(

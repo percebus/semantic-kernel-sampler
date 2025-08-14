@@ -9,10 +9,7 @@ from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
 @dataclass
 class MathAgent(ChatSemanticAgentBase):
-
-    plugins: ClassVar[list[PluginProtocol]] = [
-        MathPlugin()
-    ]
+    plugins: ClassVar[list[PluginProtocol]] = [MathPlugin()]
 
     def __post_init__(self):
         # TODO
