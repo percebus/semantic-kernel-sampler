@@ -50,6 +50,8 @@ exclude = [
 
 [tool.coverage.run]
 omit = [
+    "**/i_*.py",
+    "**/protocol.py",
     "**/tests/**",
 ]
 

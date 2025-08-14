@@ -1,3 +1,9 @@
+from a2a.server.agent_execution import AgentExecutor
+from a2a.server.apps import A2AStarletteApplication
+from a2a.server.request_handlers import DefaultRequestHandler
+from a2a.server.request_handlers.request_handler import RequestHandler
+from a2a.server.tasks import InMemoryTaskStore
+from a2a.server.tasks.task_store import TaskStore
 from lagom import Container, Singleton
 from lagom.interfaces import ReadableContainer
 from semantic_kernel import Kernel
@@ -6,8 +12,12 @@ from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChat
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
+from semantic_kernel_sampler.agent_executor import MyAgentExecutor
+from semantic_kernel_sampler.agents.light.agent import LightAgent
 from semantic_kernel_sampler.agents.light.plugin import LightPlugin
+from semantic_kernel_sampler.agents.math.agent import MathAgent
 from semantic_kernel_sampler.agents.math.plugin import MathPlugin
+from semantic_kernel_sampler.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
@@ -70,3 +80,25 @@ container[AzureChatCompletion] = lambda c: AzureChatCompletion(
 )
 
 container[Kernel] = createKernel
+
+container[LightAgent] = LightAgent
+container[MathAgent] = MathAgent
+
+container[AgentProtocol] = lambda c: c[LightAgent]
+
+container[AgentExecutor] = lambda c: MyAgentExecutor(agent=c[LightAgent])
+
+container[TaskStore] = InMemoryTaskStore
+
+# fmt: off
+container[RequestHandler] = lambda c: DefaultRequestHandler(
+    task_store=c[TaskStore],
+    agent_executor=c[AgentExecutor])
+# fmt: on
+
+# fmt: off
+container[A2AStarletteApplication] = lambda c: A2AStarletteApplication(
+    http_handler=c[RequestHandler],
+    agent_card=c[AgentProtocol].agent_card,
+    extended_agent_card=c[AgentProtocol].extended_agent_card)
+# fmt: on

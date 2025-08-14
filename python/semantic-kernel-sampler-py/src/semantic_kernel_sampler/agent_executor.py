@@ -9,12 +9,14 @@ from semantic_kernel_sampler.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
 
 if TYPE_CHECKING:
+    from a2a.types import Message
+
     from semantic_kernel_sampler.rest.models.response import ResponseModel
 
 
 # SRC: https://github.com/a2aproject/a2a-samples/blob/main/samples/python/agents/helloworld/agent_executor.py
 @dataclass
-class AgentExecutorBase(AgentExecutor):
+class MyAgentExecutor(AgentExecutor):
     agent: AgentProtocol = field()
 
     async def execute(
@@ -28,7 +30,8 @@ class AgentExecutorBase(AgentExecutor):
         if not response.message:
             raise ValueError("No message found in response")
 
-        await event_queue.enqueue_event(new_agent_text_message(response.message))
+        message: Message = new_agent_text_message(response.message)
+        await event_queue.enqueue_event(message)
 
     async def cancel(self, context: RequestContext, event_queue: EventQueue) -> None:
         raise Exception("cancel not supported")  # pylint: disable=broad-exception-raised

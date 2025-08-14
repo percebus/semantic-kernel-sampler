@@ -2,6 +2,7 @@ from abc import ABC
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Optional
 
+from a2a.types import AgentCard
 from semantic_kernel import Kernel
 from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
@@ -18,24 +19,29 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class SemanticAgentBase(AgentProtocol, ABC):
-    kernel: Kernel = field()
+class AgentBase(AgentProtocol, ABC):
+    agent_card: AgentCard = field()
+
+    extended_agent_card: Optional[AgentCard] = field(default=None)
 
     async def invoke(self, request: RequestModel) -> ResponseModel:
         raise NotImplementedError
 
 
 @dataclass
+class SemanticAgentBase(AgentBase, ABC):
+    kernel: Kernel = field()  # pyright: ignore[reportGeneralTypeIssues]
+
+
+@dataclass
 class ChatSemanticAgentBase(SemanticAgentBase, ABC):
-    kernel: Kernel = field()
+    system_prompt: str = field()  # pyright: ignore[reportGeneralTypeIssues]
 
-    system_prompt: str = field()
+    chat_history: ChatHistory = field()  # pyright: ignore[reportGeneralTypeIssues]
 
-    chat_history: ChatHistory = field()
+    azure_chat_completion: AzureChatCompletion = field()  # pyright: ignore[reportGeneralTypeIssues]
 
-    azure_chat_completion: AzureChatCompletion = field()
-
-    prompt_execution_settings: PromptExecutionSettings = field()
+    prompt_execution_settings: PromptExecutionSettings = field()  # pyright: ignore[reportGeneralTypeIssues]
 
     plugins: list[PluginProtocol] = field(default_factory=list)  # type: ignore # FIXME
 
