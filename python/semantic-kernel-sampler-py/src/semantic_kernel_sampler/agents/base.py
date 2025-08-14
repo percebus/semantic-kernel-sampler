@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class AgentBase(AgentProtocol, ABC):
+class AgentBase(ABC, AgentProtocol):
     agent_card: AgentCard = field()
 
     extended_agent_card: Optional[AgentCard] = field(default=None)
@@ -29,24 +29,40 @@ class AgentBase(AgentProtocol, ABC):
 
 
 @dataclass
-class SemanticAgentBase(AgentBase, ABC):
-    kernel: Kernel = field()  # pyright: ignore[reportGeneralTypeIssues]
+class SemanticAgentBase(ABC, AgentProtocol):
+    kernel: Kernel = field()
+
+    agent_card: AgentCard = field(init=False)
+
+    extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
+
+    async def invoke(self, request: RequestModel) -> ResponseModel:
+        raise NotImplementedError
 
 
 @dataclass
-class ChatSemanticAgentBase(SemanticAgentBase, ABC):
-    system_prompt: str = field()  # pyright: ignore[reportGeneralTypeIssues]
+class ChatSemanticAgentBase(ABC, AgentProtocol):
+    kernel: Kernel = field()
 
-    chat_history: ChatHistory = field()  # pyright: ignore[reportGeneralTypeIssues]
+    chat_history: ChatHistory = field()
 
-    azure_chat_completion: AzureChatCompletion = field()  # pyright: ignore[reportGeneralTypeIssues]
+    azure_chat_completion: AzureChatCompletion = field()
 
-    prompt_execution_settings: PromptExecutionSettings = field()  # pyright: ignore[reportGeneralTypeIssues]
+    prompt_execution_settings: PromptExecutionSettings = field()
 
     plugins: list[PluginProtocol] = field(default_factory=list)  # type: ignore # FIXME
 
+    system_prompt: str = field(init=False)
+
+    agent_card: AgentCard = field(init=False)
+
+    extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
+
     def __post_init__(self):
         self.prompt_execution_settings.function_choice_behavior = FunctionChoiceBehavior.Auto()  # type: ignore # XXX FIXME
+
+        if self.system_prompt:
+            self.chat_history.add_system_message(self.system_prompt)
 
         for plugin in self.plugins:
             self.kernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)

@@ -1,10 +1,9 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from textwrap import dedent
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 from semantic_kernel_sampler.agents.base import ChatSemanticAgentBase
-from semantic_kernel_sampler.agents.light.plugin import LightPlugin
-from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
 # TODO use plugin's methods as skills instead
 
@@ -67,8 +66,10 @@ authenticated_agent_card: AgentCard = public_agent_card.model_copy( # type: igno
 
 @dataclass
 class LightAgent(ChatSemanticAgentBase):
-    agent_card__public: AgentCard = field(default=public_agent_card)
-
-    agent_card__authenticated: AgentCard = field(default=authenticated_agent_card)  # type: ignore # FIXME
-
-    plugins: list[PluginProtocol] = field(default_factory=lambda: [LightPlugin()])  # type: ignore # FIXME
+    def __post_init__(self):
+        self.agent_card__public = public_agent_card
+        self.agent_card__authenticated = authenticated_agent_card
+        self.system_prompt = dedent("""
+            You are a helpful Light Switch assistant.
+            You will only use the registered plugin(s).
+            If it's not in the plugins, say 'I cannot help with that.'""")

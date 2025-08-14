@@ -11,6 +11,7 @@ from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
+from starlette.applications import Starlette
 
 from semantic_kernel_sampler.agent_executor import MyAgentExecutor
 from semantic_kernel_sampler.agents.light.agent import LightAgent
@@ -43,15 +44,6 @@ def createKernel(c: ReadableContainer) -> Kernel:
 
 def createChatHistory(c: ReadableContainer) -> ChatHistory:
     oChatHistory = ChatHistory()
-
-    # TODO Read from file
-    msg = """
-        You are a helpful assistant.
-        You will only use the registered plugins.
-        If it's not in the plugins, say 'I cannot help with that.'"
-    """
-
-    oChatHistory.add_system_message(msg)
     return oChatHistory
 
 
@@ -81,9 +73,25 @@ container[AzureChatCompletion] = lambda c: AzureChatCompletion(
 
 container[Kernel] = createKernel
 
-container[LightAgent] = LightAgent
-container[MathAgent] = MathAgent
+# fmt: off
+container[LightAgent] = lambda c: LightAgent(
+    kernel=c[Kernel],
+    chat_history=c[ChatHistory],
+    azure_chat_completion=c[AzureChatCompletion],
+    prompt_execution_settings=c[PromptExecutionSettings],
+    plugins=list[c[LightPlugin]])  # pyright: ignore[reportArgumentType]
+# fmt: on
 
+# fmt: off
+container[MathAgent] = lambda c: MathAgent(
+    kernel=c[Kernel],
+    chat_history=c[ChatHistory],
+    azure_chat_completion=c[AzureChatCompletion],
+    prompt_execution_settings=c[PromptExecutionSettings],
+    plugins=list[c[MathPlugin]])  # pyright: ignore[reportArgumentType]
+# fmt: on
+
+# The main (and only) agent
 container[AgentProtocol] = lambda c: c[LightAgent]
 
 container[AgentExecutor] = lambda c: MyAgentExecutor(agent=c[LightAgent])
@@ -102,3 +110,6 @@ container[A2AStarletteApplication] = lambda c: A2AStarletteApplication(
     agent_card=c[AgentProtocol].agent_card,
     extended_agent_card=c[AgentProtocol].extended_agent_card)
 # fmt: on
+
+
+container[Starlette] = lambda c: c[A2AStarletteApplication].build()
