@@ -1,21 +1,8 @@
-# modelcontextprotocol-typescript-sdk-example
+# posts-mcp-server
 
 ## HISTORY
 
-See [modelcontextprotocol-typescript-sdk-example](../modelcontextprotocol-typescript-sdk-example)
-
-### package.json
-
-1. `$> npm init`
-1. `$> npm install --save-dev typescript`
-
-### tsconfig.json
-
-1. `$> npx tsc --init`
-
-### MCP server
-
-1. Copy+pasted [modelcontextprotocol/typescript-sdk: Quick Start](https://github.com/modelcontextprotocol/typescript-sdk/tree/1.17.3?tab=readme-ov-file#quick-start)
+1. Copy+Pasted [modelcontextprotocol-typescript-sdk-example](../modelcontextprotocol-typescript-sdk-example)
 
 ### Changes
 

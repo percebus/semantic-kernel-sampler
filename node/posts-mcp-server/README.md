@@ -1,5 +1,7 @@
 # posts-mcp-server
 
+[`HISTORY`](./HISTORY.md)
+
 ## Setup
 
 ```bash

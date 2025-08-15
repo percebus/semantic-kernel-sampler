@@ -1,5 +1,7 @@
 # modelcontextprotocol-typescript-sdk-example
 
+[`HISTORY`](./HISTORY.md)
+
 ## Setup
 
 ```bash
