@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 from textwrap import dedent
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.agents.base import SemanticChatAgentBase
 from semantic_kernel_sampler.agents.light.plugin import LightPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
+
+if TYPE_CHECKING:
+    from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 
 
 @dataclass
@@ -22,9 +24,9 @@ class LightAgent(SemanticChatAgentBase):
             tags=["light", "get", "state"],
             examples=[
                 "Is the light on?",
-                "Is the light off?",]
+                "Is the light off?",
+            ],
         )
-
 
     def createAgentSkill__change_state(self) -> AgentSkill:
         # fmt: off
@@ -38,7 +40,6 @@ class LightAgent(SemanticChatAgentBase):
                 "Turn off the light"]
         )
         # fmt: on
-
 
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
         oA2ASettings: A2ASettings = self.config.settings.a2a
@@ -58,7 +59,6 @@ class LightAgent(SemanticChatAgentBase):
         )
         # fmt: on
 
-
     def createAgentCard__authenticated(self, skills: list[AgentSkill]) -> AgentCard:
         # fmt: off
         return self.agent_card.model_copy( # type: ignore # FIXME
@@ -70,9 +70,7 @@ class LightAgent(SemanticChatAgentBase):
         )
         # fmt: on
 
-
     def __post_init__(self):
-
         # TODO use plugin's methods as skills instead
 
         get_state_AgentSkill: AgentSkill = self.createAgentSkill__get_state()
