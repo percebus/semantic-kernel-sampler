@@ -1,0 +1,13 @@
+{
+	"servers": {
+		"modelcontextprotocol-typescript-sdk-example": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"ts-node",
+				"src/main.ts"
+			]
+		}
+	},
+	"inputs": []
+}

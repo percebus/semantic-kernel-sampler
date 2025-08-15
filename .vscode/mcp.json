@@ -1,0 +1,24 @@
+{
+	"servers": {
+		"modelcontextprotocol-typescript-sdk-example": {
+			"type": "stdio",
+			"command": "npx",
+			"cwd": "${workspaceFolder}/node/modelcontextprotocol-typescript-sdk-example",
+			"args": [
+				"ts-node",
+				"src/main.ts"
+			]
+		},
+
+		"posts-mcp-server": {
+			"type": "stdio",
+			"command": "npx",
+			"cwd": "${workspaceFolder}/node/posts-mcp-server",
+			"args": [
+				"ts-node",
+				"src/main.ts"
+			]
+		}
+	},
+	"inputs": []
+}

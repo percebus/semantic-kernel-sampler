@@ -11,7 +11,7 @@
 ### VisualStudioCode.gitignore ### SRC: https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
 ##################################
 
-# .vscode/*  # mcp servers
+# .vscode/*  # mcp server
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

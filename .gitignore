@@ -7,12 +7,15 @@ test*.xml
 junit*.xml
 __tests__/config/environments/environment.js
 
+# mcp servers
+!.vscode/mcp.json
+
 
 ##################################
 ### VisualStudioCode.gitignore ### SRC: https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
 ##################################
 
-.vscode/*
+# .vscode/*  # mcp servers
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

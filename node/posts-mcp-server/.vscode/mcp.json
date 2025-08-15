@@ -1,0 +1,13 @@
+{
+	"servers": {
+		"posts-mcp-server": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"ts-node",
+				"src/main.ts"
+			]
+		}
+	},
+	"inputs": []
+}
