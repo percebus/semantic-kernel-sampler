@@ -10,7 +10,7 @@ ENV PATH="/root/.local/bin/:$PATH"
 RUN uv --version
 RUN uv venv
 ENV PATH="/usr/app/.venv/bin:$PATH"
-# RUN uv python install
+
 
 FROM uv AS dev
 RUN bash scripts/uv/tool/install.ba.sh

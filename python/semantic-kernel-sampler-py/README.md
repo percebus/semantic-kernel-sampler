@@ -2,8 +2,6 @@
 
 Semantic-Kernel python sampler
 
-Semantic-Kernel monorepo sampler
-
 ## Resources
 
 ### GitHub
