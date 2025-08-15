@@ -49,6 +49,16 @@ See [Run the Application](https://github.com/a2aproject/a2a-inspector?tab=readme
 $> bash ./run.sh
 ```
 
+#### Usage
+
+**Connect**:
+
+![Connect](./assets/img/a2a-inspector/Connect.png)
+
+**Chat**:
+
+![Chat](./assets/img/semantic-kernel/plugins/light/Turn_on_the_light.png)
+
 ## Resources
 
 ### GitHub
