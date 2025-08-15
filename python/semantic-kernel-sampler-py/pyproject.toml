@@ -1,5 +1,5 @@
 [project]
-name = "semantic_kernel_sampler"
+name = "semantic-kernel-sampler-py"
 version = "0.1.0"
 readme = "README.md"
 description = "semantic-kernel sampler"
