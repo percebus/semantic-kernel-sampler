@@ -85,6 +85,7 @@ container[Kernel] = createKernel
 
 # fmt: off
 container[LightAgent] = lambda c: LightAgent(
+    config=c[Config],
     kernel=c[Kernel],
     chat_history=c[ChatHistory],
     azure_chat_completion=c[AzureChatCompletion],
@@ -95,6 +96,7 @@ container[LightAgent] = lambda c: LightAgent(
 
 # fmt: off
 container[MathAgent] = lambda c: MathAgent(
+    config=c[Config],
     kernel=c[Kernel],
     chat_history=c[ChatHistory],
     azure_chat_completion=c[AzureChatCompletion],
