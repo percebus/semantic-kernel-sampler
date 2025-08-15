@@ -8,7 +8,9 @@ FROM base AS uv
 RUN curl -LsSf https://astral.sh/uv/0.8.9/install.sh | sh
 ENV PATH="/root/.local/bin/:$PATH"
 RUN uv --version
-# RUN uv python install  # TODO
+RUN uv venv
+ENV PATH="/usr/app/.venv/bin:$PATH"
+# RUN uv python install
 
 FROM uv AS dev
 RUN bash scripts/uv/tool/install.ba.sh
@@ -22,4 +24,4 @@ RUN uvx -- pypyr build release=True
 
 # TODO use light image. alpine?
 FROM built AS release
-CMD [ "python", "src/semantic_kernel_sampler" ]
+CMD [ "python", "-m", "semantic_kernel_sampler" ]

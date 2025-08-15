@@ -2702,7 +2702,7 @@ wheels = [
 ]
 
 [[package]]
-name = "semantic-kernel-sampler-py"
+name = "semantic-kernel-sampler"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

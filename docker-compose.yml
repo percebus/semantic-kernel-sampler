@@ -1,13 +1,17 @@
-services:
-  rest-app:
-    build:
-      context: .
-      target: rest-app
-    command: start
-    ports:
-      - 8080:3000
+# SRC: https://linuxconfig.org/how-to-network-connect-two-containers-with-docker-compose
+networks:
+  my_network:
 
-  # TODO typescript-app:
+services:
+  # rest-app:
+  #   build:
+  #     context: .
+  #     target: rest-app
+  #   command: start
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - my_network
 
   semantic-app-python:
     build:
@@ -15,10 +19,27 @@ services:
       target: release
     ports:
       - 8082:9999
+    networks:
+      - my_network
 
-  semantic-app-dotnet:
-    build:
-      context: ./dotnet
-      target: webapp
-    ports:
-      - 8083:8080
+  # semantic-app-dotnet:
+  #   build:
+  #     context: ./dotnet
+  #     target: webapp
+  #   ports:
+  #     - 8083:8080
+  #   networks:
+  #     - my_network
+
+  # TODO java-app:
+
+  # TODO typescript-app?:
+
+
+  # a2a-inspector:
+  #   build:
+  #     context: ./repositories/a2a-inspector
+  #   ports:
+  #     - 5001:8080
+  #   networks:
+  #     - my_network
