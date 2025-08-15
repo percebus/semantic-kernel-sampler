@@ -2,13 +2,13 @@ from dataclasses import dataclass
 from textwrap import dedent
 from typing import ClassVar
 
-from semantic_kernel_sampler.agents.base import ChatSemanticAgentBase
+from semantic_kernel_sampler.agents.base import SemanticChatAgentBase
 from semantic_kernel_sampler.agents.math.plugin import MathPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
 
 @dataclass
-class MathAgent(ChatSemanticAgentBase):
+class MathAgent(SemanticChatAgentBase):
     plugins: ClassVar[list[PluginProtocol]] = [MathPlugin()]
 
     def __post_init__(self):

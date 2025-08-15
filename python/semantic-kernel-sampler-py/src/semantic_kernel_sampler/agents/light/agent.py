@@ -1,79 +1,92 @@
 from dataclasses import dataclass
 from textwrap import dedent
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.agents.base import ChatSemanticAgentBase
+from semantic_kernel_sampler.agents.base import SemanticChatAgentBase
 from semantic_kernel_sampler.agents.light.plugin import LightPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
-# TODO use plugin's methods as skills instead
-
-# fmt: off
-agent_skill__get_state = AgentSkill(
-    id="light__get_state",
-    name="get state",
-    description="Gets the current state of the light switch",
-    tags=["light", "get", "state"],
-    examples=[
-        "Is the light on?",
-        "Is the light off?",]
-)
-# fmt: on
-
-# fmt: off
-agent_skill__change_state = AgentSkill(
-    id="light__change_state",
-    name="change state",
-    description="Turns on and off the light switch",
-    tags=["light", "set", "change", "state"],
-    examples=[
-        "Turn on the light",
-        "Turn off the light"]
-)
-# fmt: on
-
-agent_capabilities = AgentCapabilities(streaming=False)
-
-# fmt: off
-public_agent_card = AgentCard(
-    name="Light Agent",
-    description=agent_skill__get_state.description,
-    url='http://localhost:9999/',  # FIXME read from container
-    version='1.0.0', # FIXME READ from pyproject.toml
-    default_input_modes=["text"],
-    default_output_modes=["text"],
-    capabilities=agent_capabilities,
-    supports_authenticated_extended_card=True,
-    skills=[
-        agent_skill__get_state,
-    ]
-)
-# fmt: on
-
-
-# fmt: off
-authenticated_agent_card: AgentCard = public_agent_card.model_copy( # type: ignore # FIXME
-    update={
-        'name': "Stateful Light Agent (Authenticated)",
-        'description': 'Gets or sets the state of the light switch',
-        'skills': [
-            agent_skill__get_state,
-            agent_skill__change_state
-        ]
-    }
-)
-# fmt: on
+if TYPE_CHECKING:
+    from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 
 
 @dataclass
-class LightAgent(ChatSemanticAgentBase):
+class LightAgent(SemanticChatAgentBase):
     plugins: ClassVar[list[PluginProtocol]] = [LightPlugin()]
 
+    def createAgentSkill__get_state(self) -> AgentSkill:
+        return AgentSkill(
+            id="light__get_state",
+            name="get state",
+            description="Gets the current state of the light switch",
+            tags=["light", "get", "state"],
+            examples=[
+                "Is the light on?",
+                "Is the light off?",
+            ],
+        )
+
+    def createAgentSkill__change_state(self) -> AgentSkill:
+        # fmt: off
+        return AgentSkill(
+            id="light__change_state",
+            name="change state",
+            description="Turns on and off the light switch",
+            tags=["light", "set", "change", "state"],
+            examples=[
+                "Turn on the light",
+                "Turn off the light"]
+        )
+        # fmt: on
+
+    def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
+        oA2ASettings: A2ASettings = self.config.settings.a2a
+        oAgentCapabilities = AgentCapabilities(streaming=True)
+
+        # fmt: off
+        return AgentCard(
+            name="Light Agent",
+            description="Gets the current state of the light switch",
+            url=oA2ASettings.url,
+            version='1.0.0', # FIXME READ from pyproject.toml
+            default_input_modes=["text"],
+            default_output_modes=["text"],
+            capabilities=oAgentCapabilities,
+            supports_authenticated_extended_card=True,
+            skills=skills
+        )
+        # fmt: on
+
+    def createAgentCard__authenticated(self, skills: list[AgentSkill]) -> AgentCard:
+        # fmt: off
+        return self.agent_card.model_copy( # type: ignore # FIXME
+            update={
+                'name': "Stateful Light Agent (Authenticated)",
+                'description': 'Gets or sets the state of the light switch',
+                'skills': skills
+            }
+        )
+        # fmt: on
+
     def __post_init__(self):
-        self.agent_card = public_agent_card
-        self.extended_agent_card = authenticated_agent_card
+        # TODO use plugin's methods as skills instead
+
+        get_state_AgentSkill: AgentSkill = self.createAgentSkill__get_state()
+        change_state_AgentSkill: AgentSkill = self.createAgentSkill__change_state()
+
+        # fmt: off
+        self.agent_card = self.createAgentCard__public(skills=[
+            get_state_AgentSkill])
+        # fmt: on
+
+        # fmt: off
+        self.extended_agent_card = self.createAgentCard__authenticated(skills=[
+            get_state_AgentSkill,
+            change_state_AgentSkill])
+        # fmt: on
+
         self.system_message = dedent("""
             You are a helpful Light Switch assistant.
             You will only use the registered plugin(s).

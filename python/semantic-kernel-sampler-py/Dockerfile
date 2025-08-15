@@ -8,7 +8,9 @@ FROM base AS uv
 RUN curl -LsSf https://astral.sh/uv/0.8.9/install.sh | sh
 ENV PATH="/root/.local/bin/:$PATH"
 RUN uv --version
-# RUN uv python install  # TODO
+RUN uv venv
+ENV PATH="/usr/app/.venv/bin:$PATH"
+
 
 FROM uv AS dev
 RUN bash scripts/uv/tool/install.ba.sh

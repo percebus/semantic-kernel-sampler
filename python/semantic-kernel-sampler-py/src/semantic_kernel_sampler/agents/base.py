@@ -9,6 +9,7 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 
 from semantic_kernel_sampler.agents.protocol import AgentProtocol
+from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
@@ -19,7 +20,9 @@ if TYPE_CHECKING:
 
 @dataclass
 class AgentBase(ABC, AgentProtocol):
-    agent_card: AgentCard = field()
+    config: Config = field()
+
+    agent_card: AgentCard = field(init=False)
 
     extended_agent_card: Optional[AgentCard] = field(default=None)
 
@@ -29,6 +32,8 @@ class AgentBase(ABC, AgentProtocol):
 
 @dataclass
 class SemanticAgentBase(ABC, AgentProtocol):
+    config: Config = field()
+
     kernel: Kernel = field()
 
     agent_card: AgentCard = field(init=False)
@@ -40,8 +45,10 @@ class SemanticAgentBase(ABC, AgentProtocol):
 
 
 @dataclass
-class ChatSemanticAgentBase(ABC, AgentProtocol):
+class SemanticChatAgentBase(ABC, AgentProtocol):
     plugins: ClassVar[list[PluginProtocol]] = []
+
+    config: Config = field()
 
     kernel: Kernel = field()
 

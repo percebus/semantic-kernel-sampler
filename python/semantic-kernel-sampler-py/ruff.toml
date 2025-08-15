@@ -1,7 +1,13 @@
 line-length = 150
 indent-width = 4
 show-fixes = true
-exclude = ["typings"]
+exclude = [
+    ".venv",
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "typings"
+]
 
 # Minimum Python version: 3.12
 target-version = "py312"
