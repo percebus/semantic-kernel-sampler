@@ -1,24 +1,18 @@
 {
-	"servers": {
-		"modelcontextprotocol-typescript-sdk-example": {
-			"type": "stdio",
-			"cwd": "${workspaceFolder}/node/modelcontextprotocol-typescript-sdk-example",
-			"command": "npx",
-			"args": [
-				"ts-node",
-				"src/main.ts"
-			]
-		},
+  "servers": {
+    "modelcontextprotocol-typescript-sdk-example": {
+      "type": "stdio",
+      "cwd": "${workspaceFolder}/node/modelcontextprotocol-typescript-sdk-example",
+      "command": "npx",
+      "args": ["ts-node", "src/main.ts"]
+    },
 
-		"posts-mcp-server": {
-			"type": "stdio",
-			"cwd": "${workspaceFolder}/node/posts-mcp-server",
-			"command": "npx",
-			"args": [
-				"ts-node",
-				"src/main.ts"
-			]
-		}
-	},
-	"inputs": []
+    "posts-mcp-server": {
+      "type": "stdio",
+      "cwd": "${workspaceFolder}/node/posts-mcp-server",
+      "command": "npx",
+      "args": ["ts-node", "src/main.ts"]
+    }
+  },
+  "inputs": []
 }
