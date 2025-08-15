@@ -1,0 +1,33 @@
+{
+  "name": "posts-mcp-server",
+  "version": "0.1.0",
+  "description": "blog post mcp server",
+  "keywords": [
+    "json-server",
+    "blog",
+    "posts",
+    "comments",
+    "mcp",
+    "server"
+  ],
+  "license": "SEE LICENSE IN ../../LICENSE.md",
+  "author": "JCystems",
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "npm:install:global:all": "npm install --location global yarn ts-node",
+    "setup": "npm run npm:install:global:all",
+    "setup:ci": "npm run setup",
+    "dist": "tsc",
+    "build": "npm run dist",
+    "start": "npx ts-node src/main.ts",
+    "test": "exit 0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.3",
+    "zod": "^3.25.76"
+  }
+}
