@@ -14,7 +14,7 @@ services:
       context: ./python/semantic-kernel-sampler-py
       target: release
     ports:
-      - 8082:5000
+      - 8082:5555
 
   semantic-app-dotnet:
     build:

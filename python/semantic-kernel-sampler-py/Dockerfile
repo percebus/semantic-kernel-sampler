@@ -22,4 +22,4 @@ RUN uvx -- pypyr build release=True
 
 # TODO use light image. alpine?
 FROM built AS release
-CMD [ "python", "-m", "semantic_kernel_sampler" ]
+CMD [ "python", "src/semantic_kernel_sampler" ]

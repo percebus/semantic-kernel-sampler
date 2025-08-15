@@ -20,6 +20,7 @@ from semantic_kernel_sampler.agents.math.agent import MathAgent
 from semantic_kernel_sampler.agents.math.plugin import MathPlugin
 from semantic_kernel_sampler.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
+from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
@@ -58,6 +59,7 @@ load_dotenv_files()  # TODO move to a __main__.py?
 container[Config] = Singleton(Config())
 container[Settings] = lambda c: c[Config].settings
 container[AzureOpenAISettings] = lambda c: c[Settings].azure_openai
+container[A2ASettings] = lambda c: c[Settings].a2a
 
 container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
