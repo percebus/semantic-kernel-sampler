@@ -27,6 +27,7 @@ USER_INPUTS = [
 ]
 
 
+# SRC: https://github.com/microsoft/semantic-kernel/blob/main/python/samples/concepts/mcp/agent_with_http_mcp_plugin.py
 async def main():
     # 1. Create the agent
     async with createMCPStreamableHttpPlugin() as learn_plugin:

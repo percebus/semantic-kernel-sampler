@@ -30,7 +30,6 @@ from semantic_kernel_sampler.plugins.math import MathPlugin
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel_sampler.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
-from semantic_kernel_sampler.third_party.microsoft.learn.api.mcp import createMCPStreamableHttpPlugin as createMSLearnMCPPlugin
 
 
 def createKernel(c: ReadableContainer) -> Kernel:
@@ -39,10 +38,11 @@ def createKernel(c: ReadableContainer) -> Kernel:
     oAzureChatCompletion = c[AzureChatCompletion]
     oKernel.add_service(oAzureChatCompletion)
 
-    # NOTE: Plugins will be set on each Agent now
-    plugins = c[list[PluginProtocol]]
-    for plugin in plugins:
-        oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
+    # XXX Troubleshooting
+    # NOTE: Plugins are set on each Agent now
+    # plugins = c[list[PluginProtocol]]
+    # for plugin in plugins:
+    #     oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
 
     return oKernel
 
@@ -51,9 +51,9 @@ def createChatHistory(c: ReadableContainer) -> ChatHistory:
     oChatHistory = ChatHistory()
 
     # XXX Troubleshooting
-    oChatHistory.add_system_message("""You are a helpful assistant.
-        You will only use the registered plugin(s).
-        If it's not in the plugins, say 'I cannot help with that.'""")
+    # oChatHistory.add_system_message("""You are a helpful assistant.
+    #     You will only use the registered plugin(s).
+    #     If it's not in the plugins, say 'I cannot help with that.'""")
 
     return oChatHistory
 
@@ -76,10 +76,9 @@ container[DemoServerMCPStdioPlugin] = DemoServerMCPStdioPlugin
 # NOTE: Plugins to register in the Kernel
 # fmt: off
 container[list[PluginProtocol]] = lambda c: [
-    # c[MathPlugin],
-    # c[LightPlugin],
-    # c[DemoServerMCPStdioPlugin]
-    createMSLearnMCPPlugin()
+    c[MathPlugin],
+    c[LightPlugin],
+    c[DemoServerMCPStdioPlugin]
 ]
 # fmt: on
 
@@ -136,8 +135,8 @@ container[TypescriptSDKQuickStartDemoServerAgent] = lambda c: TypescriptSDKQuick
 
 
 # The main (and only) agent
-container[AgentProtocol] = lambda c: c[TypescriptSDKQuickStartDemoServerAgent]
-container[AgentExecutor] = lambda c: MyAgentExecutor(agent=c[TypescriptSDKQuickStartDemoServerAgent])
+container[AgentProtocol] = lambda c: c[LightAgent]
+container[AgentExecutor] = lambda c: MyAgentExecutor(agent=c[AgentProtocol])
 
 # Where to store Tasks
 container[TaskStore] = InMemoryTaskStore
