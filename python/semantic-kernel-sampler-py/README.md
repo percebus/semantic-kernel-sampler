@@ -14,6 +14,7 @@ Semantic-Kernel python sampler
 ### Semantic Kernel
 
 - [Semantic Kernel: Agent concept examples](https://github.com/microsoft/semantic-kernel/tree/python-1.35.3/python/samples/concepts/agents)
+  - [Chat Completion Agents](https://github.com/microsoft/semantic-kernel/tree/python-1.35.2/python/samples/getting_started_with_agents/chat_completion)
   - [Chat Completion Agent Samples](https://github.com/microsoft/semantic-kernel/tree/python-1.35.3/python/samples/concepts/agents/chat_completion_agent)
 - [Model Context Protocol](https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/concepts/mcp/README.md)
 

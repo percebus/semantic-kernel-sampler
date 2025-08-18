@@ -14,23 +14,24 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
-from semantic_kernel_sampler.a2a.agents.light import LightAgent
-from semantic_kernel_sampler.a2a.agents.math import MathAgent
 from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.a2a.agents.typescript_sdk__quick_start import DemoMcpServerAgent
 from semantic_kernel_sampler.a2a.executor import MyAgentExecutor
+from semantic_kernel_sampler.ai.tooling.light.a2a.agent import LightAgent
+from semantic_kernel_sampler.ai.tooling.light.sk.kernel import LightKernel
+from semantic_kernel_sampler.ai.tooling.light.sk.plugin import LightPlugin
+from semantic_kernel_sampler.ai.tooling.math.a2a.agent import MathAgent
+from semantic_kernel_sampler.ai.tooling.math.sk.kernel import MathKernel
+from semantic_kernel_sampler.ai.tooling.math.sk.plugin import MathPlugin
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.sk.plugins.light import LightPlugin
-from semantic_kernel_sampler.sk.plugins.math import MathPlugin
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel_sampler.sk.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
-from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
 def createKernel(c: ReadableContainer) -> Kernel:
@@ -74,15 +75,6 @@ container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
 container[DemoServerMCPStdioPlugin] = DemoServerMCPStdioPlugin
 
-# NOTE: Plugins to register in the Kernel
-# fmt: off
-container[list[PluginProtocol]] = lambda c: [
-    c[MathPlugin],
-    c[LightPlugin],
-    c[DemoServerMCPStdioPlugin]
-]
-# fmt: on
-
 container[ChatHistory] = createChatHistory
 
 container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto()  # pyright: ignore[reportUnknownMemberType]
@@ -101,11 +93,14 @@ container[AzureChatCompletion] = lambda c: AzureChatCompletion(
 container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 
 container[Kernel] = createKernel
+container[MathKernel] = MathKernel
+container[LightKernel] = LightKernel
+
 
 # fmt: off
 container[LightAgent] = lambda c: LightAgent(
     config=c[Config],
-    kernel=c[Kernel],
+    kernel=c[LightKernel],
     chat_history=c[ChatHistory],
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
@@ -116,7 +111,7 @@ container[LightAgent] = lambda c: LightAgent(
 # fmt: off
 container[MathAgent] = lambda c: MathAgent(
     config=c[Config],
-    kernel=c[Kernel],
+    kernel=c[MathKernel],
     chat_history=c[ChatHistory],
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],

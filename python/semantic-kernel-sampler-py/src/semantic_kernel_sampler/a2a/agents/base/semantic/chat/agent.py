@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, Optional
 
 from a2a.types import AgentCard
 from semantic_kernel import Kernel
@@ -12,7 +12,6 @@ from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
-from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent
@@ -20,7 +19,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class SemanticChatAgentBase(ABC, AgentProtocol):
-    plugins: ClassVar[list[PluginProtocol]] = []
 
     config: Config = field()
 
@@ -32,18 +30,15 @@ class SemanticChatAgentBase(ABC, AgentProtocol):
 
     prompt_execution_settings: PromptExecutionSettings = field()
 
-    system_message: str = field(init=False)
+    _system_message: str = field(init=False)
 
     agent_card: AgentCard = field(init=False)
 
     extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
 
     def __post_init__(self):
-        if self.system_message:
-            self.chat_history.add_system_message(self.system_message)
-
-        for plugin in self.plugins:
-            self.kernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
+        if self._system_message:
+            self.chat_history.add_system_message(self._system_message)
 
     async def invoke(self, request: RequestModel) -> ResponseModel:
         self.chat_history.add_user_message(request.message)
