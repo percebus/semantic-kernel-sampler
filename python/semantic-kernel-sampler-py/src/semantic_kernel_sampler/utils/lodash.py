@@ -14,7 +14,7 @@ def noop(obj: Any) -> Any:  # noqa: ANN401 "Dynamically typed expressions are di
     -------
         The input object.
     """
-    pass
+    pass  # pylint: disable=unnecessary-pass
 
 
 def identity(x: Any) -> Any:  # noqa: ANN401 "Dynamically typed expressions are disallowed"

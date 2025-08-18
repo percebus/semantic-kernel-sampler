@@ -46,6 +46,7 @@ exclude = [
     "typings",
     "**/__pycache__",
     "**/test*.py",
+    "**/*.as-is.py"
 ]
 
 [tool.coverage.run]
