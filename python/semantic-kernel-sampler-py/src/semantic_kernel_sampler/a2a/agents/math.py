@@ -3,8 +3,8 @@ from textwrap import dedent
 from typing import ClassVar
 
 from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
-from semantic_kernel_sampler.plugins.math import MathPlugin
-from semantic_kernel_sampler.plugins.protocol import PluginProtocol
+from semantic_kernel_sampler.sk.plugins.math import MathPlugin
+from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
 @dataclass

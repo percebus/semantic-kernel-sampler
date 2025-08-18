@@ -4,7 +4,7 @@ from typing import Annotated
 
 from semantic_kernel.functions import kernel_function
 
-from semantic_kernel_sampler.plugins.protocol import PluginProtocol
+from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
 # SRC: https://github.com/microsoft/semantic-kernel/blob/40734345dcb5be298d524f58b5d3bf2afd835f27/python/samples/learn_resources/plugin.py#L11

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from semantic_kernel_sampler.plugins.mcp.base.stdio import MyMCPStdioPlugin
+from semantic_kernel_sampler.sk.plugins.mcp.base.stdio import MyMCPStdioPlugin
 
 
 @dataclass

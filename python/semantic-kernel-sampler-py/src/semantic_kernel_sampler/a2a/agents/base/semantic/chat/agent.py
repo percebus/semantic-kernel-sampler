@@ -10,9 +10,9 @@ from semantic_kernel.contents import ChatHistory
 
 from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
-from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
+from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent

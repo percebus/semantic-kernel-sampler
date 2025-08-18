@@ -24,12 +24,12 @@ from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.plugins.light import LightPlugin
-from semantic_kernel_sampler.plugins.math import MathPlugin
+from semantic_kernel_sampler.sk.plugins.light import LightPlugin
+from semantic_kernel_sampler.sk.plugins.math import MathPlugin
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
-from semantic_kernel_sampler.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
-from semantic_kernel_sampler.plugins.protocol import PluginProtocol
+from semantic_kernel_sampler.sk.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
+from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
 def createKernel(c: ReadableContainer) -> Kernel:
