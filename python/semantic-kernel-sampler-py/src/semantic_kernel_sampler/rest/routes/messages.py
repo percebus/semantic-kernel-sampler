@@ -2,7 +2,6 @@ from typing import TYPE_CHECKING, Optional
 
 from flask import Flask, request
 from semantic_kernel import Kernel
-from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
@@ -34,7 +33,6 @@ async def post_async():
 
     oKernel: Kernel = container[Kernel]
     oPromptExecutionSettings: PromptExecutionSettings = container[AzureChatPromptExecutionSettings]
-    oPromptExecutionSettings.function_choice_behavior = FunctionChoiceBehavior.Auto()  # type: ignore # XXX FIXME
 
     oResponse: ResponseModel = ResponseModel(request=_request)
     oAzureChatCompletion: AzureChatCompletion = container[AzureChatCompletion]

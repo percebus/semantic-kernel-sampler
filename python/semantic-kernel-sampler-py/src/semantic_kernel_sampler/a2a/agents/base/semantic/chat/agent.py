@@ -8,40 +8,14 @@ from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
-from semantic_kernel_sampler.agents.protocol import AgentProtocol
+from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
-from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
+from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent
-
-
-@dataclass
-class AgentBase(ABC, AgentProtocol):
-    config: Config = field()
-
-    agent_card: AgentCard = field(init=False)
-
-    extended_agent_card: Optional[AgentCard] = field(default=None)
-
-    async def invoke(self, request: RequestModel) -> ResponseModel:
-        raise NotImplementedError
-
-
-@dataclass
-class SemanticAgentBase(ABC, AgentProtocol):
-    config: Config = field()
-
-    kernel: Kernel = field()
-
-    agent_card: AgentCard = field(init=False)
-
-    extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
-
-    async def invoke(self, request: RequestModel) -> ResponseModel:
-        raise NotImplementedError
 
 
 @dataclass
