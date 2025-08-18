@@ -5,7 +5,7 @@ from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.utils import new_agent_text_message
 
-from semantic_kernel_sampler.agents.a2a.protocol import AgentProtocol
+from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
 
 if TYPE_CHECKING:

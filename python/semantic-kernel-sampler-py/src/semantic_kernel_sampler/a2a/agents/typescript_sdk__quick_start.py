@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, ClassVar
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.agents.a2a.base.semantic.chat_agent import SemanticChatAgentBase
+from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
 from semantic_kernel_sampler.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 from semantic_kernel_sampler.third_party.modelcontextprotocol.typescript_sdk.quick_start import createMCPStdioPlugin

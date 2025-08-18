@@ -13,11 +13,11 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
-from semantic_kernel_sampler.agent_executor import MyAgentExecutor
-from semantic_kernel_sampler.agents.a2a.light import LightAgent
-from semantic_kernel_sampler.agents.a2a.math import MathAgent
-from semantic_kernel_sampler.agents.a2a.protocol import AgentProtocol
-from semantic_kernel_sampler.agents.a2a.typescript_sdk__quick_start import TypescriptSDKQuickStartDemoServerAgent
+from semantic_kernel_sampler.a2a.executor import MyAgentExecutor
+from semantic_kernel_sampler.a2a.agents.light import LightAgent
+from semantic_kernel_sampler.a2a.agents.math import MathAgent
+from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
+from semantic_kernel_sampler.a2a.agents.typescript_sdk__quick_start import TypescriptSDKQuickStartDemoServerAgent
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
