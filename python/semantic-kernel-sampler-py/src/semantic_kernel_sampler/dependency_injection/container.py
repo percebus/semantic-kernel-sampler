@@ -96,7 +96,9 @@ container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 
 container[Kernel] = lambda c: createKernel(c)
 
-container[LightChatCompletionAgent] = LightChatCompletionAgent
+container[LightChatCompletionAgent] = lambda c: LightChatCompletionAgent(
+    kernel=createKernel(c, [c[LightPlugin]]),
+)
 
 # fmt: off
 container[LightA2AAgent] = lambda c: LightA2AAgent(
