@@ -14,10 +14,10 @@ from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
 from semantic_kernel_sampler.agent_executor import MyAgentExecutor
-from semantic_kernel_sampler.agents.light import LightAgent
-from semantic_kernel_sampler.agents.math import MathAgent
-from semantic_kernel_sampler.agents.protocol import AgentProtocol
-from semantic_kernel_sampler.agents.typescript_sdk__quick_start import TypescriptSDKQuickStartDemoServerAgent
+from semantic_kernel_sampler.agents.a2a.light import LightAgent
+from semantic_kernel_sampler.agents.a2a.math import MathAgent
+from semantic_kernel_sampler.agents.a2a.protocol import AgentProtocol
+from semantic_kernel_sampler.agents.a2a.typescript_sdk__quick_start import TypescriptSDKQuickStartDemoServerAgent
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -30,18 +30,19 @@ from semantic_kernel_sampler.plugins.math import MathPlugin
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel_sampler.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
+from semantic_kernel_sampler.third_party.microsoft.learn.api.mcp import createMCPStreamableHttpPlugin as createMSLearnMCPPlugin
 
 
 def createKernel(c: ReadableContainer) -> Kernel:
     oKernel = Kernel()
 
-    # NOTE: Plugins will be set on each Agent now
-    # plugins = c[list[PluginProtocol]]
-    # for plugin in plugins:
-    #     oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
-
     oAzureChatCompletion = c[AzureChatCompletion]
     oKernel.add_service(oAzureChatCompletion)
+
+    # NOTE: Plugins will be set on each Agent now
+    plugins = c[list[PluginProtocol]]
+    for plugin in plugins:
+        oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
 
     return oKernel
 
@@ -49,8 +50,10 @@ def createKernel(c: ReadableContainer) -> Kernel:
 def createChatHistory(c: ReadableContainer) -> ChatHistory:
     oChatHistory = ChatHistory()
 
-    # NOTE: Moved inside each Agent
-    # oChatHistory.add_system_message("You are a helpful assistant.")
+    # XXX Troubleshooting
+    oChatHistory.add_system_message("""You are a helpful assistant.
+        You will only use the registered plugin(s).
+        If it's not in the plugins, say 'I cannot help with that.'""")
 
     return oChatHistory
 
@@ -70,11 +73,14 @@ container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
 container[DemoServerMCPStdioPlugin] = DemoServerMCPStdioPlugin
 
+# NOTE: Plugins to register in the Kernel
 # fmt: off
 container[list[PluginProtocol]] = lambda c: [
-    c[MathPlugin],
-    c[LightPlugin],
-    c[DemoServerMCPStdioPlugin]]
+    # c[MathPlugin],
+    # c[LightPlugin],
+    # c[DemoServerMCPStdioPlugin]
+    createMSLearnMCPPlugin()
+]
 # fmt: on
 
 container[ChatHistory] = createChatHistory

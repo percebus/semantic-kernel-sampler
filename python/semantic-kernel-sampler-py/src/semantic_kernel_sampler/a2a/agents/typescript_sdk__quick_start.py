@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING, ClassVar
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.agents.base.semantic.chat_agent import SemanticChatAgentBase
-from semantic_kernel_sampler.third_party.modelcontextprotocol.typescript_sdk.quick_start import createMCPStdioPlugin
+from semantic_kernel_sampler.agents.a2a.base.semantic.chat_agent import SemanticChatAgentBase
 from semantic_kernel_sampler.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
+from semantic_kernel_sampler.third_party.modelcontextprotocol.typescript_sdk.quick_start import createMCPStdioPlugin
 from semantic_kernel_sampler.utils.lodash import noop
 
 if TYPE_CHECKING:
@@ -17,11 +17,10 @@ if TYPE_CHECKING:
 noop(createMCPStdioPlugin)
 noop(DemoServerMCPStdioPlugin)
 
+
 @dataclass
 class TypescriptSDKQuickStartDemoServerAgent(SemanticChatAgentBase):
-    plugins: ClassVar[list[PluginProtocol]] = [
-         DemoServerMCPStdioPlugin()
-    ]
+    plugins: ClassVar[list[PluginProtocol]] = [DemoServerMCPStdioPlugin()]
 
     def createAgentSkill__add(self) -> AgentSkill:
         return AgentSkill(
@@ -66,7 +65,6 @@ class TypescriptSDKQuickStartDemoServerAgent(SemanticChatAgentBase):
         )
         # fmt: on
 
-
     def createAgentCard__authenticated(self, skills: list[AgentSkill]) -> AgentCard:
         # fmt: off
         return self.agent_card.model_copy(
@@ -76,7 +74,6 @@ class TypescriptSDKQuickStartDemoServerAgent(SemanticChatAgentBase):
             }
         )
         # fmt: on
-
 
     def __post_init__(self):
         addAgentSkill: AgentSkill = self.createAgentSkill__add()

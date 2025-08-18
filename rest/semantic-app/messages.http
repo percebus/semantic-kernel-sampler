@@ -1,8 +1,26 @@
 
-### "What time is it?"
+### LightPlugin
 POST http://127.0.0.1:5000/messages HTTP/1.1
 Content-Type: application/json
 
 {
   "message": "is the light on?"
+}
+
+
+### modelcontextprotocol/typescript-sdk "Quick Start" example
+POST http://127.0.0.1:5000/messages HTTP/1.1
+Content-Type: application/json
+
+{
+  "message": "Add 2 and 3"
+}
+
+
+### learn.microsoft.com/api/mcp
+POST http://127.0.0.1:5000/messages HTTP/1.1
+Content-Type: application/json
+
+{
+  "message": "I want to learn about MCP"
 }

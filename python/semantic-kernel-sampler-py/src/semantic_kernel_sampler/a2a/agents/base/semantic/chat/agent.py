@@ -8,7 +8,7 @@ from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
-from semantic_kernel_sampler.agents.protocol import AgentProtocol
+from semantic_kernel_sampler.agents.a2a.protocol import AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
