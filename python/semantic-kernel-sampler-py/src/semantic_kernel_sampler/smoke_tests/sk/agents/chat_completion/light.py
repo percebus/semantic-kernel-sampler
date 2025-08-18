@@ -16,7 +16,8 @@ USER_INPUTS = [
 ]
 
 
-# SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/chat_completion/step03_chat_completion_agent_with_kernel.py  # pylint: disable=C0301 # line-too-long
+# pylint: disable-next=line-too-long
+# SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/chat_completion/step03_chat_completion_agent_with_kernel.py
 async def main():
     oAgentExecutor = container[LightAgentExecutor]
 
