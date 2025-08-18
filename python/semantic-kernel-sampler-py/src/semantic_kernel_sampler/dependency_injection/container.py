@@ -77,7 +77,7 @@ container[DemoServerMCPStdioPlugin] = DemoServerMCPStdioPlugin
 
 container[list[PluginProtocol]] = lambda c: [c[MathPlugin], c[LightPlugin], c[DemoServerMCPStdioPlugin]]
 
-container[ChatHistory] = lambda c: createChatHistory(c)
+container[ChatHistory] = lambda c: createChatHistory(c)  # pylint: disable=W0108 # unnecessary-lambda
 
 container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto()  # pyright: ignore[reportUnknownMemberType]
 
@@ -94,7 +94,7 @@ container[AzureChatCompletion] = lambda c: AzureChatCompletion(
 
 container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 
-container[Kernel] = lambda c: createKernel(c)
+container[Kernel] = lambda c: createKernel(c)  # pylint: disable=W0108 # unnecessary-lambda
 
 container[LightChatCompletionAgent] = lambda c: LightChatCompletionAgent(
     kernel=createKernel(c, [c[LightPlugin]]),

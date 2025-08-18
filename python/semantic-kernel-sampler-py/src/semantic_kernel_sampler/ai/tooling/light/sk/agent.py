@@ -9,7 +9,6 @@ from semantic_kernel_sampler.sk.agents.executors.base.semantic.chat.agent import
 
 @dataclass
 class LightAgent(ChatCompletionSemanticAgentExecutorBase):
-
     _instructions: Optional[str] = field(init=False, default=SYSTEM_MESSAGE)
 
     def __post_init__(self):
