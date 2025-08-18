@@ -1,12 +1,9 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
-from semantic_kernel import Kernel
 
 from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
-from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.instructions import SYSTEM_MESSAGE
-from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.sk.kernel import DemoServerKernel
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -14,7 +11,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class DemoMcpServerAgent(SemanticChatAgentBase):
-    kernel: Kernel = field(default_factory=DemoServerKernel)
 
     def createAgentSkill__add(self) -> AgentSkill:
         return AgentSkill(
@@ -81,7 +77,3 @@ class DemoMcpServerAgent(SemanticChatAgentBase):
 
         self.agent_card = self.createAgentCard__public(all_skills)
         self.extended_agent_card = self.createAgentCard__authenticated(all_skills)
-
-        self._system_message = SYSTEM_MESSAGE
-
-        super().__post_init__()

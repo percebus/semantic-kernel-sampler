@@ -1,12 +1,9 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
-from semantic_kernel import Kernel
 
 from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
-from semantic_kernel_sampler.ai.tooling.light.instructions import SYSTEM_MESSAGE
-from semantic_kernel_sampler.ai.tooling.light.sk.kernel import LightKernel
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -14,7 +11,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class LightAgent(SemanticChatAgentBase):
-    kernel: Kernel = field(default_factory=LightKernel)
 
     def createAgentSkill__get_state(self) -> AgentSkill:
         return AgentSkill(
@@ -86,7 +82,3 @@ class LightAgent(SemanticChatAgentBase):
             get_state_AgentSkill,
             change_state_AgentSkill])
         # fmt: on
-
-        self._system_message = SYSTEM_MESSAGE
-
-        super().__post_init__()

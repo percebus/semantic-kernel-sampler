@@ -12,7 +12,6 @@ from semantic_kernel_sampler.sk.agents.executors.base.semantic.protocol import S
 
 @dataclass
 class ChatCompletionSemanticAgentExecutorBase(SemanticAgentExecutorProtocol[ChatCompletionAgent, ChatHistoryAgentThread, ChatMessageContent], ABC):
-
     kernel: Kernel = field()
 
     agent: ChatCompletionAgent = field(init=False)

@@ -19,7 +19,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class SemanticChatAgentBase(ABC, AgentProtocol):
-
     config: Config = field()
 
     kernel: Kernel = field()
@@ -30,15 +29,9 @@ class SemanticChatAgentBase(ABC, AgentProtocol):
 
     prompt_execution_settings: PromptExecutionSettings = field()
 
-    _system_message: str = field(init=False)
-
     agent_card: AgentCard = field(init=False)
 
     extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
-
-    def __post_init__(self):
-        if self._system_message:
-            self.chat_history.add_system_message(self._system_message)
 
     async def invoke(self, request: RequestModel) -> ResponseModel:
         self.chat_history.add_user_message(request.message)

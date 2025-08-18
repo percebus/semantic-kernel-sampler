@@ -1,3 +1,4 @@
+from typing import Optional
 from a2a.server.agent_execution import AgentExecutor
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
@@ -15,47 +16,45 @@ from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
 from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
-from semantic_kernel_sampler.a2a.agents.typescript_sdk__quick_start import DemoMcpServerAgent
 from semantic_kernel_sampler.a2a.executor import MyAgentExecutor
-from semantic_kernel_sampler.ai.tooling.light.a2a.agent import LightAgent
-from semantic_kernel_sampler.ai.tooling.light.sk.kernel import LightKernel
+from semantic_kernel_sampler.ai.tooling.light.a2a.agent import LightAgent as LightA2AAgent
+from semantic_kernel_sampler.ai.tooling.light.sk.agent import LightAgent as LightChatCompletionAgent
 from semantic_kernel_sampler.ai.tooling.light.sk.plugin import LightPlugin
-from semantic_kernel_sampler.ai.tooling.math.a2a.agent import MathAgent
-from semantic_kernel_sampler.ai.tooling.math.sk.kernel import MathKernel
+from semantic_kernel_sampler.ai.tooling.light.instructions import SYSTEM_MESSAGE as light_instructions
+from semantic_kernel_sampler.ai.tooling.math.a2a.agent import MathAgent as MathA2AAgent
+from semantic_kernel_sampler.ai.tooling.math.instructions import SYSTEM_MESSAGE as math_instructions
 from semantic_kernel_sampler.ai.tooling.math.sk.plugin import MathPlugin
+from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.a2a.agent import DemoMcpServerAgent
+from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.instructions import SYSTEM_MESSAGE as mcp_instructions
+
+# from semantic_kernel.functions import KernelArguments  # TODO?
+from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.sk.plugin import DemoServerMCPStdioPlugin
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-
-# from semantic_kernel.functions import KernelArguments  # TODO?
-from semantic_kernel_sampler.sk.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
+from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
-def createKernel(c: ReadableContainer) -> Kernel:
+def createKernel(c: ReadableContainer, plugins: Optional[list[PluginProtocol]]=None) -> Kernel:
     oKernel = Kernel()
 
     oChatCompletion = c[ChatCompletionClientBase]
     oKernel.add_service(oChatCompletion)
 
-    # XXX Troubleshooting
-    # NOTE: Plugins are set on each Agent now
-    # plugins = c[list[PluginProtocol]]
-    # for plugin in plugins:
-    #     oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
+    for plugin in plugins or []:
+        oKernel.add_plugin(plugin, plugin_name=plugin.__class__.__name__)
 
     return oKernel
 
 
-def createChatHistory(c: ReadableContainer) -> ChatHistory:
+def createChatHistory(c: ReadableContainer, system_message: Optional[str]= None) -> ChatHistory:
     oChatHistory = ChatHistory()
 
-    # XXX Troubleshooting
-    # oChatHistory.add_system_message("""You are a helpful assistant.
-    #     You will only use the registered plugin(s).
-    #     If it's not in the plugins, say 'I cannot help with that.'""")
+    if system_message:
+        oChatHistory.add_system_message(system_message)
 
     return oChatHistory
 
@@ -75,6 +74,12 @@ container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
 container[DemoServerMCPStdioPlugin] = DemoServerMCPStdioPlugin
 
+container[list[PluginProtocol]] = lambda c: [
+    c[MathPlugin],
+    c[LightPlugin],
+    c[DemoServerMCPStdioPlugin]
+]
+
 container[ChatHistory] = createChatHistory
 
 container[FunctionChoiceBehavior] = FunctionChoiceBehavior.Auto()  # pyright: ignore[reportUnknownMemberType]
@@ -93,29 +98,26 @@ container[AzureChatCompletion] = lambda c: AzureChatCompletion(
 container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 
 container[Kernel] = createKernel
-container[MathKernel] = MathKernel
-container[LightKernel] = LightKernel
 
+container[LightChatCompletionAgent] = LightChatCompletionAgent
 
 # fmt: off
-container[LightAgent] = lambda c: LightAgent(
+container[LightA2AAgent] = lambda c: LightA2AAgent(
     config=c[Config],
-    kernel=c[LightKernel],
-    chat_history=c[ChatHistory],
+    kernel=createKernel(c, [c[LightPlugin]]),
+    chat_history=createChatHistory(c, system_message=light_instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
-    # plugins=list[oLightPlugin]  # pyright: ignore[reportArgumentType]  # TODO? or XXX?
 )
 # fmt: on
 
 # fmt: off
-container[MathAgent] = lambda c: MathAgent(
+container[MathA2AAgent] = lambda c: MathA2AAgent(
     config=c[Config],
-    kernel=c[MathKernel],
-    chat_history=c[ChatHistory],
+    kernel=createKernel(c, [c[MathPlugin]]),
+    chat_history=createChatHistory(c, system_message=math_instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
-    # plugins=list[oMathPlugin]  # pyright: ignore[reportArgumentType]  # TODO? or XXX?
 )
 # fmt: on
 
@@ -123,17 +125,16 @@ container[MathAgent] = lambda c: MathAgent(
 # fmt: off
 container[DemoMcpServerAgent] = lambda c: DemoMcpServerAgent(
     config=c[Config],
-    kernel=c[Kernel],
-    chat_history=c[ChatHistory],
+    kernel=createKernel(c, [c[DemoServerMCPStdioPlugin]]),
+    chat_history=createChatHistory(c, system_message=mcp_instructions),
     chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
-    # plugins=list[oMathPlugin]  # pyright: ignore[reportArgumentType]  # TODO? or XXX?
 )
 # fmt: on
 
 
 # The main (and only) agent
-container[AgentProtocol] = lambda c: c[LightAgent]
+container[AgentProtocol] = lambda c: c[LightA2AAgent]
 container[AgentExecutor] = lambda c: MyAgentExecutor(agent=c[AgentProtocol])
 
 # Where to store Tasks

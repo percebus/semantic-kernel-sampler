@@ -8,7 +8,6 @@ TAgent = TypeVar("TAgent", bound=Agent)
 
 
 class SemanticAgentExecutorProtocol(Generic[TAgent, TThreadType, TMessage], AgentExecutorProtocol[TAgent, TMessage], Protocol):
-
     agent: TAgent
 
     agent_thread: Optional[TThreadType]
