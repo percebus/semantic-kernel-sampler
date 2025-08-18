@@ -13,10 +13,19 @@ Semantic-Kernel python sampler
 
 ### Semantic Kernel
 
-- [Semantic Kernel: Agent concept examples](https://github.com/microsoft/semantic-kernel/tree/python-1.35.3/python/samples/concepts/agents)
-  - [Chat Completion Agents](https://github.com/microsoft/semantic-kernel/tree/python-1.35.2/python/samples/getting_started_with_agents/chat_completion)
-  - [Chat Completion Agent Samples](https://github.com/microsoft/semantic-kernel/tree/python-1.35.3/python/samples/concepts/agents/chat_completion_agent)
+#### MCP
+
 - [Model Context Protocol](https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/concepts/mcp/README.md)
+
+#### Agents
+
+- [Semantic Kernel: Agent concept examples](https://github.com/microsoft/semantic-kernel/tree/python-1.35.3/python/samples/concepts/agents)
+  - [Chat Completion Agent Samples](https://github.com/microsoft/semantic-kernel/tree/python-1.35.3/python/samples/concepts/agents/chat_completion_agent)
+
+- [Semantic Kernel Agents - Getting Started](https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/README.md)
+  - [Chat Completion Agents](https://github.com/microsoft/semantic-kernel/tree/python-1.35.2/python/samples/getting_started_with_agents/chat_completion)
+  - [Semantic Kernel - CopilotStudioAgent Quickstart](https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/copilot_studio/README.md)
+  - [Multi-agent orchestration](https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/multi_agent_orchestration/README.md)
 
 ### A2A
 

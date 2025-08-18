@@ -18,18 +18,19 @@ from starlette.applications import Starlette
 
 from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.a2a.executor import MyAgentExecutor
-from semantic_kernel_sampler.ai.tooling.light.a2a.agent import LightAgent as LightA2AAgent
-from semantic_kernel_sampler.ai.tooling.light.instructions import SYSTEM_MESSAGE as light_instructions
-from semantic_kernel_sampler.ai.tooling.light.sk.agent import LightAgent as LightChatCompletionAgent
-from semantic_kernel_sampler.ai.tooling.light.sk.plugin import LightPlugin
-from semantic_kernel_sampler.ai.tooling.math.a2a.agent import MathAgent as MathA2AAgent
-from semantic_kernel_sampler.ai.tooling.math.instructions import SYSTEM_MESSAGE as math_instructions
-from semantic_kernel_sampler.ai.tooling.math.sk.plugin import MathPlugin
-from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.a2a.agent import DemoMcpServerAgent
-from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.instructions import SYSTEM_MESSAGE as mcp_instructions
+from semantic_kernel_sampler.ai.modules.light.a2a.agent import LightAgent as LightA2Agent
+from semantic_kernel_sampler.ai.modules.light.instructions.v1 import INSTRUCTIONS as light_instructions
+from semantic_kernel_sampler.ai.modules.light.sk.agent import LightAgentExecutor as LightChatCompletionAgentExecutor
+from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
+from semantic_kernel_sampler.ai.modules.math.a2a.agent import MathAgent as MathA2Agent
+from semantic_kernel_sampler.ai.modules.math.instructions.v1 import INSTRUCTIONS as math_instructions
+from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
+from semantic_kernel_sampler.ai.modules.mcp_demo_server.a2a.agent import DemoMcpServerAgent
+from semantic_kernel_sampler.ai.modules.mcp_demo_server.instructions import INSTRUCTIONS as mcp_instructions
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
-from semantic_kernel_sampler.ai.tooling.typescript_sdk__quick_start.sk.plugin import DemoServerMCPStdioPlugin
+from semantic_kernel_sampler.ai.modules.mcp_demo_server.sk.plugin import DemoServerMCPStdioPlugin
+from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantAgentExecutor as AssistantChatCompletionAgentExecutor
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -96,12 +97,16 @@ container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 
 container[Kernel] = lambda c: createKernel(c)  # pylint: disable=W0108 # unnecessary-lambda
 
-container[LightChatCompletionAgent] = lambda c: LightChatCompletionAgent(
+container[AssistantChatCompletionAgentExecutor] = lambda c: AssistantChatCompletionAgentExecutor(
+    kernel=createKernel(c),
+)
+
+container[LightChatCompletionAgentExecutor] = lambda c: LightChatCompletionAgentExecutor(
     kernel=createKernel(c, [c[LightPlugin]]),
 )
 
 # fmt: off
-container[LightA2AAgent] = lambda c: LightA2AAgent(
+container[LightA2Agent] = lambda c: LightA2Agent(
     config=c[Config],
     kernel=createKernel(c, [c[LightPlugin]]),
     chat_history=createChatHistory(c, system_message=light_instructions),
@@ -111,7 +116,7 @@ container[LightA2AAgent] = lambda c: LightA2AAgent(
 # fmt: on
 
 # fmt: off
-container[MathA2AAgent] = lambda c: MathA2AAgent(
+container[MathA2Agent] = lambda c: MathA2Agent(
     config=c[Config],
     kernel=createKernel(c, [c[MathPlugin]]),
     chat_history=createChatHistory(c, system_message=math_instructions),
@@ -133,7 +138,7 @@ container[DemoMcpServerAgent] = lambda c: DemoMcpServerAgent(
 
 
 # The main (and only) agent
-container[AgentProtocol] = lambda c: c[LightA2AAgent]
+container[AgentProtocol] = lambda c: c[LightA2Agent]
 container[AgentExecutor] = lambda c: MyAgentExecutor(agent=c[AgentProtocol])
 
 # Where to store Tasks
