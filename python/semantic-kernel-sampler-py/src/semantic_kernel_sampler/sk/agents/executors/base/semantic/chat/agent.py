@@ -18,7 +18,7 @@ class ChatCompletionSemanticAgentExecutorBase(SemanticAgentExecutorProtocol[Chat
 
     agent_thread: Optional[ChatHistoryAgentThread] = field(default=None)
 
-    _instructions: str = field(init=False, default="You are a helpful assistant.")
+    _instructions: Optional[str] = field(init=False, default=None)
 
     async def invoke(self, messages: list[ChatMessageContent]) -> AgentResponseItem[ChatMessageContent]:
         # fmt: off
