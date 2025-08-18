@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from semantic_kernel import Kernel
-from semantic_kernel.agents import ChatCompletionAgent, ChatHistoryAgentThread  # pylint: disable=E0611 #no-name-in-module
+from semantic_kernel.agents import ChatCompletionAgent, ChatHistoryAgentThread  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.agent import AgentResponseItem
 from semantic_kernel.contents import ChatMessageContent
 

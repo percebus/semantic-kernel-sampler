@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from semantic_kernel.agents import ChatCompletionAgent  # pylint: disable=E0611 # no-name-in-module
+from semantic_kernel.agents import ChatCompletionAgent  # pylint: disable=no-name-in-module
 
 from semantic_kernel_sampler.ai.modules.with_kernel.instructions.v1 import INSTRUCTIONS
 from semantic_kernel_sampler.sk.agents.executors.base.semantic.chat.agent import ChatCompletionSemanticAgentExecutorBase
