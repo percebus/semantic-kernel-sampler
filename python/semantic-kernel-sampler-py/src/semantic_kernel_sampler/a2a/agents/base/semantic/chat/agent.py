@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional
 
 from a2a.types import AgentCard
 from semantic_kernel import Kernel
-from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
+from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
@@ -28,7 +28,7 @@ class SemanticChatAgentBase(ABC, AgentProtocol):
 
     chat_history: ChatHistory = field()
 
-    azure_chat_completion: AzureChatCompletion = field()
+    chat_completion: ChatCompletionClientBase = field()
 
     prompt_execution_settings: PromptExecutionSettings = field()
 
@@ -51,7 +51,7 @@ class SemanticChatAgentBase(ABC, AgentProtocol):
         oResponse: ResponseModel = ResponseModel(request=request)
 
         # fmt: off
-        oChatMessageContent: Optional[ChatMessageContent] = await self.azure_chat_completion.get_chat_message_content(
+        oChatMessageContent: Optional[ChatMessageContent] = await self.chat_completion.get_chat_message_content(
             kernel=self.kernel,
             settings=self.prompt_execution_settings,
             chat_history=self.chat_history)

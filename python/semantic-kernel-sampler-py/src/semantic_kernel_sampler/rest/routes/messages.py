@@ -2,7 +2,8 @@ from typing import TYPE_CHECKING, Optional
 
 from flask import Flask, request
 from semantic_kernel import Kernel
-from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
+from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
+from semantic_kernel.connectors.ai.open_ai import AzureChatPromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
 from semantic_kernel_sampler.dependency_injection.container import container
@@ -35,10 +36,10 @@ async def post_async():
     oPromptExecutionSettings: PromptExecutionSettings = container[AzureChatPromptExecutionSettings]
 
     oResponse: ResponseModel = ResponseModel(request=_request)
-    oAzureChatCompletion: AzureChatCompletion = container[AzureChatCompletion]
+    oChatCompletion: ChatCompletionClientBase = container[ChatCompletionClientBase]
 
     # fmt: off
-    oChatMessageContent: Optional[ChatMessageContent] = await oAzureChatCompletion.get_chat_message_content(
+    oChatMessageContent: Optional[ChatMessageContent] = await oChatCompletion.get_chat_message_content(
         kernel=oKernel,
         settings=oPromptExecutionSettings,
         chat_history=oChatHistory

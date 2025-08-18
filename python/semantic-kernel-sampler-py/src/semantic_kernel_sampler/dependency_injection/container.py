@@ -8,6 +8,7 @@ from lagom import Container, Singleton
 from lagom.interfaces import ReadableContainer
 from semantic_kernel import Kernel
 from semantic_kernel.connectors.ai import FunctionChoiceBehavior
+from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
@@ -35,8 +36,8 @@ from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 def createKernel(c: ReadableContainer) -> Kernel:
     oKernel = Kernel()
 
-    oAzureChatCompletion = c[AzureChatCompletion]
-    oKernel.add_service(oAzureChatCompletion)
+    oChatCompletion = c[ChatCompletionClientBase]
+    oKernel.add_service(oChatCompletion)
 
     # XXX Troubleshooting
     # NOTE: Plugins are set on each Agent now
@@ -97,6 +98,8 @@ container[AzureChatCompletion] = lambda c: AzureChatCompletion(
     api_version=c[AzureOpenAISettings].api_version,
 )
 
+container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
+
 container[Kernel] = createKernel
 
 # fmt: off
@@ -104,7 +107,7 @@ container[LightAgent] = lambda c: LightAgent(
     config=c[Config],
     kernel=c[Kernel],
     chat_history=c[ChatHistory],
-    azure_chat_completion=c[AzureChatCompletion],
+    chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
     # plugins=list[oLightPlugin]  # pyright: ignore[reportArgumentType]  # TODO? or XXX?
 )
@@ -115,7 +118,7 @@ container[MathAgent] = lambda c: MathAgent(
     config=c[Config],
     kernel=c[Kernel],
     chat_history=c[ChatHistory],
-    azure_chat_completion=c[AzureChatCompletion],
+    chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
     # plugins=list[oMathPlugin]  # pyright: ignore[reportArgumentType]  # TODO? or XXX?
 )
@@ -127,7 +130,7 @@ container[DemoMcpServerAgent] = lambda c: DemoMcpServerAgent(
     config=c[Config],
     kernel=c[Kernel],
     chat_history=c[ChatHistory],
-    azure_chat_completion=c[AzureChatCompletion],
+    chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
     # plugins=list[oMathPlugin]  # pyright: ignore[reportArgumentType]  # TODO? or XXX?
 )
