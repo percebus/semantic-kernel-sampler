@@ -1,4 +1,5 @@
 from typing import Optional
+
 from a2a.server.agent_execution import AgentExecutor
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
@@ -18,9 +19,9 @@ from starlette.applications import Starlette
 from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
 from semantic_kernel_sampler.a2a.executor import MyAgentExecutor
 from semantic_kernel_sampler.ai.tooling.light.a2a.agent import LightAgent as LightA2AAgent
+from semantic_kernel_sampler.ai.tooling.light.instructions import SYSTEM_MESSAGE as light_instructions
 from semantic_kernel_sampler.ai.tooling.light.sk.agent import LightAgent as LightChatCompletionAgent
 from semantic_kernel_sampler.ai.tooling.light.sk.plugin import LightPlugin
-from semantic_kernel_sampler.ai.tooling.light.instructions import SYSTEM_MESSAGE as light_instructions
 from semantic_kernel_sampler.ai.tooling.math.a2a.agent import MathAgent as MathA2AAgent
 from semantic_kernel_sampler.ai.tooling.math.instructions import SYSTEM_MESSAGE as math_instructions
 from semantic_kernel_sampler.ai.tooling.math.sk.plugin import MathPlugin
@@ -38,7 +39,7 @@ from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_f
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
-def createKernel(c: ReadableContainer, plugins: Optional[list[PluginProtocol]]=None) -> Kernel:
+def createKernel(c: ReadableContainer, plugins: Optional[list[PluginProtocol]] = None) -> Kernel:
     oKernel = Kernel()
 
     oChatCompletion = c[ChatCompletionClientBase]
@@ -50,7 +51,7 @@ def createKernel(c: ReadableContainer, plugins: Optional[list[PluginProtocol]]=N
     return oKernel
 
 
-def createChatHistory(c: ReadableContainer, system_message: Optional[str]= None) -> ChatHistory:
+def createChatHistory(c: ReadableContainer, system_message: Optional[str] = None) -> ChatHistory:
     oChatHistory = ChatHistory()
 
     if system_message:
@@ -74,11 +75,7 @@ container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
 container[DemoServerMCPStdioPlugin] = DemoServerMCPStdioPlugin
 
-container[list[PluginProtocol]] = lambda c: [
-    c[MathPlugin],
-    c[LightPlugin],
-    c[DemoServerMCPStdioPlugin]
-]
+container[list[PluginProtocol]] = lambda c: [c[MathPlugin], c[LightPlugin], c[DemoServerMCPStdioPlugin]]
 
 container[ChatHistory] = createChatHistory
 

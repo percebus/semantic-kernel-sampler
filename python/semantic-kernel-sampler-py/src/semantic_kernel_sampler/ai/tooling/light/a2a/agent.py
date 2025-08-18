@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class LightAgent(SemanticChatAgentBase):
-
     def createAgentSkill__get_state(self) -> AgentSkill:
         return AgentSkill(
             id="light__get_state",

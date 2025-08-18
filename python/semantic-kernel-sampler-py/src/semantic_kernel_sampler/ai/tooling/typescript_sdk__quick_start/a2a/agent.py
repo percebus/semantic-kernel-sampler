@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class DemoMcpServerAgent(SemanticChatAgentBase):
-
     def createAgentSkill__add(self) -> AgentSkill:
         return AgentSkill(
             id="add",
