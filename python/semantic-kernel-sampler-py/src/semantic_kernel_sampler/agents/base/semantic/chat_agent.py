@@ -19,32 +19,6 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class AgentBase(ABC, AgentProtocol):
-    config: Config = field()
-
-    agent_card: AgentCard = field(init=False)
-
-    extended_agent_card: Optional[AgentCard] = field(default=None)
-
-    async def invoke(self, request: RequestModel) -> ResponseModel:
-        raise NotImplementedError
-
-
-@dataclass
-class SemanticAgentBase(ABC, AgentProtocol):
-    config: Config = field()
-
-    kernel: Kernel = field()
-
-    agent_card: AgentCard = field(init=False)
-
-    extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
-
-    async def invoke(self, request: RequestModel) -> ResponseModel:
-        raise NotImplementedError
-
-
-@dataclass
 class SemanticChatAgentBase(ABC, AgentProtocol):
     plugins: ClassVar[list[PluginProtocol]] = []
 

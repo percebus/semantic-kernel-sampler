@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from textwrap import dedent
 from typing import ClassVar
 
-from semantic_kernel_sampler.agents.base import SemanticChatAgentBase
-from semantic_kernel_sampler.agents.math.plugin import MathPlugin
+from semantic_kernel_sampler.agents.base.semantic.chat_agent import SemanticChatAgentBase
+from semantic_kernel_sampler.plugins.math import MathPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
 

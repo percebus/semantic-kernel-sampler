@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING, ClassVar
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.agents.base import SemanticChatAgentBase
-from semantic_kernel_sampler.agents.light.plugin import LightPlugin
+from semantic_kernel_sampler.agents.base.semantic.chat_agent import SemanticChatAgentBase
+from semantic_kernel_sampler.plugins.light import LightPlugin
 from semantic_kernel_sampler.plugins.protocol import PluginProtocol
 
 if TYPE_CHECKING:
