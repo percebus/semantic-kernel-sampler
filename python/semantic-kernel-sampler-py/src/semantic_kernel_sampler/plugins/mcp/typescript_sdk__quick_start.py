@@ -9,6 +9,6 @@ class DemoServerMCPStdioPlugin(MyMCPStdioPlugin):
 
     description: str = field(default="Demo Server for TypeScript SDK")
 
-    command: str = field(default="npx")
+    command: str = field(default="npm")
 
-    args: list[str] = field(default_factory=lambda: ["ts-node", "src/main.ts", "--prefix", "../../node/modelcontextprotocol-typescript-sdk-example"])
+    args: list[str] = field(default_factory=lambda: ["start", "--prefix", "../../node/modelcontextprotocol-typescript-sdk-example"])

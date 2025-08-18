@@ -8,6 +8,6 @@ def createMCPStdioPlugin() -> MCPStdioPlugin:
     return MCPStdioPlugin(
         name="Demo Server",
         description="modelcontextprotocol/typescript-sdk example",
-        command="npx",
-        args=["ts-node", "src/main.ts", "--prefix", "../../node/modelcontextprotocol-typescript-sdk-example"],
+        command="npm",
+        args=["start", "--prefix", "../../node/modelcontextprotocol-typescript-sdk-example"],
     )
