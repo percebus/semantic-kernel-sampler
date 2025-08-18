@@ -1,27 +1,16 @@
 from dataclasses import dataclass
-from textwrap import dedent
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
-from semantic_kernel_sampler.sk.plugins.mcp.typescript_sdk__quick_start import DemoServerMCPStdioPlugin
-from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
-from semantic_kernel_sampler.third_party.modelcontextprotocol.typescript_sdk.quick_start import createMCPStdioPlugin
-from semantic_kernel_sampler.utils.lodash import noop
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 
 
-noop(createMCPStdioPlugin)
-noop(DemoServerMCPStdioPlugin)
-
-
 @dataclass
 class DemoMcpServerAgent(SemanticChatAgentBase):
-    plugins: ClassVar[list[PluginProtocol]] = [DemoServerMCPStdioPlugin()]
-
     def createAgentSkill__add(self) -> AgentSkill:
         return AgentSkill(
             id="add",
@@ -87,11 +76,3 @@ class DemoMcpServerAgent(SemanticChatAgentBase):
 
         self.agent_card = self.createAgentCard__public(all_skills)
         self.extended_agent_card = self.createAgentCard__authenticated(all_skills)
-
-        # TODO read from file
-        self.system_message = dedent("""
-            You are a helpful assistant that leverages MCP services.
-            You will only use the registered plugin(s).
-            If it's not in the plugins, say 'I cannot help with that.'""")
-
-        super().__post_init__()

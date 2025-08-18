@@ -1,12 +1,9 @@
 from dataclasses import dataclass
-from textwrap import dedent
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
-from semantic_kernel_sampler.sk.plugins.light import LightPlugin
-from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -14,8 +11,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class LightAgent(SemanticChatAgentBase):
-    plugins: ClassVar[list[PluginProtocol]] = [LightPlugin()]
-
     def createAgentSkill__get_state(self) -> AgentSkill:
         return AgentSkill(
             id="light__get_state",
@@ -86,10 +81,3 @@ class LightAgent(SemanticChatAgentBase):
             get_state_AgentSkill,
             change_state_AgentSkill])
         # fmt: on
-
-        self.system_message = dedent("""
-            You are a helpful Light Switch assistant.
-            You will only use the registered plugin(s).
-            If it's not in the plugins, say 'I cannot help with that.'""")
-
-        super().__post_init__()
