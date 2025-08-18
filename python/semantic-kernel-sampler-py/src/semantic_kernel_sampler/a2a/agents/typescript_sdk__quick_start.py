@@ -19,7 +19,7 @@ noop(DemoServerMCPStdioPlugin)
 
 
 @dataclass
-class TypescriptSDKQuickStartDemoServerAgent(SemanticChatAgentBase):
+class DemoMcpServerAgent(SemanticChatAgentBase):
     plugins: ClassVar[list[PluginProtocol]] = [DemoServerMCPStdioPlugin()]
 
     def createAgentSkill__add(self) -> AgentSkill:

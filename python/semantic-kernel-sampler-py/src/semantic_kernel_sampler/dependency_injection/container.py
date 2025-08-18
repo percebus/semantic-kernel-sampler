@@ -16,7 +16,7 @@ from starlette.applications import Starlette
 from semantic_kernel_sampler.a2a.agents.light import LightAgent
 from semantic_kernel_sampler.a2a.agents.math import MathAgent
 from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
-from semantic_kernel_sampler.a2a.agents.typescript_sdk__quick_start import TypescriptSDKQuickStartDemoServerAgent
+from semantic_kernel_sampler.a2a.agents.typescript_sdk__quick_start import DemoMcpServerAgent
 from semantic_kernel_sampler.a2a.executor import MyAgentExecutor
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
@@ -123,7 +123,7 @@ container[MathAgent] = lambda c: MathAgent(
 
 
 # fmt: off
-container[TypescriptSDKQuickStartDemoServerAgent] = lambda c: TypescriptSDKQuickStartDemoServerAgent(
+container[DemoMcpServerAgent] = lambda c: DemoMcpServerAgent(
     config=c[Config],
     kernel=c[Kernel],
     chat_history=c[ChatHistory],
