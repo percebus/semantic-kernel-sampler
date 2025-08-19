@@ -6,12 +6,15 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 
 import type { Post, NewPost } from "./schema/post.ts";
-import { PostSchema, NewPostSchema, PostIdentifierSchema } from "./schema/post.ts";
-
+import {
+  PostSchema,
+  NewPostSchema,
+  PostIdentifierSchema,
+} from "./schema/post.ts";
 
 // TODO pass from .environment
 // TODO convert to ResourceTemplate
-const baseURI = "http://localhost:3000/posts"
+const baseURI = "http://localhost:3000/posts";
 
 // Create an MCP server
 const server = new McpServer({
@@ -31,8 +34,7 @@ server.registerTool(
     const rawPosts = await responsePromise.json();
 
     // Validate and parse the posts using the schema
-    const posts = rawPosts.map((post: any) =>
-      PostSchema.parse(post));
+    const posts = rawPosts.map((post: any) => PostSchema.parse(post));
 
     const content = posts
       // TODO .filter
@@ -61,10 +63,12 @@ server.registerTool(
     // Validate and parse the posts using the schema
     const post = PostSchema.parse(rawPost);
 
-    const content = [{
-      type: "text" as const,
-      text: JSON.stringify(post),
-    }];
+    const content = [
+      {
+        type: "text" as const,
+        text: JSON.stringify(post),
+      },
+    ];
 
     return {
       content,
@@ -86,15 +90,17 @@ server.registerTool(
     };
 
     const response = await fetch(`${baseURI}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to create post: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to create post: ${response.status} ${response.statusText}`,
+      );
     }
 
     const createdPost = await response.json();
@@ -102,10 +108,12 @@ server.registerTool(
     // Validate and parse the created post using the schema
     const oPost = PostSchema.parse(createdPost);
 
-    const content = [{
-      type: "text" as const,
-      text: JSON.stringify(oPost),
-    }];
+    const content = [
+      {
+        type: "text" as const,
+        text: JSON.stringify(oPost),
+      },
+    ];
 
     return {
       content,
@@ -122,17 +130,21 @@ server.registerTool(
   },
   async ({ id }) => {
     const response = await fetch(`${baseURI}/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete post: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to delete post: ${response.status} ${response.statusText}`,
+      );
     }
 
-    const content = [{
-      type: "text" as const,
-      text: `Post with ID ${id} has been successfully deleted`,
-    }];
+    const content = [
+      {
+        type: "text" as const,
+        text: `Post with ID ${id} has been successfully deleted`,
+      },
+    ];
 
     return {
       content,
@@ -154,15 +166,17 @@ server.registerTool(
     };
 
     const response = await fetch(`${baseURI}/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to update post: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to update post: ${response.status} ${response.statusText}`,
+      );
     }
 
     const updatedPost = await response.json();
@@ -170,10 +184,12 @@ server.registerTool(
     // Validate and parse the updated post using the schema
     const oPost = PostSchema.parse(updatedPost);
 
-    const content = [{
-      type: "text" as const,
-      text: JSON.stringify(oPost),
-    }];
+    const content = [
+      {
+        type: "text" as const,
+        text: JSON.stringify(oPost),
+      },
+    ];
 
     return {
       content,

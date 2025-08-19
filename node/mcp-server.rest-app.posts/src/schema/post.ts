@@ -4,18 +4,14 @@ const NewPostSchema = z.object({
   title: z.string(),
 });
 
-
 const PostIdentifierSchema = z.object({
   id: z.string(),
 });
 
 // Define the Post schema by extending NewPostSchema with an ID
-const PostSchema = NewPostSchema
-  .extend(PostIdentifierSchema.shape)
-  .extend({
-    views: z.number(),
-  });
-
+const PostSchema = NewPostSchema.extend(PostIdentifierSchema.shape).extend({
+  views: z.number(),
+});
 
 // Type inference from the schemas
 type NewPost = z.infer<typeof NewPostSchema>;
