@@ -1,6 +1,6 @@
 {
   "servers": {
-    "modelcontextprotocol-typescript-sdk-example": {
+    "modelcontextprotocol.typescript-sdk.examples.quick-start": {
       "type": "stdio",
       "command": "npx",
       "args": ["ts-node", "src/main.ts"]

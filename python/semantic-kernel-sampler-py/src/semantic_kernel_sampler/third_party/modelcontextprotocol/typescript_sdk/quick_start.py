@@ -9,5 +9,5 @@ def createMCPStdioPlugin() -> MCPStdioPlugin:
         name="Demo Server",
         description="modelcontextprotocol/typescript-sdk example",
         command="npm",
-        args=["start", "--prefix", "../../node/modelcontextprotocol-typescript-sdk-example"],
+        args=["start", "--prefix", "../../node/mcp-server.examples.quick-start"],
     )
