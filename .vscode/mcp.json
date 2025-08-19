@@ -7,9 +7,9 @@
       "args": ["ts-node", "src/main.ts"]
     },
 
-    "posts-mcp-server": {
+    "rest-app.posts": {
       "type": "stdio",
-      "cwd": "${workspaceFolder}/node/posts-mcp-server",
+      "cwd": "${workspaceFolder}/node/mcp-server.rest-app.posts",
       "command": "npx",
       "args": ["ts-node", "src/main.ts"]
     }

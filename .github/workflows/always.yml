@@ -43,7 +43,7 @@ jobs:
       matrix:
         project:
           - rest-app
-          - posts-mcp-server
+          - mcp-server.rest-app.posts
 
     env:
       WORKSPACE: ./node/${{ matrix.project }}

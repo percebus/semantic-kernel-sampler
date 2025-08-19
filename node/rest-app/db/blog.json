@@ -6,9 +6,9 @@
       "views": 100
     },
     {
-      "id": "2",
       "title": "another title",
-      "views": 200
+      "views": 0,
+      "id": "2"
     }
   ],
   "comments": [

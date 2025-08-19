@@ -1,5 +1,5 @@
 {
-  "name": "posts-mcp-server",
+  "name": "mcp-server.rest-app.posts",
   "version": "0.1.0",
   "description": "blog post mcp server",
   "keywords": [

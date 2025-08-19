@@ -43,6 +43,10 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    // import local .ts
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   }
 }

@@ -1,4 +1,4 @@
-# posts-mcp-server
+# mcp-server.rest-app.posts
 
 [`HISTORY`](./HISTORY.md)
 
