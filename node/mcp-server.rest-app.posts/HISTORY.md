@@ -2,7 +2,7 @@
 
 ## HISTORY
 
-1. Copy+Pasted [modelcontextprotocol-typescript-sdk-example](../modelcontextprotocol-typescript-sdk-example)
+1. Copy+Pasted [mcp-server.examples.getting-started](../mcp-server.examples.getting-started)
 
 ### Changes
 

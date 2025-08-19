@@ -11,9 +11,9 @@ services:
     ports:
       - 3000:3000
 
-  mcp-server.examples.getting_started:
+  mcp-server.examples.getting-started:
     build:
-      context: ./node/mcp-server.examples.getting_started
+      context: ./node/mcp-server.examples.getting-started
       target: mcp-server
     command: start
     stdin_open: true

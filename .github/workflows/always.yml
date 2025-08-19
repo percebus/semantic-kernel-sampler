@@ -42,9 +42,9 @@ jobs:
       max-parallel: 6
       matrix:
         project:
+          - mcp-server.examples.getting-started
           - rest-app
           - mcp-server.rest-app.posts
-          - mcp-server.examples.getting_started
 
     env:
       WORKSPACE: ./node/${{ matrix.project }}
