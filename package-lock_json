@@ -4590,6 +4590,10 @@
         "node": ">= 0.4"
       }
     },
+    "node_modules/mcp-server.rest-app.posts": {
+      "resolved": "node/mcp-server.rest-app.posts",
+      "link": true
+    },
     "node_modules/media-typer": {
       "version": "1.1.0",
       "resolved": "https://registry.npmjs.org/media-typer/-/media-typer-1.1.0.tgz",
@@ -5055,10 +5059,6 @@
       "engines": {
         "node": ">=8"
       }
-    },
-    "node_modules/posts-mcp-server": {
-      "resolved": "node/posts-mcp-server",
-      "link": true
     },
     "node_modules/prettier": {
       "version": "3.4.2",
@@ -6160,6 +6160,29 @@
         "zod": "^3.24.1"
       }
     },
+    "node/mcp-server-rest-app-posts": {
+      "version": "0.1.0",
+      "extraneous": true,
+      "license": "SEE LICENSE IN ../../LICENSE.md",
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.17.3",
+        "zod": "^3.25.76"
+      },
+      "devDependencies": {
+        "typescript": "^5.9.2"
+      }
+    },
+    "node/mcp-server.rest-app.posts": {
+      "version": "0.1.0",
+      "license": "SEE LICENSE IN ../../LICENSE.md",
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.17.3",
+        "zod": "^3.25.76"
+      },
+      "devDependencies": {
+        "typescript": "^5.9.2"
+      }
+    },
     "node/modelcontextprotocol-typescript-sdk-example": {
       "version": "0.1.0",
       "license": "SEE LICENSE IN ../../LICENSE.md",
@@ -6173,6 +6196,7 @@
     },
     "node/posts-mcp-server": {
       "version": "0.1.0",
+      "extraneous": true,
       "license": "SEE LICENSE IN ../../LICENSE.md",
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.17.3",
