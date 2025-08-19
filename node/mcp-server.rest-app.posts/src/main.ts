@@ -79,10 +79,10 @@ server.registerTool(
     description: "Create a new post with the provided data",
     inputSchema: NewPostSchema.shape,
   },
-  async ({ title, views }: NewPost) => {
+  async ({ title }: NewPost) => {
     const postData = {
       title,
-      views,
+      views: 0,
     };
 
     const response = await fetch(`${baseURI}`, {
@@ -140,8 +140,46 @@ server.registerTool(
   },
 );
 
-// TODO ADD
-// 1. PUT
+server.registerTool(
+  "update",
+  {
+    title: "Update post",
+    description: "Update an existing post with new data",
+    inputSchema: PostSchema.shape,
+  },
+  async ({ id, title, views }: Post) => {
+    const postData = {
+      title,
+      views,
+    };
+
+    const response = await fetch(`${baseURI}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update post: ${response.status} ${response.statusText}`);
+    }
+
+    const updatedPost = await response.json();
+
+    // Validate and parse the updated post using the schema
+    const oPost = PostSchema.parse(updatedPost);
+
+    const content = [{
+      type: "text" as const,
+      text: JSON.stringify(oPost),
+    }];
+
+    return {
+      content,
+    };
+  },
+);
 
 // Start receiving messages on stdin and sending messages on stdout
 const transport = new StdioServerTransport();

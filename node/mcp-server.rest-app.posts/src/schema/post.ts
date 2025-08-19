@@ -2,7 +2,6 @@ import { z } from "zod";
 
 const NewPostSchema = z.object({
   title: z.string(),
-  views: z.number(),
 });
 
 
@@ -11,7 +10,11 @@ const PostIdentifierSchema = z.object({
 });
 
 // Define the Post schema by extending NewPostSchema with an ID
-const PostSchema = NewPostSchema.extend(PostIdentifierSchema.shape);
+const PostSchema = NewPostSchema
+  .extend(PostIdentifierSchema.shape)
+  .extend({
+    views: z.number(),
+  });
 
 
 // Type inference from the schemas
