@@ -6,7 +6,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 
 import type { Post, NewPost } from "./schema/post.ts";
-import { PostSchema, NewPostSchema } from "./schema/post.ts";
+import { PostSchema, NewPostSchema, PostIdentifierSchema } from "./schema/post.ts";
 
 
 // TODO pass from .environment
@@ -52,7 +52,7 @@ server.registerTool(
   {
     title: "Get post by ID",
     description: "Retrieve a single post by its ID",
-    inputSchema: { id: z.string() }, // TODO PostSchema.id
+    inputSchema: PostIdentifierSchema.shape,
   },
   async ({ id }) => {
     const responsePromise = await fetch(`${baseURI}/${id}`);
@@ -113,9 +113,35 @@ server.registerTool(
   },
 );
 
+server.registerTool(
+  "delete",
+  {
+    title: "Delete post by ID",
+    description: "Delete a post by its ID",
+    inputSchema: PostIdentifierSchema.shape,
+  },
+  async ({ id }) => {
+    const response = await fetch(`${baseURI}/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete post: ${response.status} ${response.statusText}`);
+    }
+
+    const content = [{
+      type: "text" as const,
+      text: `Post with ID ${id} has been successfully deleted`,
+    }];
+
+    return {
+      content,
+    };
+  },
+);
+
 // TODO ADD
 // 1. PUT
-// 2. DELETE
 
 // Start receiving messages on stdin and sending messages on stdout
 const transport = new StdioServerTransport();
