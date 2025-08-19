@@ -5,13 +5,36 @@ networks:
 services:
   rest-app:
     build:
-      context: .
-      target: rest-app
+      context: ./node/rest-app
+      target: json-server
     command: start
     ports:
       - 3000:3000
 
+  mcp-server.examples.getting_started:
+    build:
+      context: ./node/mcp-server.examples.getting_started
+      target: mcp-server
+    command: start
+    stdin_open: true
+    ports:
+      - 4001:3000
+
+  # FIXME change to [Streamable]HTTPServerTransport
+  mcp-server.rest-app.posts:
+    depends_on:
+      - rest-app
+    build:
+      context: ./node/mcp-server.rest-app.posts
+      target: mcp-server
+    command: start
+    stdin_open: true
+    ports:
+      - 4002:3000
+
   semantic-app-py:
+    depends_on:
+      - mcp-server.rest-app.posts
     build:
       context: ./python/semantic-kernel-sampler-py
       target: release

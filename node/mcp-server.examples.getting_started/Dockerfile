@@ -9,3 +9,7 @@ ENTRYPOINT [ "npm", "run" ]
 FROM project AS dev
 RUN npm run setup:docker --if-present && npm ci
 CMD [ "test" ]
+
+FROM dev AS mcp-server
+EXPOSE 3000
+CMD [ "start" ]

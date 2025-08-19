@@ -1,5 +1,5 @@
 {
-  "name": "modelcontextprotocol-typescript-sdk-example",
+  "name": "mcp-server.typescript-sdk.examples.getting_started",
   "version": "0.1.0",
   "description": "modelcontextprotocol / typescript-sdk / example",
   "keywords": [
@@ -11,15 +11,17 @@
   "type": "module",
   "main": "src/main.ts",
   "scripts": {
-    "npm:install:global:all": "npm install --location global yarn ts-node",
+    "npm:install:global:all": "npm install --location global yarn",
     "setup": "npm run npm:install:global:all",
     "setup:ci": "npm run setup",
     "dist": "tsc",
     "build": "npm run dist",
-    "start": "npx ts-node src/main.ts",
-    "test": "exit 0"
+    "test": "exit 0",
+    "ts-node": "ts-node",
+    "start": "npm run ts-node"
   },
   "devDependencies": {
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {

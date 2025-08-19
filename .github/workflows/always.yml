@@ -44,6 +44,7 @@ jobs:
         project:
           - rest-app
           - mcp-server.rest-app.posts
+          - mcp-server.examples.getting_started
 
     env:
       WORKSPACE: ./node/${{ matrix.project }}
@@ -60,7 +61,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: setup
+      - name: npm run setup:ci
         run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
       - name: npm install
         run: npm ci ${{ env.NPM_CLI_OPTS }}
@@ -85,7 +86,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: setup
+      - name: npm run setup:ci
         run: npm run setup:ci --if-present
       - name: npm install
         run: npm ci
@@ -117,7 +118,7 @@ jobs:
         run: ls -la
         working-directory: ./python/${{ matrix.project }}
 
-      - name: pip install
+      - name: (uv) pip install
         run: bash scripts/install.ba.sh
         working-directory: ./python/${{ matrix.project }}
 

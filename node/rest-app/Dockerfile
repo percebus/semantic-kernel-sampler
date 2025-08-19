@@ -9,3 +9,6 @@ ENTRYPOINT [ "npm", "run" ]
 FROM project AS dev
 RUN npm run setup:docker --if-present && npm ci
 CMD [ "test" ]
+
+FROM dev AS json-server
+CMD [ "start" ]
