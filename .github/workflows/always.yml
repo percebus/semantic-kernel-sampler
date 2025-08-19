@@ -212,7 +212,7 @@ jobs:
           pip install --upgrade --requirement requirements.upgrade.txt
 
       - name: gil clone
-        run: git clone
+        run: gil clone
 
       # - name: git clone a2a-inspector
       #   run: git clone https://github.com/a2aproject/a2a-inspector.git ./repositories/a2a-inspector
