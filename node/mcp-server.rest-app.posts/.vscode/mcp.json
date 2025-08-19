@@ -1,6 +1,6 @@
 {
   "servers": {
-    "posts-mcp-server": {
+    "rest-app.posts": {
       "type": "stdio",
       "command": "npx",
       "args": ["ts-node", "src/main.ts"]
