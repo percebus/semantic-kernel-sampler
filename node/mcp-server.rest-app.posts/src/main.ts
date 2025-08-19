@@ -3,7 +3,6 @@ import {
   // ResourceTemplate, // TODO
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
 
 import type { Post, NewPost } from "./schema/post.ts";
 import {
@@ -23,7 +22,7 @@ const server = new McpServer({
 });
 
 server.registerTool(
-  "find",
+  "posts_find",
   {
     title: "Find posts",
     description: "Find posts by a certain criteria",
@@ -50,7 +49,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  "get",
+  "posts_get",
   {
     title: "Get post by ID",
     description: "Retrieve a single post by its ID",
@@ -77,7 +76,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  "create",
+  "posts_create",
   {
     title: "Create a new post",
     description: "Create a new post with the provided data",
@@ -122,38 +121,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  "delete",
-  {
-    title: "Delete post by ID",
-    description: "Delete a post by its ID",
-    inputSchema: PostIdentifierSchema.shape,
-  },
-  async ({ id }) => {
-    const response = await fetch(`${baseURI}/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to delete post: ${response.status} ${response.statusText}`,
-      );
-    }
-
-    const content = [
-      {
-        type: "text" as const,
-        text: `Post with ID ${id} has been successfully deleted`,
-      },
-    ];
-
-    return {
-      content,
-    };
-  },
-);
-
-server.registerTool(
-  "update",
+  "posts_update",
   {
     title: "Update post",
     description: "Update an existing post with new data",
@@ -188,6 +156,37 @@ server.registerTool(
       {
         type: "text" as const,
         text: JSON.stringify(oPost),
+      },
+    ];
+
+    return {
+      content,
+    };
+  },
+);
+
+server.registerTool(
+  "posts_delete",
+  {
+    title: "Delete post by ID",
+    description: "Delete a post by its ID",
+    inputSchema: PostIdentifierSchema.shape,
+  },
+  async ({ id }) => {
+    const response = await fetch(`${baseURI}/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to delete post: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const content = [
+      {
+        type: "text" as const,
+        text: `Post with ID ${id} has been successfully deleted`,
       },
     ];
 
