@@ -5,8 +5,8 @@ import {
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
-import type { Post } from "./schema/post.ts";
-import { PostSchema } from "./schema/post.ts";
+import type { Post, NewPost } from "./schema/post.ts";
+import { PostSchema, NewPostSchema } from "./schema/post.ts";
 
 
 // TODO pass from .environment
@@ -77,15 +77,10 @@ server.registerTool(
   {
     title: "Create a new post",
     description: "Create a new post with the provided data",
-    inputSchema: {
-      title: z.string().describe("The title of the post"),
-      views: z.number().describe("The number of views for the post"),
-      id: z.string().optional().describe("Optional ID for the post (will be auto-generated if not provided)")
-    },
+    inputSchema: NewPostSchema.shape,
   },
-  async ({ title, views, id }: { title: string; views: number; id?: string | undefined }) => {
+  async ({ title, views }: NewPost) => {
     const postData = {
-      ...(id && { id }),
       title,
       views,
     };
@@ -105,11 +100,11 @@ server.registerTool(
     const createdPost = await response.json();
 
     // Validate and parse the created post using the schema
-    const post = PostSchema.parse(createdPost);
+    const oPost = PostSchema.parse(createdPost);
 
     const content = [{
       type: "text" as const,
-      text: JSON.stringify(post),
+      text: JSON.stringify(oPost),
     }];
 
     return {

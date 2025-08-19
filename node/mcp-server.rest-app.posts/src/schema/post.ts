@@ -1,15 +1,20 @@
 import { z } from "zod";
 
-// Define the Post schema based on the JSON structure
-const PostSchema = z.object({
-  id: z.string(),
+const NewPostSchema = z.object({
   title: z.string(),
   views: z.number(),
 });
 
 
-// Type inference from the schema
+// Define the Post schema by extending NewPostSchema with an ID
+const PostSchema = NewPostSchema.extend({
+  id: z.string(),
+});
+
+
+// Type inference from the schemas
+type NewPost = z.infer<typeof NewPostSchema>;
 type Post = z.infer<typeof PostSchema>;
 
-export { PostSchema };
-export type { Post };
+export { NewPostSchema, PostSchema };
+export type { NewPost, Post };
