@@ -209,7 +209,7 @@ jobs:
       - name: pip upgrade
         run: |
           pip install --upgrade pip
-          pip install --upgrade --requirement requirements.txt
+          pip install --upgrade --requirement requirements.upgrade.txt
 
       - name: gil clone
         run: git clone
