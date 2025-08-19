@@ -42,7 +42,7 @@ jobs:
       max-parallel: 6
       matrix:
         project:
-          - mcp-server.examples.getting-started
+          - mcp-server.examples.quick-start
           - rest-app
           - mcp-server.rest-app.posts
 

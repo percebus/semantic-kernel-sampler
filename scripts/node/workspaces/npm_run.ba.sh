@@ -10,7 +10,7 @@ fi
 set -x
 
 # TODO for each package
-npm run ${cmd} --prefix ./node/mcp-server.examples.getting-started
+npm run ${cmd} --prefix ./node/mcp-server.examples.quick-start
 npm run ${cmd} --prefix ./node/rest-app
 npm run ${cmd} --prefix ./node/mcp-server.rest-app.posts
 

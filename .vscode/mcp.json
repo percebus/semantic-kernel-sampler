@@ -1,8 +1,8 @@
 {
   "servers": {
-    "mcp-server.examples.getting-started": {
+    "modelcontextprotocol.typescript-sdk.examples.quick-start": {
       "type": "stdio",
-      "cwd": "${workspaceFolder}/node/mcp-server.examples.getting-started",
+      "cwd": "${workspaceFolder}/node/mcp-server.examples.quick-start",
       "command": "npx",
       "args": ["ts-node", "src/main.ts"]
     },

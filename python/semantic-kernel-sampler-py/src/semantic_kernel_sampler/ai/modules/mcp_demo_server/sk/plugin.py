@@ -11,4 +11,4 @@ class DemoServerMCPStdioPlugin(MyMCPStdioPlugin):
 
     command: str = field(default="npm")
 
-    args: list[str] = field(default_factory=lambda: ["start", "--prefix", "../../node/mcp-server.examples.getting-started"])
+    args: list[str] = field(default_factory=lambda: ["start", "--prefix", "../../node/mcp-server.examples.quick-start"])
