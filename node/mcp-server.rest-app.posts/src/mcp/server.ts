@@ -8,4 +8,3 @@ const mcpServer = new McpServer({ name: "rest-app.posts", version: "1.0.0" });
 registerPostsModule(mcpServer);
 
 export { mcpServer };
-``;
