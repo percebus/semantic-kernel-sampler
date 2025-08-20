@@ -12,4 +12,4 @@ CMD [ "test" ]
 
 FROM dev AS mcp-server
 EXPOSE 3000
-CMD [ "start" ]
+CMD [ "start:http:stateless" ]

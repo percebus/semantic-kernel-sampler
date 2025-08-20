@@ -27,7 +27,7 @@ services:
     build:
       context: ./node/mcp-server.rest-app.posts
       target: mcp-server
-    command: start
+    command: start:http:stateless
     stdin_open: true
     ports:
       - 4002:3000
