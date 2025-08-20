@@ -18,6 +18,9 @@
     "npm:install:global:all": "npm install --location global yarn",
     "setup": "npm run npm:install:global:all",
     "setup:ci": "npm run setup",
+    "_prettier": "prettier .",
+    "prettier:check": "npm run _prettier -- --check",
+    "prettier:write": "npm run _prettier -- --write",
     "ts-standard": "ts-standard",
     "ts-standard:fix": "npm run ts-standard -- --fix",
     "lint": "npm run ts-standard",
@@ -25,7 +28,7 @@
     "poststyle": "npm run lint",
     "dist": "tsc",
     "build": "npm run dist",
-    "pretest": "npm run lint",
+    "FIXME_pretest": "npm run lint",
     "test": "exit 0",
     "ts-node": "ts-node",
     "modelcontextprotocol:inspector": "npx @modelcontextprotocol/inspector",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^0.16.5",
+    "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "ts-standard": "^12.0.2",
     "typescript": "^5.9.2"

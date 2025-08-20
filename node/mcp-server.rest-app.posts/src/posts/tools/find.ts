@@ -1,36 +1,34 @@
-import { baseURI } from '../config.ts'
-import { PostSchema } from '../schema.ts'
-import type { Post } from '../schema.ts'
+import { baseURI } from "../config.ts";
+import { PostSchema } from "../schema.ts";
+import type { Post } from "../schema.ts";
 
-async function findPostsAsync (/* postSchema */): Promise<object> {
-  const responsePromise = await fetch(`${baseURI}`)
-  const rawPosts = await responsePromise.json()
+async function findPostsAsync(/* postSchema */): Promise<object> {
+  const responsePromise = await fetch(`${baseURI}`);
+  const rawPosts = await responsePromise.json();
 
   // Validate and parse the posts using the schema
-  const posts = rawPosts.map((post: any) => PostSchema.parse(post))
+  const posts = rawPosts.map((post: any) => PostSchema.parse(post));
 
   const content = posts
-  // TODO .filter
+    // TODO .filter
     .map((post: Post) => ({
-      type: 'text' as const,
-      text: JSON.stringify(post)
-    }))
+      type: "text" as const,
+      text: JSON.stringify(post),
+    }));
 
   return {
-    content
-  }
+    content,
+  };
 }
 
 findPostsAsync.metadata = {
-  title: 'Find posts',
-  description: 'Find posts by a certain criteria',
+  title: "Find posts",
+  description: "Find posts by a certain criteria",
   inputSchema: PostSchema.shape,
   annotations: {
     readOnlyHint: true,
-    openWorldHint: false
-  }
-}
+    openWorldHint: false,
+  },
+};
 
-export {
-  findPostsAsync
-}
+export { findPostsAsync };

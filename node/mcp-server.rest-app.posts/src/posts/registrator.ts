@@ -1,56 +1,48 @@
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+
 import {
-  McpServer
-} from '@modelcontextprotocol/sdk/server/mcp.js'
+  getPostResourceByIdAsync,
+  postResourceMetadata,
+  postResourceTemplate,
+} from "./resources/post.ts";
 
-import { getPostResourceByIdAsync, postResourceMetadata, postResourceTemplate } from './resources/post.ts'
+import { getPostByIdAsync } from "./tools/get.ts";
+import { findPostsAsync } from "./tools/find.ts";
+import { createPostAsync } from "./tools/create.ts";
+import { putPostAsync } from "./tools/put.ts";
+import { deletePostByIdAsync } from "./tools/delete.ts";
 
-import { getPostByIdAsync } from './tools/get.ts'
-import { findPostsAsync } from './tools/find.ts'
-import { createPostAsync } from './tools/create.ts'
-import { putPostAsync } from './tools/put.ts'
-import { deletePostByIdAsync } from './tools/delete.ts'
-
-function registerAll (mcpServer: McpServer): McpServer {
+function registerAll(mcpServer: McpServer): McpServer {
   mcpServer.registerResource(
-    'post',
+    "post",
     postResourceTemplate,
     postResourceMetadata,
-    getPostResourceByIdAsync
-  )
+    getPostResourceByIdAsync,
+  );
+
+  mcpServer.registerTool("posts_find", findPostsAsync.metadata, findPostsAsync);
 
   mcpServer.registerTool(
-    'posts_find',
-    findPostsAsync.metadata,
-    findPostsAsync
-  )
-
-  mcpServer.registerTool(
-    'posts_get',
+    "posts_get",
     getPostByIdAsync.metadata,
-    getPostByIdAsync
-  )
+    getPostByIdAsync,
+  );
 
   mcpServer.registerTool(
-    'posts_create',
+    "posts_create",
     createPostAsync.metadata,
-    createPostAsync
-  )
+    createPostAsync,
+  );
+
+  mcpServer.registerTool("posts_update", putPostAsync.metadata, putPostAsync);
 
   mcpServer.registerTool(
-    'posts_update',
-    putPostAsync.metadata,
-    putPostAsync
-  )
-
-  mcpServer.registerTool(
-    'posts_delete',
+    "posts_delete",
     deletePostByIdAsync.metadata,
-    deletePostByIdAsync
-  )
+    deletePostByIdAsync,
+  );
 
-  return mcpServer
+  return mcpServer;
 }
 
-export {
-  registerAll
-}
+export { registerAll };
