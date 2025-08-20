@@ -25,6 +25,7 @@
     "poststyle": "npm run lint",
     "dist": "tsc",
     "build": "npm run dist",
+    "pretest": "npm run lint",
     "test": "exit 0",
     "ts-node": "ts-node",
     "modelcontextprotocol:inspector": "npx @modelcontextprotocol/inspector",

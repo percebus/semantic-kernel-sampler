@@ -1,7 +1,7 @@
 import { baseURI } from '../config.ts'
 import { PostIdentifierSchema } from '../schema.ts'
 
-async function deletePostByIdAsync ({ id }) {
+async function deletePostByIdAsync ({ id }: { id: string }): Promise<object> {
   const response = await fetch(`${baseURI}/${id}`, {
     method: 'DELETE'
   })

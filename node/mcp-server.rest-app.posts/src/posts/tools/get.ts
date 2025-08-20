@@ -1,9 +1,9 @@
 import { baseURI } from '../config.ts'
 import { PostIdentifierSchema, PostSchema } from '../schema.ts'
 
-async function getPostByIdAsync ({ id }) {
-  const responsePromise = await fetch(`${baseURI}/${id}`)
-  const rawPost = await responsePromise.json()
+async function getPostByIdAsync ({ id }: { id: string }): Promise<object> {
+  const response: Response = await fetch(`${baseURI}/${id}`)
+  const rawPost = await response.json()
 
   // Validate and parse the posts using the schema
   const post = PostSchema.parse(rawPost)

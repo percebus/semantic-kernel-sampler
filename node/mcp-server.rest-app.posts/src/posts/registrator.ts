@@ -10,49 +10,45 @@ import { createPostAsync } from './tools/create.ts'
 import { putPostAsync } from './tools/put.ts'
 import { deletePostByIdAsync } from './tools/delete.ts'
 
-function registerAll (mcpServer: McpServer) {
-  // Create an MCP server
-  const oMcpServer = new McpServer({
-    name: 'rest-app-posts',
-    version: '1.0.0'
-  })
-
-  oMcpServer.registerResource(
+function registerAll (mcpServer: McpServer): McpServer {
+  mcpServer.registerResource(
     'post',
     postResourceTemplate,
     postResourceMetadata,
     getPostResourceByIdAsync
   )
 
-  oMcpServer.registerTool(
+  mcpServer.registerTool(
     'posts_find',
     findPostsAsync.metadata,
     findPostsAsync
   )
 
-  oMcpServer.registerTool(
+  mcpServer.registerTool(
     'posts_get',
     getPostByIdAsync.metadata,
     getPostByIdAsync
   )
 
-  oMcpServer.registerTool(
+  mcpServer.registerTool(
     'posts_create',
     createPostAsync.metadata,
     createPostAsync
   )
 
-  oMcpServer.registerTool(
+  mcpServer.registerTool(
     'posts_update',
     putPostAsync.metadata,
     putPostAsync
   )
 
-  oMcpServer.registerTool(
+  mcpServer.registerTool(
     'posts_delete',
     deletePostByIdAsync.metadata,
     deletePostByIdAsync
   )
+
+  return mcpServer
 }
 
 export {

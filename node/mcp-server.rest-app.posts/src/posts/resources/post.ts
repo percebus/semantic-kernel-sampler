@@ -15,9 +15,9 @@ const postResourceMetadata: ResourceMetadata = {
   schema: PostSchema.shape
 }
 
-async function getPostResourceByIdAsync (uri, { id }) {
-  const responsePromise = await fetch(`${baseURI}/${id}`)
-  const rawPost = await responsePromise.json()
+async function getPostResourceByIdAsync (uri, { id }: { id: string }): Promise<object> {
+  const responsePromise: Promise<Response> = fetch(`${baseURI}/${id}`)
+  const rawPost = await (await responsePromise).json()
 
   // Validate and parse the posts using the schema
   const post = PostSchema.parse(rawPost)

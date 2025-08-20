@@ -1,7 +1,7 @@
 import { baseURI } from '../config.ts'
 import { PostSchema, type Post } from '../schema.ts'
 
-async function putPostAsync ({ id, title, views }: Post) {
+async function putPostAsync ({ id, title, views }: Post): Promise<object> {
   const postData = {
     title,
     views

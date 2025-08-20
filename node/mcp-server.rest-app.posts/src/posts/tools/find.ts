@@ -2,7 +2,7 @@ import { baseURI } from '../config.ts'
 import { PostSchema } from '../schema.ts'
 import type { Post } from '../schema.ts'
 
-async function findPostsAsync (postSchema) {
+async function findPostsAsync (/* postSchema */): Promise<object> {
   const responsePromise = await fetch(`${baseURI}`)
   const rawPosts = await responsePromise.json()
 
