@@ -4,6 +4,14 @@
       "type": "stdio",
       "command": "npx",
       "args": ["ts-node", "src/main.ts"]
+    },
+    "rest-app.posts@express": {
+      "url": "http://local:3000/mcp",
+      "type": "http"
+    },
+    "rest-app.posts@docker": {
+      "url": "http://local:4002/mcp",
+      "type": "http"
     }
   },
   "inputs": []

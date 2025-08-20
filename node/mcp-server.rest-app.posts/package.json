@@ -33,11 +33,16 @@
     "ts-node": "ts-node",
     "modelcontextprotocol:inspector": "npx @modelcontextprotocol/inspector",
     "start": "npm run ts-node",
+    "start:http:stateless": "ts-node src/run/stateless.ts",
+    "start:http:stateful": "ts-node src/run/stateful.ts",
     "start:mcp:inspector": "npx @modelcontextprotocol/inspector npm run start"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@modelcontextprotocol/inspector": "^0.16.5",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "eslint": "^9.33.0",
@@ -52,6 +57,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.3",
+    "express": "^5.1.0",
     "zod": "^3.25.76"
   }
 }
