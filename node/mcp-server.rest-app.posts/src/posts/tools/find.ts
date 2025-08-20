@@ -7,7 +7,7 @@ async function findPostsAsync(/* postSchema */): Promise<object> {
   const rawPosts = await responsePromise.json();
 
   // Validate and parse the posts using the schema
-  const posts = rawPosts.map((post: any) => PostSchema.parse(post));
+  const posts = rawPosts.map((post: unknown) => PostSchema.parse(post));
 
   const content = posts
     // TODO .filter
