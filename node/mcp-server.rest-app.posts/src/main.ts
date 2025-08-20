@@ -4,12 +4,12 @@ import {
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
-import type { Post, NewPost } from "./schema/post.js";
+import type { Post, NewPost } from "./schema/post.ts";
 import {
   PostSchema,
   NewPostSchema,
   PostIdentifierSchema,
-} from "./schema/post.js";
+} from "./schema/post.ts";
 
 // TODO pass from .environment
 // TODO convert to ResourceTemplate

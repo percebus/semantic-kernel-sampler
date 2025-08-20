@@ -18,7 +18,7 @@
     "npm:install:global:all": "npm install --location global yarn",
     "setup": "npm run npm:install:global:all",
     "setup:ci": "npm run setup",
-    "dist": "tsc src/main.ts",
+    "dist": "tsc",
     "build": "npm run dist",
     "test": "exit 0",
     "ts-node": "ts-node",
