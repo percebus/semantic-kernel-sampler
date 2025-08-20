@@ -2,13 +2,10 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
-import { registerAll as registerPostsModule } from "./posts/registrator.ts";
+import { registerAll as registerPostsModule } from "./posts/register.ts";
 
 // Create an MCP server
-const oMcpServer = new McpServer({
-  name: "rest-app-posts",
-  version: "1.0.0",
-});
+const oMcpServer = new McpServer({ name: "rest-app-posts", version: "1.0.0" });
 
 registerPostsModule(oMcpServer);
 
