@@ -52,6 +52,15 @@ services:
 
   # TODO typescript-app?:
 
+  modelcontextprotocol.inspector:
+    build:
+      target: modelcontextprotocol.inspector
+    depends_on:
+      - mcp-server.examples.quick-start
+      - mcp-server.rest-app.posts
+    ports:
+      - 6274:6274
+
   a2a-inspector:
     build:
       context: ./repositories/a2a-inspector
