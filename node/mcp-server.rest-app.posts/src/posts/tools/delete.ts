@@ -1,10 +1,8 @@
 import { baseURI } from "../config.ts";
-import { PostIdentifierSchema } from "../schema.ts";
+import { PostIdentifierSchema } from "../schemas/id.ts";
 
 async function deletePostByIdAsync({ id }: { id: string }): Promise<object> {
-  const response = await fetch(`${baseURI}/${id}`, {
-    method: "DELETE",
-  });
+  const response = await fetch(`${baseURI}/${id}`, { method: "DELETE" });
 
   if (!response.ok) {
     throw new Error(
@@ -19,12 +17,10 @@ async function deletePostByIdAsync({ id }: { id: string }): Promise<object> {
     },
   ];
 
-  return {
-    content,
-  };
+  return { content };
 }
 
-deletePostByIdAsync.metadata = {
+deletePostByIdAsync.config = {
   title: "Delete post by ID",
   description: "Delete a post by its ID",
   inputSchema: PostIdentifierSchema.shape,

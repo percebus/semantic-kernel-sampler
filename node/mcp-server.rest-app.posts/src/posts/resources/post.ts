@@ -3,7 +3,7 @@ import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { ResourceMetadata } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import { baseURI } from "../config.ts";
-import { PostSchema } from "../schema.ts";
+import { PostSchema } from "../schemas/full.ts";
 
 const postResourceTemplate = new ResourceTemplate("posts://{id}", {
   list: undefined,
@@ -29,9 +29,7 @@ async function getPostResourceByIdAsync(
     text: JSON.stringify(post),
     uri: uri.href,
   };
-  return {
-    contents: [content],
-  };
+  return { contents: [content] };
 }
 
 export { postResourceTemplate, getPostResourceByIdAsync, postResourceMetadata };

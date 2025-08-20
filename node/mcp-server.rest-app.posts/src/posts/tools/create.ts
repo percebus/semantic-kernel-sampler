@@ -1,17 +1,13 @@
 import { baseURI } from "../config.ts";
-import { NewPostSchema, PostSchema, type NewPost } from "../schema.ts";
+import { NewPostSchema, type NewPost } from "../schemas/new.ts";
+import { PostSchema } from "../schemas/full.ts";
 
 async function createPostAsync({ title }: NewPost): Promise<object> {
-  const postData = {
-    title,
-    views: 0,
-  };
+  const postData = { title, views: 0 };
 
   const response = await fetch(`${baseURI}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(postData),
   });
 
@@ -26,19 +22,12 @@ async function createPostAsync({ title }: NewPost): Promise<object> {
   // Validate and parse the created post using the schema
   const oPost = PostSchema.parse(createdPost);
 
-  const content = [
-    {
-      type: "text" as const,
-      text: JSON.stringify(oPost),
-    },
-  ];
+  const content = [{ type: "text" as const, text: JSON.stringify(oPost) }];
 
-  return {
-    content,
-  };
+  return { content };
 }
 
-createPostAsync.metadata = {
+createPostAsync.config = {
   title: "Create a new post",
   description: "Create a new post with the provided data",
   inputSchema: NewPostSchema.shape,

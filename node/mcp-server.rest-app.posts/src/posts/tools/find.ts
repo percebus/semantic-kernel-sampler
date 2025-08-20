@@ -1,6 +1,5 @@
 import { baseURI } from "../config.ts";
-import { PostSchema } from "../schema.ts";
-import type { Post } from "../schema.ts";
+import { PostSchema, type Post } from "../schemas/full.ts";
 
 async function findPostsAsync(/* postSchema */): Promise<object> {
   const responsePromise = await fetch(`${baseURI}`);
@@ -16,19 +15,14 @@ async function findPostsAsync(/* postSchema */): Promise<object> {
       text: JSON.stringify(post),
     }));
 
-  return {
-    content,
-  };
+  return { content };
 }
 
-findPostsAsync.metadata = {
+findPostsAsync.config = {
   title: "Find posts",
   description: "Find posts by a certain criteria",
   inputSchema: PostSchema.shape,
-  annotations: {
-    readOnlyHint: true,
-    openWorldHint: false,
-  },
+  annotations: { readOnlyHint: true, openWorldHint: false },
 };
 
 export { findPostsAsync };
