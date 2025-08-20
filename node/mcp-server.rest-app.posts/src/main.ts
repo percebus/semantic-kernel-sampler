@@ -4,11 +4,22 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 
 import { registerAll as registerPostsModule } from "./posts/register.ts";
 
-// Create an MCP server
-const oMcpServer = new McpServer({ name: "rest-app-posts", version: "1.0.0" });
+async function main() {
+  // Create an MCP server
+  const oMcpServer = new McpServer({
+    name: "rest-app.posts",
+    version: "1.0.0",
+  });
 
-registerPostsModule(oMcpServer);
+  registerPostsModule(oMcpServer);
 
-// Start receiving messages on stdin and sending messages on stdout
-const stdioServerTransport = new StdioServerTransport();
-await oMcpServer.connect(stdioServerTransport);
+  // Start receiving messages on stdin and sending messages on stdout
+  const stdioServerTransport = new StdioServerTransport();
+  await oMcpServer.connect(stdioServerTransport);
+  console.log("MCP server is running...");
+}
+
+main().catch((error) => {
+  console.error("Server error:", error);
+  process.exit(1);
+});

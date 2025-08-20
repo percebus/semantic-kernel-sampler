@@ -6,7 +6,7 @@ const createPromptPayloadViewsPerPost = ({ id }: { id: string }) => ({
       role: "user",
       content: {
         type: "text",
-        text: `How many views does the post with id"${id}" have?`,
+        text: `How many views does the post with id "${id}" have?`,
       },
     },
   ],
@@ -14,7 +14,7 @@ const createPromptPayloadViewsPerPost = ({ id }: { id: string }) => ({
 
 createPromptPayloadViewsPerPost.config = {
   title: "How many views does the post with id: {id} have?",
-  argSchema: { id: z.string() },
+  argsSchema: { id: z.string() },
 };
 
 export { createPromptPayloadViewsPerPost };

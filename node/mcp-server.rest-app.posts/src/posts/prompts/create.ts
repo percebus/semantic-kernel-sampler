@@ -14,7 +14,7 @@ const createPromptPayloadCreatePost = ({ title }: { title: string }) => ({
 
 createPromptPayloadCreatePost.config = {
   title: "Create a new post with the title: {title}",
-  argSchema: { title: z.string() },
+  argsSchema: { title: z.string() },
 };
 
 export { createPromptPayloadCreatePost };
