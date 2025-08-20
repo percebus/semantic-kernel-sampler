@@ -1,4 +1,7 @@
 
+# mcp servers
+!.vscode/mcp.json
+
 tmp/
 
 # git clone foo
@@ -9,8 +12,12 @@ test*.xml
 junit*.xml
 __tests__/config/environments/environment.js
 
-# mcp servers
-!.vscode/mcp.json
+# example
+!**/*.example
+!**/*example.*
+
+# env/*.src.sh
+env/
 
 
 ##################################
@@ -301,9 +308,9 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+# env/
 venv/
-ENV/
+# ENV/
 env.bak/
 venv.bak/
 

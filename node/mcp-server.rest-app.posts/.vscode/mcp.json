@@ -3,7 +3,8 @@
     "rest-app.posts": {
       "type": "stdio",
       "command": "npx",
-      "args": ["ts-node", "src/main.ts"]
+      "args": ["ts-node", "src/main.ts"],
+
     }
   },
   "inputs": []

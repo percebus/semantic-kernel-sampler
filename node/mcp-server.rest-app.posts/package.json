@@ -18,13 +18,16 @@
     "npm:install:global:all": "npm install --location global yarn",
     "setup": "npm run npm:install:global:all",
     "setup:ci": "npm run setup",
-    "dist": "tsc",
+    "dist": "tsc src/main.ts",
     "build": "npm run dist",
     "test": "exit 0",
     "ts-node": "ts-node",
-    "start": "npm run ts-node"
+    "modelcontextprotocol:inspector": "npx @modelcontextprotocol/inspector",
+    "start": "npm run ts-node",
+    "start:mcp:inspector": "npx @modelcontextprotocol/inspector npm run start"
   },
   "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.16.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },

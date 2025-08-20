@@ -1,32 +1,63 @@
 import {
   McpServer,
-  // ResourceTemplate, // TODO
+  ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
-import type { Post, NewPost } from "./schema/post.ts";
+import type { Post, NewPost } from "./schema/post.js";
 import {
   PostSchema,
   NewPostSchema,
   PostIdentifierSchema,
-} from "./schema/post.ts";
+} from "./schema/post.js";
 
 // TODO pass from .environment
 // TODO convert to ResourceTemplate
 const baseURI = "http://localhost:3000/posts";
 
 // Create an MCP server
-const server = new McpServer({
+const oMcpServer = new McpServer({
   name: "rest-app-posts",
   version: "1.0.0",
 });
 
-server.registerTool(
+const postResourceTemplate = new ResourceTemplate("posts://{id}", { list: undefined})
+oMcpServer.registerResource(
+  "post",
+  postResourceTemplate,
+  {
+    title: "Post",
+    description: "A single blog post",
+  },
+  async (uri , {id}) => {
+    const responsePromise = await fetch(`${baseURI}/${id}`);
+    const rawPost = await responsePromise.json();
+
+    // Validate and parse the posts using the schema
+    const post = PostSchema.parse(rawPost);
+    const content = {
+      mime: "application/json",
+      text: JSON.stringify(post),
+      uri: uri.href
+    }
+    return {
+      contents: [
+        content
+      ]
+    };
+  }
+);
+
+oMcpServer.registerTool(
   "posts_find",
   {
     title: "Find posts",
     description: "Find posts by a certain criteria",
     inputSchema: PostSchema.shape,
+    annotations: {
+      readOnlyHint: true,
+      openWorldHint: false,
+    }
   },
   async (postSchema) => {
     const responsePromise = await fetch(`${baseURI}`);
@@ -48,12 +79,16 @@ server.registerTool(
   },
 );
 
-server.registerTool(
+oMcpServer.registerTool(
   "posts_get",
   {
     title: "Get post by ID",
     description: "Retrieve a single post by its ID",
     inputSchema: PostIdentifierSchema.shape,
+    annotations: {
+      readOnlyHint: true,
+      openWorldHint: false,
+    }
   },
   async ({ id }) => {
     const responsePromise = await fetch(`${baseURI}/${id}`);
@@ -75,12 +110,17 @@ server.registerTool(
   },
 );
 
-server.registerTool(
+oMcpServer.registerTool(
   "posts_create",
   {
     title: "Create a new post",
     description: "Create a new post with the provided data",
     inputSchema: NewPostSchema.shape,
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      openWorldHint: false,
+    }
   },
   async ({ title }: NewPost) => {
     const postData = {
@@ -120,12 +160,18 @@ server.registerTool(
   },
 );
 
-server.registerTool(
+oMcpServer.registerTool(
   "posts_update",
   {
     title: "Update post",
     description: "Update an existing post with new data",
     inputSchema: PostSchema.shape,
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: true,
+      // destructiveHint: true, // TODO?
+      openWorldHint: false,
+    }
   },
   async ({ id, title, views }: Post) => {
     const postData = {
@@ -165,12 +211,18 @@ server.registerTool(
   },
 );
 
-server.registerTool(
+oMcpServer.registerTool(
   "posts_delete",
   {
     title: "Delete post by ID",
     description: "Delete a post by its ID",
     inputSchema: PostIdentifierSchema.shape,
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: true,
+      destructiveHint: true,
+      openWorldHint: false,
+    }
   },
   async ({ id }) => {
     const response = await fetch(`${baseURI}/${id}`, {
@@ -197,5 +249,5 @@ server.registerTool(
 );
 
 // Start receiving messages on stdin and sending messages on stdout
-const transport = new StdioServerTransport();
-await server.connect(transport);
+const stdioServerTransport = new StdioServerTransport();
+await oMcpServer.connect(stdioServerTransport);
