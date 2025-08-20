@@ -50,16 +50,14 @@ app.post("/mcp", async (req, res) => {
     await server.connect(transport);
   } else {
     // Invalid request
-    res
-      .status(400)
-      .json({
-        jsonrpc: "2.0",
-        error: {
-          code: -32000,
-          message: "Bad Request: No valid session ID provided",
-        },
-        id: null,
-      });
+    res.status(400).json({
+      jsonrpc: "2.0",
+      error: {
+        code: -32000,
+        message: "Bad Request: No valid session ID provided",
+      },
+      id: null,
+    });
     return;
   }
 
