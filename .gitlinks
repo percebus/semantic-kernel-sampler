@@ -1,6 +1,8 @@
 # SRC: https://github.com/chronoxor/gil?tab=readme-ov-file#root-gitlinks-file
 
+a2a-inspector repositories/a2a-inspector https://github.com/a2aproject/a2a-inspector.git main
+
+a2a-samples repositories/a2a-samples https://github.com/a2aproject/a2a-samples.git main
+
 # python-1.35.2
 semantic-kernel repositories/semantic-kernel https://github.com/microsoft/semantic-kernel.git main
-
-a2a-inspector repositories/a2a-inspector https://github.com/a2aproject/a2a-inspector.git main

@@ -4,12 +4,26 @@ Semantic-Kernel monorepo sampler
 
 ## Sub-Projecs/Repos
 
+### REST API
+
+- `node/`
+  - [`rest-app`](./node/rest-app)
+
 ### Agents
 
 - `dotnet/`
   - [`SemanticKernelSampler.DotNet`](./dotnet/)
+- `java/`
+  - TODO
 - `python/`
   - [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py)
+
+### MCP
+
+- `node/`
+  - [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start)
+  - [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts)
+    - Uses [`rest-app`](./node/rest-app)
 
 ### External
 
@@ -17,7 +31,34 @@ Semantic-Kernel monorepo sampler
 - [`@modelcontextprotocol/inspector`](./package.json):
   - `$> npm start:mcp:inspector`
 
+### Examples
+
+- [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
+
 ## R&D
+
+### npm (global)
+
+1. `$> npm run setup`
+1. `$> npm install`
+
+### python (global)
+
+1. [`python -m venv .venv`](./.venv/)
+1. Activate `venv`
+1. [`python -m pip install --upgrade --requirement ./requirements.upgrade.txt`](./requirements.upgrade.txt) : Installs `gil`
+
+### External `repositories/`
+
+1. `gil clone`: [Installs `.gitlinks`](./.gitlinks) [under `repositories/`](./repositories/)
+
+### @modelcontextprotcol/inspector
+
+#### Start
+
+1. `$> npm run start:mcp:inspector`
+
+#### Usage
 
 TODO
 
@@ -73,6 +114,12 @@ $> bash ./run.sh
 **Chat**:
 
 ![Chat](./assets/img/semantic-kernel/plugins/light/Turn_on_the_light.png)
+
+### Everything (docker-compose)
+
+[See `docker-compose.yml`](./docker-compose.yml) for more details
+
+1. `$> docker-compose up`
 
 ## Resources
 
