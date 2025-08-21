@@ -2,6 +2,21 @@
 
 Semantic-Kernel monorepo sampler
 
+## Sub-Projecs/Repos
+
+### Agents
+
+- `dotnet/`
+  - [`SemanticKernelSampler.DotNet`](./dotnet/)
+- `python/`
+  - [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py)
+
+### External
+
+- [`a2a-inspector`](https://github.com/a2aproject/a2a-inspector)
+- [`@modelcontextprotocol/inspector`](./package.json):
+  - `$> npm start:mcp:inspector`
+
 ## R&D
 
 TODO
