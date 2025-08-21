@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
+from semantic_kernel_sampler.ai.base.semantic.chat.agent import SemanticChatAgentBase
 
 
 @dataclass

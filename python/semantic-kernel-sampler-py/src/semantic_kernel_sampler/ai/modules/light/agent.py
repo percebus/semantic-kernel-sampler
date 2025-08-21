@@ -3,12 +3,15 @@ from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
+from semantic_kernel_sampler.ai.base.semantic.chat.agent import SemanticChatAgentBase
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 
 
+# TODO? REFACTOR? as Mixin only?
+#  - w/o SemanticChatAgentBase
+#  - and only a2a stuff
 @dataclass
 class LightAgent(SemanticChatAgentBase):
     def createAgentSkill__get_state(self) -> AgentSkill:

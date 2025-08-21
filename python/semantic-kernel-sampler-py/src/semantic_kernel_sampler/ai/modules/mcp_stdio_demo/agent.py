@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.a2a.agents.base.semantic.chat.agent import SemanticChatAgentBase
+from semantic_kernel_sampler.ai.base.semantic.chat.agent import SemanticChatAgentBase
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -23,6 +23,7 @@ class DemoMcpServerAgent(SemanticChatAgentBase):
             ],
         )
 
+    # NOTE: Should MCP "resources" also be listed as "skills"?
     def createAgentSkill__greeting(self) -> AgentSkill:
         # fmt: off
         return AgentSkill(

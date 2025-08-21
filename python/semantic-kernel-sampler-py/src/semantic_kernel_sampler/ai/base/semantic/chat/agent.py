@@ -8,7 +8,7 @@ from semantic_kernel.connectors.ai.chat_completion_client_base import ChatComple
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
-from semantic_kernel_sampler.a2a.agents.protocol import AgentProtocol
+from semantic_kernel_sampler.a2a.agents.protocol import A2AgentProtocol
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class SemanticChatAgentBase(ABC, AgentProtocol):
+class SemanticChatAgentBase(ABC, A2AgentProtocol):
     config: Config = field()
 
     kernel: Kernel = field()
