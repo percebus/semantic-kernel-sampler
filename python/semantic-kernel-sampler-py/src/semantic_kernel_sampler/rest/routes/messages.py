@@ -24,19 +24,17 @@ async def get_async():
 
 @api.route("/messages", methods=["POST"])
 async def post_async():
-    _request: RequestModel = RequestModel.create_from_flask(request)
-    print(f"request: {_request}")
+    oRequestModel: RequestModel = RequestModel.create_from_flask(request)
+    print(f"request: {oRequestModel}")
+    oResponseModel: ResponseModel = ResponseModel(request=oRequestModel)
 
     oCustomSemanticChatInvoker: CustomSemanticChatInvoker = container[CustomSemanticChatInvoker]
 
-    oResponse: ResponseModel = ResponseModel(request=_request)
-
-    requestChatMessageContent = ChatMessageContent(role=AuthorRole.USER, content=_request.message)
+    requestChatMessageContent = ChatMessageContent(role=AuthorRole.USER, content=oRequestModel.message)
     messages: list[KernelContent] = [requestChatMessageContent]
-
     responseChatMessageContent: Optional[KernelContent] = await oCustomSemanticChatInvoker.invoke(messages=messages)
     if responseChatMessageContent:
-        oResponse.message = str(responseChatMessageContent)
+        oResponseModel.message = str(responseChatMessageContent)
 
-    result: FlaskResponse = oResponse.to_flask()
+    result: FlaskResponse = oResponseModel.to_flask()
     return result, 200
