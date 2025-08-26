@@ -3,9 +3,9 @@ from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.a2a.cards.mixin import A2ACardsMixin
+from semantic_kernel_sampler.a2a.cards.protocol import A2ACardsProtocol
 from semantic_kernel_sampler.configuration.mixin import ConfigurableMixin
-from semantic_kernel_sampler.sk.agents.invokers.custom.base.chat.agent import CustomSemanticChatAgentInvokerBase
+from semantic_kernel_sampler.sk.invokers.custom.semantic.chat.base import CustomSemanticChatInvokerBase
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 #  - w/o SemanticChatAgentBase
 #  - and only a2a stuff
 @dataclass
-class LightCustomSemanticA2AgentInvoker(ConfigurableMixin, A2ACardsMixin, CustomSemanticChatAgentInvokerBase):
+class LightCustomSemanticA2AgentInvoker(ConfigurableMixin, CustomSemanticChatInvokerBase, A2ACardsProtocol):
     def createAgentSkill__get_state(self) -> AgentSkill:
         return AgentSkill(
             id="light__get_state",

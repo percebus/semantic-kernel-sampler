@@ -6,17 +6,16 @@ from semantic_kernel import Kernel
 from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
+from semantic_kernel.contents.kernel_content import KernelContent
 
-from semantic_kernel_sampler.rest.models.request import RequestModel
-from semantic_kernel_sampler.rest.models.response import ResponseModel
-from semantic_kernel_sampler.sk.agents.invokers.custom.protocol import CustomSemanticAgentInvokerProtocol
+from semantic_kernel_sampler.sk.invokers.custom.semantic.protocol import CustomSemanticInvokerProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent
 
 
 @dataclass
-class CustomSemanticChatAgentInvokerBase(ABC, CustomSemanticAgentInvokerProtocol):
+class CustomSemanticChatInvokerBase(ABC, CustomSemanticInvokerProtocol):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()
@@ -25,20 +24,17 @@ class CustomSemanticChatAgentInvokerBase(ABC, CustomSemanticAgentInvokerProtocol
 
     prompt_execution_settings: PromptExecutionSettings = field()
 
-    async def invoke(self, request: RequestModel) -> ResponseModel:
-        self.chat_history.add_user_message(request.message)
-
-        oResponse: ResponseModel = ResponseModel(request=request)
+    async def invoke(self, request: KernelContent) -> Optional[KernelContent]:
+        self.chat_history.add_user_message(request)
 
         # fmt: off
-        oChatMessageContent: Optional[ChatMessageContent] = await self.chat_completion.get_chat_message_content(
+        responseChatMessageContent: Optional[ChatMessageContent] = await self.chat_completion.get_chat_message_content(
             kernel=self.kernel,
             settings=self.prompt_execution_settings,
             chat_history=self.chat_history)
         # fmt: on
 
-        if oChatMessageContent:
-            oResponse.message = str(oChatMessageContent)
-            self.chat_history.add_assistant_message(oResponse.message)
+        if responseChatMessageContent:
+            self.chat_history.add_assistant_message(responseChatMessageContent)
 
-        return oResponse
+        return responseChatMessageContent

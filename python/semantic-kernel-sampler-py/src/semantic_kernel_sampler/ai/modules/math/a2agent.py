@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-# from semantic_kernel_sampler.a2a.mixins.cards import A2ACardsMixin  # TODO
-from semantic_kernel_sampler.sk.agents.invokers.custom.base.chat.agent import CustomSemanticChatAgentInvokerBase
+# from semantic_kernel_sampler.a2a.cards.protocol import A2ACardsProtocol  # TODO
+from semantic_kernel_sampler.sk.invokers.custom.semantic.chat.base import CustomSemanticChatInvokerBase
 
 
 @dataclass
-class MathCustomSemanticA2AgentInvoker(CustomSemanticChatAgentInvokerBase):
+class MathCustomSemanticA2AgentInvoker(CustomSemanticChatInvokerBase):
     def __post_init__(self):
         # TODO
         # self.agent_card__public = public_agent_card
