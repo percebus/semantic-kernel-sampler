@@ -1,11 +1,11 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from semantic_kernel_sampler.sk.plugins.mcp.base.stdio import StdIOMCPPlugin
+from semantic_kernel_sampler.sk.plugins.mcp.base.stdio import StdioMCPPlugin
 
 
 @dataclass
-class DemoStdIOMCPPlugin(StdIOMCPPlugin):
+class DemoStdioMCPPlugin(StdioMCPPlugin):
     def create_command_args(self) -> list[str]:
         current_working_directory = Path.cwd()
         self.logger.debug("Current working directory: %s", current_working_directory)

@@ -7,18 +7,22 @@ from semantic_kernel.agents import ChatCompletionAgent, ChatHistoryAgentThread  
 from semantic_kernel.agents.agent import AgentResponseItem
 from semantic_kernel.contents import ChatMessageContent
 
-from semantic_kernel_sampler.sk.agents.executors.base.semantic.protocol import SemanticAgentExecutorProtocol
+from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.protocol import ThreadedBuiltinAgentInvokerProtocol
 
 
 @dataclass
-class ChatCompletionSemanticAgentExecutorBase(SemanticAgentExecutorProtocol[ChatCompletionAgent, ChatHistoryAgentThread, ChatMessageContent], ABC):
+class ChatCompletionBuiltinAgentInvoker(ABC, ThreadedBuiltinAgentInvokerProtocol[ChatCompletionAgent, ChatHistoryAgentThread, ChatMessageContent]):
+    # NOTE: kernel holds the plugins!
     kernel: Kernel = field()
 
     agent: ChatCompletionAgent = field(init=False)
 
     agent_thread: Optional[ChatHistoryAgentThread] = field(default=None)
 
-    _instructions: Optional[str] = field(init=False, default=None)
+    instructions: Optional[str] = field(default=None)
+
+    def __post_init__(self):
+        self.agent = ChatCompletionAgent(kernel=self.kernel, name=self.__class__.__name__, instructions=self.instructions)
 
     async def invoke(self, messages: list[ChatMessageContent]) -> AgentResponseItem[ChatMessageContent]:
         # fmt: off

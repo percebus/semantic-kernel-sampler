@@ -7,11 +7,12 @@ from semantic_kernel.agents import Agent  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.agent import AgentResponseItem, AgentThread
 from semantic_kernel.contents import ChatMessageContent
 
-from semantic_kernel_sampler.sk.agents.executors.base.semantic.protocol import SemanticAgentExecutorProtocol
+from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.protocol import ThreadedBuiltinAgentInvokerProtocol
 
 
 @dataclass
-class SemanticAgentExecutorBase(SemanticAgentExecutorProtocol[Agent, AgentThread, ChatMessageContent], ABC):
+class SemanticAgentInvokerBase(ThreadedBuiltinAgentInvokerProtocol[Agent, AgentThread, ChatMessageContent], ABC):
+    # NOTE: kernel holds the plugins!
     kernel: Kernel = field()
 
     agent: Agent = field()

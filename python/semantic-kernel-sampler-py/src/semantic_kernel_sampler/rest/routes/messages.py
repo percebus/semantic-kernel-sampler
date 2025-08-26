@@ -1,19 +1,17 @@
 from typing import TYPE_CHECKING, Optional
 
 from flask import Flask, request
-from semantic_kernel import Kernel
-from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
-from semantic_kernel.connectors.ai.open_ai import AzureChatPromptExecutionSettings
-from semantic_kernel.contents import ChatHistory
+from semantic_kernel.contents.chat_message_content import ChatMessageContent
+from semantic_kernel.contents.utils.author_role import AuthorRole
 
 from semantic_kernel_sampler.dependency_injection.container import container
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
+from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 
 if TYPE_CHECKING:
     from flask.wrappers import Response as FlaskResponse
-    from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
-    from semantic_kernel.contents.chat_message_content import ChatMessageContent
+    from semantic_kernel.contents.kernel_content import KernelContent
 
 
 api: Flask = Flask(__name__)
@@ -26,29 +24,17 @@ async def get_async():
 
 @api.route("/messages", methods=["POST"])
 async def post_async():
-    _request: RequestModel = RequestModel.create_from_flask(request)
-    print(f"request: {_request}")
+    oRequestModel: RequestModel = RequestModel.create_from_flask(request)
+    print(f"request: {oRequestModel}")
+    oResponseModel: ResponseModel = ResponseModel(request=oRequestModel)
 
-    oChatHistory: ChatHistory = container[ChatHistory]
-    oChatHistory.add_user_message(_request.message)
+    oCustomSemanticChatInvoker: CustomSemanticChatInvoker = container[CustomSemanticChatInvoker]
 
-    oKernel: Kernel = container[Kernel]
-    oPromptExecutionSettings: PromptExecutionSettings = container[AzureChatPromptExecutionSettings]
+    requestChatMessageContent = ChatMessageContent(role=AuthorRole.USER, content=oRequestModel.message)
+    messages: list[KernelContent] = [requestChatMessageContent]
+    responseChatMessageContent: Optional[KernelContent] = await oCustomSemanticChatInvoker.invoke(messages=messages)
+    if responseChatMessageContent:
+        oResponseModel.message = str(responseChatMessageContent)
 
-    oResponse: ResponseModel = ResponseModel(request=_request)
-    oChatCompletion: ChatCompletionClientBase = container[ChatCompletionClientBase]
-
-    # fmt: off
-    oChatMessageContent: Optional[ChatMessageContent] = await oChatCompletion.get_chat_message_content(
-        kernel=oKernel,
-        settings=oPromptExecutionSettings,
-        chat_history=oChatHistory
-    )
-    # fmt: on
-
-    if oChatMessageContent:
-        oResponse.message = str(oChatMessageContent)
-        oChatHistory.add_assistant_message(oResponse.message)
-
-    result: FlaskResponse = oResponse.to_flask()
+    result: FlaskResponse = oResponseModel.to_flask()
     return result, 200

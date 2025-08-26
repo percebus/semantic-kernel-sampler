@@ -9,7 +9,7 @@ from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 @dataclass
 @experimental
-class StdIOMCPPlugin(MCPStdioPlugin, PluginProtocol):
+class StdioMCPPlugin(MCPStdioPlugin, PluginProtocol):
     logger: Logger = field()
 
     name: str = field()

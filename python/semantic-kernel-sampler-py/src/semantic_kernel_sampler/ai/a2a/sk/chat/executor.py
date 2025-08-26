@@ -1,23 +1,23 @@
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.utils import new_agent_text_message
+from semantic_kernel.contents import ChatMessageContent
+from semantic_kernel.contents.utils.author_role import AuthorRole
 
-from semantic_kernel_sampler.a2a.agents.protocol import A2AgentProtocol
-from semantic_kernel_sampler.rest.models.request import RequestModel
+from semantic_kernel_sampler.ai.a2a.sk.protocol import SemanticA2AInvokerProtocol
 
 if TYPE_CHECKING:
     from a2a.types import Message
-
-    from semantic_kernel_sampler.rest.models.response import ResponseModel
+    from semantic_kernel.contents.kernel_content import KernelContent
 
 
 # SRC: https://github.com/a2aproject/a2a-samples/blob/main/samples/python/agents/helloworld/agent_executor.py
 @dataclass
-class A2AgentExecutor(AgentExecutor):
-    agent: A2AgentProtocol = field()
+class A2AgentInvokerExecutor(AgentExecutor):
+    agent: SemanticA2AInvokerProtocol = field()
 
     async def execute(
         self,
@@ -25,12 +25,14 @@ class A2AgentExecutor(AgentExecutor):
         event_queue: EventQueue,
     ) -> None:
         user_input: str = context.get_user_input()
-        request: RequestModel = RequestModel(message=user_input)
-        response: ResponseModel = await self.agent.invoke(request)
-        if not response.message:
+        requestKernelContent = ChatMessageContent(role=AuthorRole.USER, content=user_input)
+        messages: list[KernelContent] = [requestKernelContent]
+        responseKernelContent: Optional[KernelContent] = await self.agent.invoke(messages)
+        if not responseKernelContent:
             raise ValueError("No message found in response")
 
-        message: Message = new_agent_text_message(response.message)
+        message_text: str = str(responseKernelContent)
+        message: Message = new_agent_text_message(message_text)
         await event_queue.enqueue_event(message)
 
     async def cancel(self, context: RequestContext, event_queue: EventQueue) -> None:
