@@ -9,13 +9,14 @@ from semantic_kernel.contents import ChatHistory
 
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
+from semantic_kernel_sampler.sk.agents.invokers.custom.protocol import CustomSemanticAgentInvokerProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent
 
 
 @dataclass
-class CustomSemanticChatAgentMixin(ABC):
+class CustomSemanticChatAgentInvokerMixin(ABC, CustomSemanticAgentInvokerProtocol):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()

@@ -6,7 +6,7 @@ from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
 
 
-class A2AgentProtocol(Protocol):
+class A2AgentInvokerProtocol(Protocol):
     agent_card: AgentCard
 
     extended_agent_card: Optional[AgentCard]

@@ -3,16 +3,16 @@ from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from semantic_kernel_sampler.a2a.agents.mixins.agent import A2AgentMixin
-from semantic_kernel_sampler.ai.mixins.semantic.chat.custom_agent import CustomSemanticChatAgentMixin
+from semantic_kernel_sampler.a2a.agents.invokers.protocol import A2AgentInvokerProtocol
 from semantic_kernel_sampler.configuration.mixin import ConfigurableMixin
+from semantic_kernel_sampler.sk.agents.invokers.custom.mixins.chat.agent import CustomSemanticChatAgentInvokerMixin
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 
 
 @dataclass
-class DemoMcpServerAgent(ConfigurableMixin, A2AgentMixin, CustomSemanticChatAgentMixin):
+class DemoMcpServerAgent(ConfigurableMixin, CustomSemanticChatAgentInvokerMixin, A2AgentInvokerProtocol):
     def createAgentSkill__add(self) -> AgentSkill:
         return AgentSkill(
             id="add",

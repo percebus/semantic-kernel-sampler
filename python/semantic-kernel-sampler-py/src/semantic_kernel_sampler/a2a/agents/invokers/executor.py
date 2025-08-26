@@ -5,7 +5,7 @@ from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.utils import new_agent_text_message
 
-from semantic_kernel_sampler.a2a.agents.protocol import A2AgentProtocol
+from semantic_kernel_sampler.a2a.agents.invokers.protocol import A2AgentInvokerProtocol
 from semantic_kernel_sampler.rest.models.request import RequestModel
 
 if TYPE_CHECKING:
@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 
 # SRC: https://github.com/a2aproject/a2a-samples/blob/main/samples/python/agents/helloworld/agent_executor.py
 @dataclass
-class A2AgentExecutor(AgentExecutor):
-    agent: A2AgentProtocol = field()
+class A2AgentInvokerExecutor(AgentExecutor):
+    agent: A2AgentInvokerProtocol = field()
 
     async def execute(
         self,

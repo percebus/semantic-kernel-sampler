@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from semantic_kernel_sampler.ai.mixins.semantic.chat.custom_agent import CustomSemanticChatAgentMixin
+from semantic_kernel_sampler.sk.agents.invokers.custom.mixins.chat.agent import CustomSemanticChatAgentInvokerMixin
 
 
 @dataclass
-class MathAgent(CustomSemanticChatAgentMixin):
+class MathCustomAgentInvoker(CustomSemanticChatAgentInvokerMixin):
     def __post_init__(self):
         # TODO
         # self.agent_card__public = public_agent_card

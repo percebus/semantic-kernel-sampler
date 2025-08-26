@@ -4,11 +4,11 @@ from typing import Optional
 from semantic_kernel.agents import ChatCompletionAgent  # pylint: disable=no-name-in-module
 
 from semantic_kernel_sampler.ai.modules.with_kernel.instructions.v1 import INSTRUCTIONS
-from semantic_kernel_sampler.sk.agents.executors.base.semantic.chat.agent import ChatCompletionSemanticAgentExecutorBase
+from semantic_kernel_sampler.sk.agents.invokers.builtin.base.threaded.chat.agent import ChatCompletionBuiltinAgentInvokerBase
 
 
 @dataclass
-class AssistantAgentExecutor(ChatCompletionSemanticAgentExecutorBase):
+class AssistantAgentInvoker(ChatCompletionBuiltinAgentInvokerBase):
     _instructions: Optional[str] = field(init=False, default=INSTRUCTIONS)
 
     def __post_init__(self):
