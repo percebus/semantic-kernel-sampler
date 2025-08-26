@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class CustomSemanticChatAgentInvokerMixin(ABC, CustomSemanticAgentInvokerProtocol):
+class CustomSemanticChatAgentInvokerBase(ABC, CustomSemanticAgentInvokerProtocol):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()

@@ -17,21 +17,21 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
-from semantic_kernel_sampler.a2a.agents.invokers.executor import A2AgentInvokerExecutor
-from semantic_kernel_sampler.a2a.agents.invokers.protocol import A2AgentInvokerProtocol
+from semantic_kernel_sampler.ai.a2a.custom.executor import A2AgentInvokerExecutor
+from semantic_kernel_sampler.ai.a2a.custom.protocol import A2AInvokerProtocol
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
 from semantic_kernel_sampler.ai.modules.light.instructions.v1 import INSTRUCTIONS as light_instructions
 from semantic_kernel_sampler.ai.modules.light.sk.agent import LightBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
-from semantic_kernel_sampler.ai.modules.math.a2agent import MathCustomAgentInvoker
+from semantic_kernel_sampler.ai.modules.math.a2agent import MathCustomSemanticA2AgentInvoker
 from semantic_kernel_sampler.ai.modules.math.instructions.v1 import INSTRUCTIONS as math_instructions
 from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.a2agent import DemoMcpServerAgent
+from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.instructions.v1 import INSTRUCTIONS as mcp_instructions
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent import MCPDemoBuiltinAgentInvoker
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.plugin import DemoStdIOMCPPlugin
+from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.plugin import DemoStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantAgentInvoker as AssistantChatCompletionAgentExecutor
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
@@ -77,14 +77,14 @@ container[A2ASettings] = lambda c: c[Settings].a2a
 
 container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
-container[DemoStdIOMCPPlugin] = lambda c: DemoStdIOMCPPlugin(logger=c[Logger])
+container[DemoStdioMCPPlugin] = lambda c: DemoStdioMCPPlugin(logger=c[Logger])
 
 # NOTE: If you need all Plugins for w/e reason
 # fmt: off
 container[list[PluginProtocol]] = lambda c: [
     c[MathPlugin],
     c[LightPlugin],
-    c[DemoStdIOMCPPlugin]]
+    c[DemoStdioMCPPlugin]]
 # fmt: on
 
 container[ChatHistory] = lambda c: createChatHistory(c)  # pylint: disable=unnecessary-lambda
@@ -115,7 +115,7 @@ container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
 )
 
 container[MCPDemoBuiltinAgentInvoker] = lambda c: MCPDemoBuiltinAgentInvoker(
-    kernel=createKernel(c, [c[DemoStdIOMCPPlugin]]),
+    kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
 # fmt: off
@@ -129,7 +129,7 @@ container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2Ag
 # fmt: on
 
 # fmt: off
-container[MathCustomAgentInvoker] = lambda c: MathCustomAgentInvoker(
+container[MathCustomSemanticA2AgentInvoker] = lambda c: MathCustomSemanticA2AgentInvoker(
     kernel=createKernel(c, [c[MathPlugin]]),
     chat_history=createChatHistory(c, system_message=math_instructions),
     chat_completion=c[ChatCompletionClientBase],
@@ -139,9 +139,9 @@ container[MathCustomAgentInvoker] = lambda c: MathCustomAgentInvoker(
 
 
 # fmt: off
-container[DemoMcpServerAgent] = lambda c: DemoMcpServerAgent(
+container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSemanticA2Agent(
     config=c[Config],
-    kernel=createKernel(c, [c[DemoStdIOMCPPlugin]]),
+    kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
     chat_history=createChatHistory(c, system_message=mcp_instructions),
     chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
@@ -150,8 +150,8 @@ container[DemoMcpServerAgent] = lambda c: DemoMcpServerAgent(
 
 
 # The main (and only) agent
-container[A2AgentInvokerProtocol] = lambda c: c[LightCustomSemanticA2AgentInvoker]
-container[AgentExecutor] = lambda c: A2AgentInvokerExecutor(agent=c[A2AgentInvokerProtocol])
+container[A2AInvokerProtocol] = lambda c: c[LightCustomSemanticA2AgentInvoker]
+container[AgentExecutor] = lambda c: A2AgentInvokerExecutor(agent=c[A2AInvokerProtocol])
 
 # Where to store Tasks
 container[TaskStore] = InMemoryTaskStore
@@ -165,8 +165,8 @@ container[RequestHandler] = lambda c: DefaultRequestHandler(
 # fmt: off
 container[A2AStarletteApplication] = lambda c: A2AStarletteApplication(
     http_handler=c[RequestHandler],
-    agent_card=c[A2AgentInvokerProtocol].agent_card,
-    extended_agent_card=c[A2AgentInvokerProtocol].extended_agent_card)
+    agent_card=c[A2AInvokerProtocol].agent_card,
+    extended_agent_card=c[A2AInvokerProtocol].extended_agent_card)
 # fmt: on
 
 
