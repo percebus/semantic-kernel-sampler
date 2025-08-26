@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 # from semantic_kernel_sampler.a2a.cards.protocol import A2ACardsProtocol  # TODO
-from semantic_kernel_sampler.sk.invokers.custom.semantic.chat.base import CustomSemanticChatInvokerBase
+from semantic_kernel_sampler.sk.invokers.custom.chat.base import CustomSemanticChatInvokerBase
 
 
 @dataclass

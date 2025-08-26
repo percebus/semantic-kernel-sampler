@@ -8,14 +8,14 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from semantic_kernel.contents.kernel_content import KernelContent
 
-from semantic_kernel_sampler.sk.invokers.custom.semantic.protocol import CustomSemanticInvokerProtocol
+from semantic_kernel_sampler.sk.invokers.protocol import InvokerProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent
 
 
 @dataclass
-class CustomSemanticChatInvokerBase(ABC, CustomSemanticInvokerProtocol):
+class CustomSemanticChatInvokerBase(ABC, InvokerProtocol[KernelContent]):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()

@@ -5,12 +5,12 @@ from typing import Optional
 from semantic_kernel import Kernel
 from semantic_kernel.contents.kernel_content import KernelContent
 
-from semantic_kernel_sampler.sk.invokers.custom.semantic.protocol import CustomSemanticInvokerProtocol
+from semantic_kernel_sampler.sk.invokers.protocol import InvokerProtocol
 
 
 @dataclass
-class CustomSemanticInvokerBase(ABC, CustomSemanticInvokerProtocol):
+class CustomSemanticInvokerBase(ABC, InvokerProtocol[KernelContent]):
     kernel: Kernel = field()
 
-    async def invoke(self, message: KernelContent) -> Optional[KernelContent]:
+    async def invoke(self, messages: list[KernelContent]) -> Optional[KernelContent]:
         raise NotImplementedError

@@ -5,7 +5,6 @@ from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.utils import new_agent_text_message
 from semantic_kernel.contents import ChatMessageContent
-from semantic_kernel.contents.const import ContentTypes
 from semantic_kernel.contents.utils.author_role import AuthorRole
 
 from semantic_kernel_sampler.ai.a2a.sk.protocol import SemanticA2AInvokerProtocol
