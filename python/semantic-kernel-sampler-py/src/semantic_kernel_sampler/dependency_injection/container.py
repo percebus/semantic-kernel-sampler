@@ -32,13 +32,15 @@ from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.instructions.v1 import IN
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent import MCPDemoBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.plugin import DemoStdioMCPPlugin
-from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantAgentInvoker as AssistantChatCompletionAgentExecutor
+from semantic_kernel_sampler.ai.modules.with_kernel.instructions.v1 import INSTRUCTIONS as assistant_instructions
+from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantBuiltinAgentInvoker
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
+from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
@@ -106,7 +108,16 @@ container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 
 container[Kernel] = lambda c: createKernel(c)  # pylint: disable=unnecessary-lambda
 
-container[AssistantChatCompletionAgentExecutor] = lambda c: AssistantChatCompletionAgentExecutor(
+
+container[CustomSemanticChatInvoker] = lambda c: CustomSemanticChatInvoker(
+    kernel=createKernel(c),  # NOTE: No plugins
+    chat_history=createChatHistory(c, system_message=light_instructions),
+    chat_completion=c[ChatCompletionClientBase],
+    prompt_execution_settings=c[PromptExecutionSettings],
+)
+
+container[AssistantBuiltinAgentInvoker] = lambda c: AssistantBuiltinAgentInvoker(
+    instructions=assistant_instructions,
     kernel=createKernel(c),
 )
 
@@ -120,7 +131,7 @@ container[MCPDemoBuiltinAgentInvoker] = lambda c: MCPDemoBuiltinAgentInvoker(
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
-# fmt: off
+
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(
     config=c[Config],
     kernel=createKernel(c, [c[LightPlugin]]),
@@ -128,19 +139,15 @@ container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2Ag
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
-# fmt: on
 
-# fmt: off
 container[MathCustomSemanticA2AgentInvoker] = lambda c: MathCustomSemanticA2AgentInvoker(
     kernel=createKernel(c, [c[MathPlugin]]),
     chat_history=createChatHistory(c, system_message=math_instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
-# fmt: on
 
 
-# fmt: off
 container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSemanticA2Agent(
     config=c[Config],
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
@@ -148,7 +155,6 @@ container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSeman
     chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
-# fmt: on
 
 
 # The main (and only) agent

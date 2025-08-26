@@ -1,4 +1,3 @@
-from abc import ABC
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Optional
 
@@ -15,7 +14,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class CustomSemanticChatInvokerBase(ABC, InvokerProtocol[KernelContent]):
+class CustomSemanticChatInvoker(InvokerProtocol[KernelContent]):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()

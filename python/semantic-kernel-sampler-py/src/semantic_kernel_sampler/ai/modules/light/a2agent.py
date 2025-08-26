@@ -5,7 +5,7 @@ from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 from semantic_kernel_sampler.a2a.cards.protocol import A2ACardsProtocol
 from semantic_kernel_sampler.configuration.mixin import ConfigurableMixin
-from semantic_kernel_sampler.sk.invokers.custom.chat.base import CustomSemanticChatInvokerBase
+from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 #  - w/o SemanticChatAgentBase
 #  - and only a2a stuff
 @dataclass
-class LightCustomSemanticA2AgentInvoker(ConfigurableMixin, CustomSemanticChatInvokerBase, A2ACardsProtocol):
+class LightCustomSemanticA2AgentInvoker(ConfigurableMixin, CustomSemanticChatInvoker, A2ACardsProtocol):
     def createAgentSkill__get_state(self) -> AgentSkill:
         return AgentSkill(
             id="light__get_state",
