@@ -130,7 +130,6 @@ container[LightAgent] = lambda c: LightAgent(
 
 # fmt: off
 container[MathAgent] = lambda c: MathAgent(
-    config=c[Config],
     kernel=createKernel(c, [c[MathPlugin]]),
     chat_history=createChatHistory(c, system_message=math_instructions),
     chat_completion=c[ChatCompletionClientBase],

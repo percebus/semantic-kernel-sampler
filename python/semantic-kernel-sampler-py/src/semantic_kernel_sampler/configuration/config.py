@@ -1,19 +1,19 @@
 """Shared Configuration Module."""
 
+from dataclasses import dataclass, field
 from typing import Any, Optional
-
-from pydantic import BaseModel, Field
 
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 
 
-class Config(BaseModel):
+@dataclass
+class Config:
     """Shared configuration model for the application."""
 
-    settings: Settings = Field(default_factory=Settings)  # type: ignore[assignment]  # FIXME
+    settings: Settings = field(default_factory=Settings)  # type: ignore[assignment]  # FIXME
 
-    logging: LoggingConfig = Field(default_factory=LoggingConfig)
+    logging: LoggingConfig = field(default_factory=LoggingConfig)
 
     @property
     def debug(self) -> bool:

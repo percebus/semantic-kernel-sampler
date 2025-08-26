@@ -2,14 +2,11 @@ from abc import ABC
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Optional
 
-from a2a.types import AgentCard
 from semantic_kernel import Kernel
 from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
 from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
 from semantic_kernel.contents import ChatHistory
 
-from semantic_kernel_sampler.a2a.agents.protocol import A2AgentProtocol
-from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
 
@@ -18,9 +15,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class SemanticChatAgentBase(ABC, A2AgentProtocol):
-    config: Config = field()
-
+class CustomSemanticChatAgentMixin(ABC):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()
@@ -28,10 +23,6 @@ class SemanticChatAgentBase(ABC, A2AgentProtocol):
     chat_completion: ChatCompletionClientBase = field()
 
     prompt_execution_settings: PromptExecutionSettings = field()
-
-    agent_card: AgentCard = field(init=False)
-
-    extended_agent_card: Optional[AgentCard] = field(init=False, default=None)
 
     async def invoke(self, request: RequestModel) -> ResponseModel:
         self.chat_history.add_user_message(request.message)

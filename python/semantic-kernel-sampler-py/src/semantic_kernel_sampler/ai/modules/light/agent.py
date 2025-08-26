@@ -1,9 +1,15 @@
-from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Optional
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
+from semantic_kernel import Kernel
+from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
+from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
+from semantic_kernel.contents import ChatHistory
 
-from semantic_kernel_sampler.ai.base.semantic.chat.agent import SemanticChatAgentBase
+from semantic_kernel_sampler.a2a.agents.mixins.agent import A2AgentMixin
+from semantic_kernel_sampler.ai.mixins.semantic.chat.custom_agent import CustomSemanticChatAgentMixin
+from semantic_kernel_sampler.configuration.mixin import ConfigurableMixin
 
 if TYPE_CHECKING:
     from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
@@ -13,7 +19,19 @@ if TYPE_CHECKING:
 #  - w/o SemanticChatAgentBase
 #  - and only a2a stuff
 @dataclass
-class LightAgent(SemanticChatAgentBase):
+class LightAgent(ConfigurableMixin, A2AgentMixin, CustomSemanticChatAgentMixin):
+    kernel: Kernel = field()
+
+    chat_history: ChatHistory = field()
+
+    chat_completion: ChatCompletionClientBase = field()
+
+    prompt_execution_settings: PromptExecutionSettings = field()
+
+    agent_card: AgentCard = field(init=False)
+
+    extended_agent_card: Optional[AgentCard] = field(default=None)
+
     def createAgentSkill__get_state(self) -> AgentSkill:
         return AgentSkill(
             id="light__get_state",
