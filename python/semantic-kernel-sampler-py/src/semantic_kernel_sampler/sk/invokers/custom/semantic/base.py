@@ -12,5 +12,5 @@ from semantic_kernel_sampler.sk.invokers.custom.semantic.protocol import CustomS
 class CustomSemanticInvokerBase(ABC, CustomSemanticInvokerProtocol):
     kernel: Kernel = field()
 
-    async def invoke(self, request: KernelContent) -> Optional[KernelContent]:
+    async def invoke(self, message: KernelContent) -> Optional[KernelContent]:
         raise NotImplementedError

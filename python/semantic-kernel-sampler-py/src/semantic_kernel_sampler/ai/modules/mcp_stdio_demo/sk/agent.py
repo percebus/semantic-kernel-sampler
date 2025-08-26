@@ -9,7 +9,7 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.chat.base impor
 
 @dataclass
 class MCPDemoBuiltinAgentInvoker(ChatCompletionBuiltinAgentInvokerBase):
-    _instructions: Optional[str] = field(init=False, default=INSTRUCTIONS)
+    _instructions: Optional[str] = field(default=INSTRUCTIONS)
 
     def __post_init__(self):
         self.agent = ChatCompletionAgent(kernel=self.kernel, name=self.__class__.__name__, instructions=self._instructions)

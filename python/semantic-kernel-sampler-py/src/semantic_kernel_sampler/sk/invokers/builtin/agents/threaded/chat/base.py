@@ -21,7 +21,7 @@ class ChatCompletionBuiltinAgentInvokerBase(
 
     agent_thread: Optional[ChatHistoryAgentThread] = field(default=None)
 
-    _instructions: Optional[str] = field(init=False, default=None)
+    _instructions: Optional[str] = field(default=None)
 
     async def invoke(self, messages: list[ChatMessageContent]) -> AgentResponseItem[ChatMessageContent]:
         # fmt: off
