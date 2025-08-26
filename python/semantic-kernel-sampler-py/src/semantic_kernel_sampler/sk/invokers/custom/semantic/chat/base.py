@@ -24,8 +24,12 @@ class CustomSemanticChatInvokerBase(ABC, CustomSemanticInvokerProtocol):
 
     prompt_execution_settings: PromptExecutionSettings = field()
 
-    async def invoke(self, message: KernelContent) -> Optional[KernelContent]:
-        self.chat_history.add_user_message(message)
+    async def invoke(self, messages: list[KernelContent]) -> Optional[KernelContent]:
+        # FIXME HACK
+        first_message: KernelContent = messages[0]
+        message_text: str = str(first_message)
+
+        self.chat_history.add_user_message(message_text)
 
         # fmt: off
         responseChatMessageContent: Optional[ChatMessageContent] = await self.chat_completion.get_chat_message_content(
@@ -35,6 +39,7 @@ class CustomSemanticChatInvokerBase(ABC, CustomSemanticInvokerProtocol):
         # fmt: on
 
         if responseChatMessageContent:
-            self.chat_history.add_assistant_message(responseChatMessageContent)
+            response_text: str = str(responseChatMessageContent)
+            self.chat_history.add_assistant_message(response_text)
 
         return responseChatMessageContent

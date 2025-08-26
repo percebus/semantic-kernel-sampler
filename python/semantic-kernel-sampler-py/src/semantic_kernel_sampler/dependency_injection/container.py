@@ -17,8 +17,8 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
-from semantic_kernel_sampler.ai.a2a.custom.executor import A2AgentInvokerExecutor
-from semantic_kernel_sampler.ai.a2a.custom.protocol import A2AInvokerProtocol
+from semantic_kernel_sampler.ai.a2a.sk.chat.executor import A2AgentInvokerExecutor
+from semantic_kernel_sampler.ai.a2a.sk.protocol import SemanticA2AInvokerProtocol
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
 from semantic_kernel_sampler.ai.modules.light.instructions.v1 import INSTRUCTIONS as light_instructions
 from semantic_kernel_sampler.ai.modules.light.sk.agent import LightBuiltinAgentInvoker
@@ -111,10 +111,12 @@ container[AssistantChatCompletionAgentExecutor] = lambda c: AssistantChatComplet
 )
 
 container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
+    instructions=light_instructions,
     kernel=createKernel(c, [c[LightPlugin]]),
 )
 
 container[MCPDemoBuiltinAgentInvoker] = lambda c: MCPDemoBuiltinAgentInvoker(
+    instructions=mcp_instructions,
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
@@ -150,8 +152,8 @@ container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSeman
 
 
 # The main (and only) agent
-container[A2AInvokerProtocol] = lambda c: c[LightCustomSemanticA2AgentInvoker]
-container[AgentExecutor] = lambda c: A2AgentInvokerExecutor(agent=c[A2AInvokerProtocol])
+container[SemanticA2AInvokerProtocol] = lambda c: c[LightCustomSemanticA2AgentInvoker]
+container[AgentExecutor] = lambda c: A2AgentInvokerExecutor(agent=c[SemanticA2AInvokerProtocol])
 
 # Where to store Tasks
 container[TaskStore] = InMemoryTaskStore
@@ -165,8 +167,8 @@ container[RequestHandler] = lambda c: DefaultRequestHandler(
 # fmt: off
 container[A2AStarletteApplication] = lambda c: A2AStarletteApplication(
     http_handler=c[RequestHandler],
-    agent_card=c[A2AInvokerProtocol].agent_card,
-    extended_agent_card=c[A2AInvokerProtocol].extended_agent_card)
+    agent_card=c[SemanticA2AInvokerProtocol].agent_card,
+    extended_agent_card=c[SemanticA2AInvokerProtocol].extended_agent_card)
 # fmt: on
 
 

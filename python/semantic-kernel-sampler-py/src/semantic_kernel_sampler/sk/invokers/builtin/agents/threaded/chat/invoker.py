@@ -11,9 +11,7 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.protocol import
 
 
 @dataclass
-class ChatCompletionBuiltinAgentInvokerBase(
-    ABC, ThreadedBuiltinAgentInvokerProtocol[ChatCompletionAgent, ChatHistoryAgentThread, ChatMessageContent]
-):
+class ChatCompletionBuiltinAgentInvoker(ABC, ThreadedBuiltinAgentInvokerProtocol[ChatCompletionAgent, ChatHistoryAgentThread, ChatMessageContent]):
     # NOTE: kernel holds the plugins!
     kernel: Kernel = field()
 
@@ -21,7 +19,10 @@ class ChatCompletionBuiltinAgentInvokerBase(
 
     agent_thread: Optional[ChatHistoryAgentThread] = field(default=None)
 
-    _instructions: Optional[str] = field(default=None)
+    instructions: Optional[str] = field(default=None)
+
+    def __post_init__(self):
+        self.agent = ChatCompletionAgent(kernel=self.kernel, name=self.__class__.__name__, instructions=self.instructions)
 
     async def invoke(self, messages: list[ChatMessageContent]) -> AgentResponseItem[ChatMessageContent]:
         # fmt: off
