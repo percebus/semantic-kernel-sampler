@@ -17,8 +17,8 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from starlette.applications import Starlette
 
-from semantic_kernel_sampler.ai.a2a.sk.chat.executor import A2AgentInvokerExecutor
-from semantic_kernel_sampler.ai.a2a.sk.protocol import SemanticA2AInvokerProtocol
+from semantic_kernel_sampler.ai.a2a.sk.invokers.single.executor import A2AgentInvokerExecutor
+from semantic_kernel_sampler.ai.a2a.sk.invokers.single.protocol import SemanticA2AInvokerProtocol
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
 from semantic_kernel_sampler.ai.modules.light.instructions.v1 import INSTRUCTIONS as light_instructions
 from semantic_kernel_sampler.ai.modules.light.sk.agent import LightBuiltinAgentInvoker
@@ -30,7 +30,7 @@ from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.a2agent import DemoStdioM
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.instructions.v1 import INSTRUCTIONS as mcp_instructions
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent import MCPDemoBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent import DemoStdioMCPBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.plugin import DemoStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.with_kernel.instructions.v1 import INSTRUCTIONS as assistant_instructions
 from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantBuiltinAgentInvoker
@@ -126,7 +126,7 @@ container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
     kernel=createKernel(c, [c[LightPlugin]]),
 )
 
-container[MCPDemoBuiltinAgentInvoker] = lambda c: MCPDemoBuiltinAgentInvoker(
+container[DemoStdioMCPBuiltinAgentInvoker] = lambda c: DemoStdioMCPBuiltinAgentInvoker(
     instructions=mcp_instructions,
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )

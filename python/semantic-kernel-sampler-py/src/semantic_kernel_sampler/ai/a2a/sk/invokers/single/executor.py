@@ -7,7 +7,7 @@ from a2a.utils import new_agent_text_message
 from semantic_kernel.contents import ChatMessageContent
 from semantic_kernel.contents.utils.author_role import AuthorRole
 
-from semantic_kernel_sampler.ai.a2a.sk.protocol import SemanticA2AInvokerProtocol
+from semantic_kernel_sampler.ai.a2a.sk.invokers.single.protocol import SemanticA2AInvokerProtocol
 
 if TYPE_CHECKING:
     from a2a.types import Message

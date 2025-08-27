@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class CustomSemanticChatInvoker(InvokerProtocol[KernelContent]):
+class CustomSemanticChatInvoker(InvokerProtocol):
     kernel: Kernel = field()
 
     chat_history: ChatHistory = field()

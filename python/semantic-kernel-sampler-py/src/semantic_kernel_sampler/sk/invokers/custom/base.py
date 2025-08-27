@@ -9,7 +9,7 @@ from semantic_kernel_sampler.sk.invokers.protocol import InvokerProtocol
 
 
 @dataclass
-class CustomSemanticInvokerBase(ABC, InvokerProtocol[KernelContent]):
+class CustomSemanticInvokerBase(ABC, InvokerProtocol):
     kernel: Kernel = field()
 
     async def invoke(self, messages: list[KernelContent]) -> Optional[KernelContent]:
