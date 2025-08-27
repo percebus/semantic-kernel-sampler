@@ -18,6 +18,7 @@ def human_response_callback() -> ChatMessageContent:
     user_input = input("User: ")
     return ChatMessageContent(role=AuthorRole.USER, content=user_input)
 
+
 # SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/multi_agent_orchestration/step4_handoff.py
 async def main():
     oHandoffBuiltinOrchestrationInvoker = container[HandoffBuiltinOrchestrationInvoker]

@@ -23,26 +23,27 @@ from starlette.applications import Starlette
 
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.executor import A2AgentInvokerExecutor
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.protocol import SemanticA2AInvokerProtocol
-from semantic_kernel_sampler.ai.modules.basic.sk.agent.v1 import BasicBuiltinAgentInvoker
-from semantic_kernel_sampler.ai.modules.content_reviewer.sk.agent.v1 import ContentReviewerBuiltinAgentInvoker
-from semantic_kernel_sampler.ai.modules.content_writer.sk.agent.v1 import ContentWriterBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.basic.sk.agent.v2 import BasicChatCompletionAgent
+from semantic_kernel_sampler.ai.modules.content_reviewer.sk.agent.v2 import ContentReviewerChatCompletionAgent
+from semantic_kernel_sampler.ai.modules.content_writer.sk.agent.v2 import ContentWriterChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
-from semantic_kernel_sampler.ai.modules.light.sk.agent.v2 import LightBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.light.sk.agent.v3 import LightChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
-from semantic_kernel_sampler.ai.modules.math.sk.agent.v2 import MathBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.math.sk.agent.v3 import MathChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
 from semantic_kernel_sampler.ai.modules.mcp.demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
-from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v2 import DemoMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v3 import DemoMCPChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.mcp.demo.sk.plugin.stdio import DemoStdioMCPPlugin
-from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.agent.v2 import BlogPostsMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.agent.v3 import BlogPostsMCPChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.plugin.stdio import BlogPostsStdioMCPPlugin
-from semantic_kernel_sampler.ai.modules.triage.sk.agent.v1y import TriageBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.triage.sk.agent.v1 import TriageChatCompletionAgent
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
+from semantic_kernel_sampler.dependency_injection.aliases.agent_invokers.basic import BasicAgentInvoker
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatBuiltinOrchestrationInvoker
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.handoff import (
     HandoffBuiltinOrchestrationInvoker,  # pyright: ignore[reportAttributeAccessIssue]
@@ -73,11 +74,11 @@ def createChatHistory(c: ReadableContainer, system_message: Optional[str] = None
 
 
 def createOrchestrationHandoffs(c: ReadableContainer) -> OrchestrationHandoffs:
-    triageAgent = c[TriageBuiltinAgentInvoker].agent
+    triageAgent = c[TriageChatCompletionAgent]
 
-    mathAgent = c[MathBuiltinAgentInvoker].agent
-    basicAgent = c[BasicBuiltinAgentInvoker].agent
-    lightAgent = c[LightBuiltinAgentInvoker].agent
+    mathAgent = c[MathChatCompletionAgent]
+    basicAgent = c[BasicChatCompletionAgent]
+    lightAgent = c[LightChatCompletionAgent]
 
     # fmt: off
     return OrchestrationHandoffs() \
@@ -149,42 +150,48 @@ container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 container[Kernel] = lambda c: createKernel(c)  # pylint: disable=unnecessary-lambda
 
 
-container[BasicBuiltinAgentInvoker] = lambda c: BasicBuiltinAgentInvoker(
-    kernel=createKernel(c),
-)
-
-container[ContentWriterBuiltinAgentInvoker] = lambda c: ContentWriterBuiltinAgentInvoker(
-    kernel=createKernel(c),
-)
-
-container[ContentReviewerBuiltinAgentInvoker] = lambda c: ContentReviewerBuiltinAgentInvoker(
-    kernel=createKernel(c),
-)
-
-container[MathBuiltinAgentInvoker] = lambda c: MathBuiltinAgentInvoker(
-    kernel=createKernel(c, [c[MathPlugin]]),
-)
-
-container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
+container[BasicChatCompletionAgent] = lambda c: BasicChatCompletionAgent(
     kernel=createKernel(c, [c[LightPlugin]]),
 )
 
-container[DemoMCPBuiltinAgentInvoker] = lambda c: DemoMCPBuiltinAgentInvoker(
+container[ContentWriterChatCompletionAgent] = lambda c: ContentWriterChatCompletionAgent(
+    kernel=createKernel(c),
+)
+
+container[ContentReviewerChatCompletionAgent] = lambda c: ContentReviewerChatCompletionAgent(
+    kernel=createKernel(c),
+)
+
+container[LightChatCompletionAgent] = lambda c: LightChatCompletionAgent(
+    kernel=createKernel(c, [c[LightPlugin]]),
+)
+
+container[MathChatCompletionAgent] = lambda c: MathChatCompletionAgent(
+    kernel=createKernel(c, [c[MathPlugin]]),
+)
+
+container[DemoMCPChatCompletionAgent] = lambda c: DemoMCPChatCompletionAgent(
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
-container[BlogPostsMCPBuiltinAgentInvoker] = lambda c: BlogPostsMCPBuiltinAgentInvoker(
+container[BlogPostsMCPChatCompletionAgent] = lambda c: BlogPostsMCPChatCompletionAgent(
     kernel=createKernel(c, [c[BlogPostsStdioMCPPlugin]]),
 )
 
-container[TriageBuiltinAgentInvoker] = lambda c: TriageBuiltinAgentInvoker(
+
+container[TriageChatCompletionAgent] = lambda c: TriageChatCompletionAgent(
     kernel=createKernel(c),
+)
+
+
+container[BasicAgentInvoker] = lambda c: BasicAgentInvoker(
+    agent=c[BasicChatCompletionAgent],
 )
 
 
 container[CustomSemanticChatInvoker] = lambda c: CustomSemanticChatInvoker(
     kernel=createKernel(c),  # NOTE: No plugins
-    chat_history=createChatHistory(c, system_message=c[LightBuiltinAgentInvoker].instructions),
+    chat_history=createChatHistory(c, system_message=c[LightChatCompletionAgent].instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
@@ -200,8 +207,8 @@ container[GroupChatBuiltinOrchestrationInvoker] = lambda c: GroupChatBuiltinOrch
     runtime=c[InProcessRuntime],
     group_chat_manager=c[GroupChatManager],
     agents=[
-        c[ContentWriterBuiltinAgentInvoker].agent,
-        c[ContentReviewerBuiltinAgentInvoker].agent,
+        c[ContentWriterChatCompletionAgent],
+        c[ContentReviewerChatCompletionAgent],
         # c[BlogPostsMCPBuiltinAgentInvoker].agent,   # TODO? or XXX? the 2 other agents are VERY chatty
     ],
 )
@@ -216,10 +223,10 @@ container[HandoffBuiltinOrchestrationInvoker] = lambda c: HandoffBuiltinOrchestr
     runtime=c[InProcessRuntime],
     handoffs=c[OrchestrationHandoffs],
     agents=[
-        c[TriageBuiltinAgentInvoker].agent,
-        c[BasicBuiltinAgentInvoker].agent,
-        c[LightBuiltinAgentInvoker].agent,
-        c[MathBuiltinAgentInvoker].agent,
+        c[TriageChatCompletionAgent],
+        c[BasicChatCompletionAgent],
+        c[LightChatCompletionAgent],
+        c[MathChatCompletionAgent],
     ],
 )
 # fmt: on
@@ -228,7 +235,7 @@ container[HandoffBuiltinOrchestrationInvoker] = lambda c: HandoffBuiltinOrchestr
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(
     config=c[Config],
     kernel=createKernel(c, [c[LightPlugin]]),
-    chat_history=createChatHistory(c, system_message=c[LightBuiltinAgentInvoker].instructions),
+    chat_history=createChatHistory(c, system_message=c[LightChatCompletionAgent].instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
@@ -237,7 +244,7 @@ container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2Ag
 container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSemanticA2Agent(
     config=c[Config],
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
-    chat_history=createChatHistory(c, system_message=c[DemoMCPBuiltinAgentInvoker].instructions),
+    chat_history=createChatHistory(c, system_message=c[DemoMCPChatCompletionAgent].instructions),
     chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
 )

@@ -5,8 +5,9 @@ import asyncio
 from semantic_kernel.contents import ChatMessageContent
 from semantic_kernel.contents.utils.author_role import AuthorRole
 
-from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantAgentInvoker
+from semantic_kernel_sampler.ai.modules.basic.sk.agent.v2 import BasicChatCompletionAgent
 from semantic_kernel_sampler.dependency_injection.container import container
+from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.invoker import ThreadedBuiltinAgentInvoker
 
 """
 The following sample demonstrates how to create a chat completion agent that
@@ -32,7 +33,8 @@ USER_INPUTS = [
 
 # SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/chat_completion/step03_chat_completion_agent_with_kernel.py
 async def main():
-    oThreadedBuiltinAgentInvoker = container[AssistantAgentInvoker]
+    oAgent = container[BasicChatCompletionAgent]  # noqa: F821
+    oThreadedBuiltinAgentInvoker = ThreadedBuiltinAgentInvoker(agent=oAgent)
 
     for user_input in USER_INPUTS:
         print(f"# User: {user_input}")
