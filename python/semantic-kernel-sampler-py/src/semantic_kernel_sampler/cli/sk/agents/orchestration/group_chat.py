@@ -1,17 +1,15 @@
 import asyncio
 from logging import Logger
 
-from semantic_kernel.contents import ChatMessageContent
+from semantic_kernel.agents import GroupChatManager, GroupChatOrchestration  # pylint: disable=no-name-in-module
+from semantic_kernel.agents.runtime import InProcessRuntime
+from semantic_kernel.contents import ChatMessageContent, FunctionCallContent, FunctionResultContent
 from semantic_kernel.contents.utils.author_role import AuthorRole
 
-from semantic_kernel.agents.runtime import InProcessRuntime
-from semantic_kernel.agents import GroupChatManager, GroupChatOrchestration  # pylint: disable=no-name-in-module
 from semantic_kernel_sampler.ai.modules.content_reviewer.sk.agent.v2 import ContentReviewerChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.content_writer.sk.agent.v2 import ContentWriterChatCompletionAgent
 from semantic_kernel_sampler.dependency_injection.container import container
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatBuiltinOrchestrationInvoker
-from semantic_kernel.contents import ChatMessageContent, FunctionCallContent, FunctionResultContent
-
 
 # Simulate a conversation with the orchestrator
 USER_INPUTS = [
@@ -36,7 +34,6 @@ def agent_response_callback(message: ChatMessageContent) -> None:
 
 # SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/chat_completion/step03_chat_completion_agent_with_kernel.py
 async def main():
-
     oOrchestration = GroupChatOrchestration(
         manager=container[GroupChatManager],
         agent_response_callback=agent_response_callback,  # pyright: ignore[reportArgumentType]
@@ -47,10 +44,7 @@ async def main():
         ],
     )
 
-    invoker = GroupChatBuiltinOrchestrationInvoker(
-        logger=container[Logger],
-        runtime=container[InProcessRuntime],
-        orchestration=oOrchestration)
+    invoker = GroupChatBuiltinOrchestrationInvoker(logger=container[Logger], runtime=container[InProcessRuntime], orchestration=oOrchestration)
 
     for user_input in USER_INPUTS:
         print(f"# User: {user_input}")

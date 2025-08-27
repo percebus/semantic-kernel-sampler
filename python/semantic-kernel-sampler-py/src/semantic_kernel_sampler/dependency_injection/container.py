@@ -43,7 +43,6 @@ from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatBuiltinOrchestrationInvoker
 from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
@@ -150,7 +149,7 @@ container[Kernel] = lambda c: createKernel(c)  # pylint: disable=unnecessary-lam
 
 
 container[BasicChatCompletionAgent] = lambda c: BasicChatCompletionAgent(
-    kernel=createKernel(c, [c[LightPlugin]]),
+    kernel=createKernel(c),
 )
 
 container[ContentWriterChatCompletionAgent] = lambda c: ContentWriterChatCompletionAgent(
@@ -194,7 +193,6 @@ container[CustomSemanticChatInvoker] = lambda c: CustomSemanticChatInvoker(
 container[InProcessRuntime] = InProcessRuntime
 
 container[GroupChatManager] = lambda: RoundRobinGroupChatManager(max_rounds=5)
-
 
 container[OrchestrationHandoffs] = createOrchestrationHandoffs
 

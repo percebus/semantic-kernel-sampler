@@ -2,9 +2,9 @@ from dataclasses import dataclass, field
 from logging import Logger
 from typing import TYPE_CHECKING
 
-from semantic_kernel.agents import Agent, GroupChatManager, GroupChatOrchestration  # pylint: disable=no-name-in-module
+from semantic_kernel.agents import GroupChatOrchestration  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.runtime import InProcessRuntime
-from semantic_kernel.contents import ChatMessageContent, FunctionCallContent, FunctionResultContent
+from semantic_kernel.contents import ChatMessageContent
 
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.protocol import BuiltinOrchestrationInvokerProtocol
 
