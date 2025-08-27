@@ -43,7 +43,6 @@ from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.dependency_injection.aliases.agent_invokers.basic import BasicAgentInvoker
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatBuiltinOrchestrationInvoker
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.handoff import (
     HandoffBuiltinOrchestrationInvoker,  # pyright: ignore[reportAttributeAccessIssue]
@@ -181,11 +180,6 @@ container[BlogPostsMCPChatCompletionAgent] = lambda c: BlogPostsMCPChatCompletio
 
 container[TriageChatCompletionAgent] = lambda c: TriageChatCompletionAgent(
     kernel=createKernel(c),
-)
-
-
-container[BasicAgentInvoker] = lambda c: BasicAgentInvoker(
-    agent=c[BasicChatCompletionAgent],
 )
 
 
