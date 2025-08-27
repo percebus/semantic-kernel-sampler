@@ -30,6 +30,5 @@ async def main():
         await oGroupChatOrchestrationBuiltinAgentInvoker.runtime.stop_when_idle()
 
 
-
 if __name__ == "__main__":
     asyncio.run(main())
