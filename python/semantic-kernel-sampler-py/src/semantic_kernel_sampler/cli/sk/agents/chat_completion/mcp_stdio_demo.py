@@ -3,7 +3,7 @@ import asyncio
 from semantic_kernel.contents import ChatMessageContent
 from semantic_kernel.contents.utils.author_role import AuthorRole
 
-from semantic_kernel_sampler.ai.modules.mcp_demo.sk.agent.v1 import DemoMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v2 import DemoMCPBuiltinAgentInvoker
 from semantic_kernel_sampler.dependency_injection.container import container
 
 # Simulate a conversation with the agent

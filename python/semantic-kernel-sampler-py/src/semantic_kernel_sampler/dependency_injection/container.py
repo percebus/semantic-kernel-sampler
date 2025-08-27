@@ -30,11 +30,11 @@ from semantic_kernel_sampler.ai.modules.light.sk.agent.v2 import LightBuiltinAge
 from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
 from semantic_kernel_sampler.ai.modules.math.sk.agent.v2 import MathBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
-from semantic_kernel_sampler.ai.modules.mcp__rest_app__posts.sk.agent.v2 import BlogPostsMCPBuiltinAgentInvoker
-from semantic_kernel_sampler.ai.modules.mcp__rest_app__posts.sk.plugin.stdio import BlogPostsStdioMCPPlugin
-from semantic_kernel_sampler.ai.modules.mcp_demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
-from semantic_kernel_sampler.ai.modules.mcp_demo.sk.agent.v2 import DemoMCPBuiltinAgentInvoker
-from semantic_kernel_sampler.ai.modules.mcp_demo.sk.plugin.stdio import DemoStdioMCPPlugin
+from semantic_kernel_sampler.ai.modules.mcp.demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
+from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v2 import DemoMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp.demo.sk.plugin.stdio import DemoStdioMCPPlugin
+from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.agent.v2 import BlogPostsMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.plugin.stdio import BlogPostsStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent.v1 import AssistantBuiltinAgentInvoker
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig

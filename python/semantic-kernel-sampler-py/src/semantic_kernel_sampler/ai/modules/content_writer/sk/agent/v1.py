@@ -7,7 +7,6 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.chat.invoker im
 # SRC: https://github.com/microsoft/semantic-kernel/blob/main/python/samples/getting_started_with_agents/multi_agent_orchestration/step3_group_chat.py
 @dataclass
 class ContentWriterBuiltinAgentInvoker(ChatCompletionBuiltinAgentInvoker):
-
     name: Optional[str] = field(default="Writer")
 
     description: Optional[str] = field(default="A content writer.")
