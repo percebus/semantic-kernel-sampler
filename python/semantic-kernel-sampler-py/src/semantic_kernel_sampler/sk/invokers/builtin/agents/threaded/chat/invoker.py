@@ -15,14 +15,24 @@ class ChatCompletionBuiltinAgentInvoker(ABC, ThreadedBuiltinAgentInvokerProtocol
     # NOTE: kernel holds the plugins!
     kernel: Kernel = field()
 
-    agent: ChatCompletionAgent = field(init=False)
+    instructions: str = field()
+
+    name: Optional[str] = field(default=None)
+
+    description: Optional[str] = field(default=None)
 
     agent_thread: Optional[ChatHistoryAgentThread] = field(default=None)
 
-    instructions: Optional[str] = field(default=None)
+    agent: ChatCompletionAgent = field(init=False)
 
     def __post_init__(self):
-        self.agent = ChatCompletionAgent(kernel=self.kernel, name=self.__class__.__name__, instructions=self.instructions)
+        # fmt: off
+        self.agent = ChatCompletionAgent(
+            kernel=self.kernel,
+            name=self.name or self.__class__.__name__,
+            description=self.description,
+            instructions=self.instructions)
+        # fmt: on
 
     async def invoke(self, messages: list[ChatMessageContent]) -> AgentResponseItem[ChatMessageContent]:
         # fmt: off

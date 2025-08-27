@@ -9,7 +9,11 @@ from a2a.server.tasks import InMemoryTaskStore
 from a2a.server.tasks.task_store import TaskStore
 from lagom import Container, Singleton
 from lagom.interfaces import ReadableContainer
+
+# from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel import Kernel
+from semantic_kernel.agents import GroupChatManager, RoundRobinGroupChatManager  # pylint: disable=no-name-in-module
+from semantic_kernel.agents.runtime import InProcessRuntime
 from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
@@ -20,26 +24,21 @@ from starlette.applications import Starlette
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.executor import A2AgentInvokerExecutor
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.protocol import SemanticA2AInvokerProtocol
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
-from semantic_kernel_sampler.ai.modules.light.instructions.v1 import INSTRUCTIONS as light_instructions
-from semantic_kernel_sampler.ai.modules.light.sk.agent import LightBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.light.sk.agent.v2 import LightBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
-from semantic_kernel_sampler.ai.modules.math.a2agent import MathCustomSemanticA2AgentInvoker
-from semantic_kernel_sampler.ai.modules.math.instructions.v1 import INSTRUCTIONS as math_instructions
+from semantic_kernel_sampler.ai.modules.math.sk.agent.v2 import MathBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.instructions.v1 import INSTRUCTIONS as mcp_instructions
-
-# from semantic_kernel.functions import KernelArguments  # TODO?
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent import DemoStdioMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent.v1 import DemoStdioMCPBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.plugin import DemoStdioMCPPlugin
-from semantic_kernel_sampler.ai.modules.with_kernel.instructions.v1 import INSTRUCTIONS as assistant_instructions
-from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent import AssistantBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent.v1 import AssistantBuiltinAgentInvoker
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
+from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatOrchestrationBuiltinAgentInvoker
 from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
@@ -121,6 +120,11 @@ container[AssistantBuiltinAgentInvoker] = lambda c: AssistantBuiltinAgentInvoker
     kernel=createKernel(c),
 )
 
+container[MathBuiltinAgentInvoker] = lambda c: MathBuiltinAgentInvoker(
+    instructions=math_instructions,
+    kernel=createKernel(c, [c[MathPlugin]]),
+)
+
 container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
     instructions=light_instructions,
     kernel=createKernel(c, [c[LightPlugin]]),
@@ -131,18 +135,28 @@ container[DemoStdioMCPBuiltinAgentInvoker] = lambda c: DemoStdioMCPBuiltinAgentI
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
+container[InProcessRuntime] = InProcessRuntime
+
+container[GroupChatManager] = lambda: RoundRobinGroupChatManager(max_rounds=5)
+
+# fmt: off
+container[GroupChatOrchestrationBuiltinAgentInvoker] = lambda c: GroupChatOrchestrationBuiltinAgentInvoker(
+    logger=c[Logger],
+    runtime=c[InProcessRuntime],
+    group_chat_manager=c[GroupChatManager],
+    agents=[
+        c[MathBuiltinAgentInvoker].agent,
+        c[LightBuiltinAgentInvoker].agent,
+        # c[AssistantBuiltinAgentInvoker].agent,  # XXX?
+        # c[DemoStdioMCPBuiltinAgentInvoker].agent  # XXX? Add 2 numbers is covered in the MathPlugin
+    ],
+)
+# fmt: on
 
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(
     config=c[Config],
     kernel=createKernel(c, [c[LightPlugin]]),
     chat_history=createChatHistory(c, system_message=light_instructions),
-    chat_completion=c[ChatCompletionClientBase],
-    prompt_execution_settings=c[PromptExecutionSettings],
-)
-
-container[MathCustomSemanticA2AgentInvoker] = lambda c: MathCustomSemanticA2AgentInvoker(
-    kernel=createKernel(c, [c[MathPlugin]]),
-    chat_history=createChatHistory(c, system_message=math_instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
 )

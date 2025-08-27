@@ -5,7 +5,6 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.protocol i
 
 
 class SemanticOrchestrationA2AInvokerProtocol(A2ACardsProtocol, BuiltinOrchestrationInvokerProtocol, Protocol):
-
     # NOTE: Inherited
     # agent_card: AgentCard
     # extended_agent_card: Optional[AgentCard]

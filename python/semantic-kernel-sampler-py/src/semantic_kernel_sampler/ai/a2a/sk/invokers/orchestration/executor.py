@@ -28,13 +28,14 @@ class A2AOrchestrationInvokerExecutor(AgentExecutor):
 
         self.orchestration.runtime.start()
         messages: list[ChatMessageContent] = await self.orchestration.invoke(messages)
+        await self.orchestration.runtime.stop_when_idle()
+
         if not messages:
             raise ValueError("No message found in response")
 
         message_text: str = str(messages)
         message: Message = new_agent_text_message(message_text)
         await event_queue.enqueue_event(message)
-        await self.orchestration.runtime.stop_when_idle()
 
     async def cancel(self, context: RequestContext, event_queue: EventQueue) -> None:
         raise Exception("cancel not supported")  # pylint: disable=broad-exception-raised
