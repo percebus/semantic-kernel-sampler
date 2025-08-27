@@ -108,32 +108,30 @@ container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 container[Kernel] = lambda c: createKernel(c)  # pylint: disable=unnecessary-lambda
 
 
-container[CustomSemanticChatInvoker] = lambda c: CustomSemanticChatInvoker(
-    kernel=createKernel(c),  # NOTE: No plugins
-    chat_history=createChatHistory(c, system_message=light_instructions),
-    chat_completion=c[ChatCompletionClientBase],
-    prompt_execution_settings=c[PromptExecutionSettings],
-)
-
 container[AssistantBuiltinAgentInvoker] = lambda c: AssistantBuiltinAgentInvoker(
-    instructions=assistant_instructions,
     kernel=createKernel(c),
 )
 
 container[MathBuiltinAgentInvoker] = lambda c: MathBuiltinAgentInvoker(
-    instructions=math_instructions,
     kernel=createKernel(c, [c[MathPlugin]]),
 )
 
 container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
-    instructions=light_instructions,
     kernel=createKernel(c, [c[LightPlugin]]),
 )
 
 container[DemoStdioMCPBuiltinAgentInvoker] = lambda c: DemoStdioMCPBuiltinAgentInvoker(
-    instructions=mcp_instructions,
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
+
+
+container[CustomSemanticChatInvoker] = lambda c: CustomSemanticChatInvoker(
+    kernel=createKernel(c),  # NOTE: No plugins
+    chat_history=createChatHistory(c, system_message=c[LightBuiltinAgentInvoker].instructions),
+    chat_completion=c[ChatCompletionClientBase],
+    prompt_execution_settings=c[PromptExecutionSettings],
+)
+
 
 container[InProcessRuntime] = InProcessRuntime
 
@@ -156,7 +154,7 @@ container[GroupChatOrchestrationBuiltinAgentInvoker] = lambda c: GroupChatOrches
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(
     config=c[Config],
     kernel=createKernel(c, [c[LightPlugin]]),
-    chat_history=createChatHistory(c, system_message=light_instructions),
+    chat_history=createChatHistory(c, system_message=c[LightBuiltinAgentInvoker].instructions),
     chat_completion=c[ChatCompletionClientBase],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
@@ -165,7 +163,7 @@ container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2Ag
 container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSemanticA2Agent(
     config=c[Config],
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
-    chat_history=createChatHistory(c, system_message=mcp_instructions),
+    chat_history=createChatHistory(c, system_message=c[DemoStdioMCPBuiltinAgentInvoker].instructions),
     chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
