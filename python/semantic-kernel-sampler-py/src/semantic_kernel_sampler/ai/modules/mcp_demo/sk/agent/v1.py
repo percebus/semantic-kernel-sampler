@@ -6,7 +6,7 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.chat.invoker im
 
 
 @dataclass
-class DemoStdioMCPBuiltinAgentInvoker(ChatCompletionBuiltinAgentInvoker):
+class DemoMCPBuiltinAgentInvoker(ChatCompletionBuiltinAgentInvoker):
     description: Optional[str] = field(
         default="An agent that interfaces with an MCP server with tools like 'greeting resource', and 'Add 2 numbers'."
     )

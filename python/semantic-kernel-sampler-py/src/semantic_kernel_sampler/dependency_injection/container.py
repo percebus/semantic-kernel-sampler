@@ -28,9 +28,9 @@ from semantic_kernel_sampler.ai.modules.light.sk.agent.v2 import LightBuiltinAge
 from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
 from semantic_kernel_sampler.ai.modules.math.sk.agent.v2 import MathBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.agent.v1 import DemoStdioMCPBuiltinAgentInvoker
-from semantic_kernel_sampler.ai.modules.mcp_stdio_demo.sk.plugin import DemoStdioMCPPlugin
+from semantic_kernel_sampler.ai.modules.mcp_demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
+from semantic_kernel_sampler.ai.modules.mcp_demo.sk.agent.v1 import DemoMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp_demo.sk.plugin.stdio import DemoStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent.v1 import AssistantBuiltinAgentInvoker
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
@@ -120,7 +120,7 @@ container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
     kernel=createKernel(c, [c[LightPlugin]]),
 )
 
-container[DemoStdioMCPBuiltinAgentInvoker] = lambda c: DemoStdioMCPBuiltinAgentInvoker(
+container[DemoMCPBuiltinAgentInvoker] = lambda c: DemoMCPBuiltinAgentInvoker(
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
@@ -163,7 +163,7 @@ container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2Ag
 container[DemoStdioMCPCustomSemanticA2Agent] = lambda c: DemoStdioMCPCustomSemanticA2Agent(
     config=c[Config],
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
-    chat_history=createChatHistory(c, system_message=c[DemoStdioMCPBuiltinAgentInvoker].instructions),
+    chat_history=createChatHistory(c, system_message=c[DemoMCPBuiltinAgentInvoker].instructions),
     chat_completion=c[AzureChatCompletion],
     prompt_execution_settings=c[PromptExecutionSettings],
 )
