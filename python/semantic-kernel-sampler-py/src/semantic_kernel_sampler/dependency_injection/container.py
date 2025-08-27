@@ -216,6 +216,7 @@ container[HandoffBuiltinOrchestrationInvoker] = lambda c: HandoffBuiltinOrchestr
     runtime=c[InProcessRuntime],
     handoffs=c[OrchestrationHandoffs],
     agents=[
+        c[TriageBuiltinAgentInvoker].agent,
         c[BasicBuiltinAgentInvoker].agent,
         c[LightBuiltinAgentInvoker].agent,
         c[MathBuiltinAgentInvoker].agent,

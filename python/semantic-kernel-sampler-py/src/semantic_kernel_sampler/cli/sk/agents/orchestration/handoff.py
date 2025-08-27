@@ -6,9 +6,11 @@ from semantic_kernel.contents.utils.author_role import AuthorRole
 from semantic_kernel_sampler.dependency_injection.container import container
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.handoff import HandoffBuiltinOrchestrationInvoker
 
-# Simulate a conversation with the orchestrator
 USER_INPUTS = [
-    "I want to turn on the light",
+    # "I want to turn on the light",
+    "I want to know what is 2 + 2",
+    # "What is the closest planet to the sun?",
+    # "Can you wible wable to wabliton?"
 ]
 
 
