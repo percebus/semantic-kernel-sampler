@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from logging import Logger
 from typing import TYPE_CHECKING
 
-from semantic_kernel.agents import GroupChatOrchestration  # pylint: disable=no-name-in-module
+from semantic_kernel.agents import HandoffOrchestration  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.runtime import InProcessRuntime
 from semantic_kernel.contents import ChatMessageContent
 
@@ -13,12 +13,12 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class GroupChatBuiltinOrchestrationInvoker(BuiltinOrchestrationInvokerProtocol):
+class HandoffBuiltinOrchestrationInvoker(BuiltinOrchestrationInvokerProtocol):
     logger: Logger = field()
 
     runtime: InProcessRuntime = field()
 
-    orchestration: GroupChatOrchestration = field()
+    orchestration: HandoffOrchestration = field()
 
     async def invoke(self, messages: list[ChatMessageContent]) -> list[ChatMessageContent]:
         firstChatMessageContent: ChatMessageContent = messages[0]

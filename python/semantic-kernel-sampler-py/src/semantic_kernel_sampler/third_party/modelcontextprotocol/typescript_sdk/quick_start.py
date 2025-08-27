@@ -4,7 +4,7 @@ from semantic_kernel.utils.feature_stage_decorator import experimental
 
 @experimental
 def createMCPStdioPlugin() -> MCPStdioPlugin:
-    # SRC: https://github.com/microsoft/semantic-kernel/blob/main/python/samples/concepts/mcp/mcp_as_plugin.py
+    # SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/concepts/mcp/mcp_as_plugin.py
     return MCPStdioPlugin(
         name="Demo Server",
         description="modelcontextprotocol/typescript-sdk example",

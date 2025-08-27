@@ -2,7 +2,6 @@ from abc import ABC
 from dataclasses import dataclass, field
 from typing import Optional
 
-from semantic_kernel import Kernel
 from semantic_kernel.agents import Agent  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.agent import AgentResponseItem, AgentThread
 from semantic_kernel.contents import ChatMessageContent
@@ -11,10 +10,7 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.protocol import
 
 
 @dataclass
-class SemanticAgentInvokerBase(ThreadedBuiltinAgentInvokerProtocol[Agent, AgentThread, ChatMessageContent], ABC):
-    # NOTE: kernel holds the plugins!
-    kernel: Kernel = field()
-
+class ThreadedBuiltinAgentInvoker(ThreadedBuiltinAgentInvokerProtocol[Agent, AgentThread, ChatMessageContent], ABC):
     agent: Agent = field()
 
     agent_thread: Optional[AgentThread] = field(default=None)
