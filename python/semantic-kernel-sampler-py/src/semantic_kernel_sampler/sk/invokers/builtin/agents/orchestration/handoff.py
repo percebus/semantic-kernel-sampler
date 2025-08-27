@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
 from logging import Logger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Optional
 
-from semantic_kernel.agents import Agent, GroupChatManager, GroupChatOrchestration  # pylint: disable=no-name-in-module
+from semantic_kernel.agents import Agent, HandoffOrchestration, OrchestrationHandoffs  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.runtime import InProcessRuntime
-from semantic_kernel.contents import ChatMessageContent, FunctionCallContent, FunctionResultContent
+from semantic_kernel.contents import ChatMessageContent
 
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.protocol import BuiltinOrchestrationInvokerProtocol
 
@@ -13,32 +13,30 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class GroupChatBuiltinOrchestrationInvoker(BuiltinOrchestrationInvokerProtocol):
+class HandoffBuiltinOrchestrationInvoker(BuiltinOrchestrationInvokerProtocol):
     logger: Logger = field()
-
-    group_chat_manager: GroupChatManager = field()
 
     runtime: InProcessRuntime = field()
 
+    handoffs: OrchestrationHandoffs = field()
+
     agents: list[Agent] = field(default_factory=list)  # pyright: ignore[reportUnknownVariableType]
 
-    orchestration: GroupChatOrchestration = field(init=False)
+    human_response_callback: Optional[Callable[[], ChatMessageContent]] = field(default=None)
+
+    orchestration: HandoffOrchestration = field(init=False)
 
     def agent_response_callback(self, message: ChatMessageContent) -> None:
         """Observer function to print the messages from the agents."""
         self.logger.info("**%s**\n%s", message.name, message.content)
-        for oChatMessageContent in message.items:
-            if isinstance(oChatMessageContent, FunctionCallContent):
-                self.logger.debug("Calling %s with arguments %s", oChatMessageContent.name, oChatMessageContent.arguments)
-            if isinstance(oChatMessageContent, FunctionResultContent):
-                self.logger.debug("Result from %s is %s", oChatMessageContent.name, oChatMessageContent.result)
 
     def __post_init__(self) -> None:
         # fmt: off
-        self.orchestration = GroupChatOrchestration(
+        self.orchestration = HandoffOrchestration(
             members=self.agents,
-            manager=self.group_chat_manager,
+            handoffs=self.handoffs,
             agent_response_callback=self.agent_response_callback,  # pyright: ignore[reportArgumentType]
+            human_response_function=self.human_response_callback,  # pyright: ignore[reportArgumentType]
         )
         # fmt: on
 

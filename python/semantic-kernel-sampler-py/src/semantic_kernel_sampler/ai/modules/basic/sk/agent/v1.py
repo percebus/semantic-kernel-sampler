@@ -5,7 +5,7 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.chat.invoker im
 
 
 @dataclass
-class AssistantBuiltinAgentInvoker(ChatCompletionBuiltinAgentInvoker):
+class BasicBuiltinAgentInvoker(ChatCompletionBuiltinAgentInvoker):
     description: Optional[str] = field(default="An assistant that answers questions")
 
     instructions: str = field(default="Answer the user's questions.")

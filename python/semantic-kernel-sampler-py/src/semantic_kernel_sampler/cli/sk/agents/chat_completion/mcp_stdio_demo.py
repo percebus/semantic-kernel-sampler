@@ -12,7 +12,6 @@ USER_INPUTS = [
 ]
 
 
-# pylint: disable-next=line-too-long
 # SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/getting_started_with_agents/chat_completion/step03_chat_completion_agent_with_kernel.py
 async def main():
     oThreadedBuiltinAgentInvoker = container[DemoMCPBuiltinAgentInvoker]

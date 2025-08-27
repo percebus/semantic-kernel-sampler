@@ -12,7 +12,7 @@ from lagom.interfaces import ReadableContainer
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel import Kernel
-from semantic_kernel.agents import GroupChatManager, RoundRobinGroupChatManager  # pylint: disable=no-name-in-module
+from semantic_kernel.agents import GroupChatManager, OrchestrationHandoffs, RoundRobinGroupChatManager  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.runtime import InProcessRuntime
 from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
@@ -23,6 +23,7 @@ from starlette.applications import Starlette
 
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.executor import A2AgentInvokerExecutor
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.protocol import SemanticA2AInvokerProtocol
+from semantic_kernel_sampler.ai.modules.basic.sk.agent.v1 import BasicBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.content_reviewer.sk.agent.v1 import ContentReviewerBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.content_writer.sk.agent.v1 import ContentWriterBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
@@ -35,14 +36,17 @@ from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v2 import DemoMCPBuilt
 from semantic_kernel_sampler.ai.modules.mcp.demo.sk.plugin.stdio import DemoStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.agent.v2 import BlogPostsMCPBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.plugin.stdio import BlogPostsStdioMCPPlugin
-from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent.v1 import AssistantBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.triage.sk.agent.v1y import TriageBuiltinAgentInvoker
 from semantic_kernel_sampler.configuration.config import Config
 from semantic_kernel_sampler.configuration.logs import LoggingConfig
 from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatOrchestrationBuiltinAgentInvoker
+from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatBuiltinOrchestrationInvoker
+from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.handoff import (
+    HandoffBuiltinOrchestrationInvoker,  # pyright: ignore[reportAttributeAccessIssue]
+)
 from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
@@ -66,6 +70,39 @@ def createChatHistory(c: ReadableContainer, system_message: Optional[str] = None
         oChatHistory.add_system_message(system_message)
 
     return oChatHistory
+
+
+def createOrchestrationHandoffs(c: ReadableContainer) -> OrchestrationHandoffs:
+    triageAgent = c[TriageBuiltinAgentInvoker].agent
+
+    mathAgent = c[MathBuiltinAgentInvoker].agent
+    basicAgent = c[BasicBuiltinAgentInvoker].agent
+    lightAgent = c[LightBuiltinAgentInvoker].agent
+
+    # fmt: off
+    return OrchestrationHandoffs() \
+        .add_many(
+            source_agent=triageAgent.name,
+            target_agents={
+                mathAgent.name:
+                    "Transfer to this agent when the request is related to basic mathematical calculations (add, substract, multiply, divide)",
+                lightAgent.name: "Transfer to this agent when the request is related to a light switch and or light bulb (turn on/off the light)",
+                basicAgent.name: "Transfer to this agent when the request is a general culture and/or trivia question"
+        }) \
+        .add(
+            source_agent=mathAgent.name,
+            target_agent=triageAgent.name,
+            description=
+                "Transfer back to this agent when the request is NOT related to basic mathematical calculations (add, substract, multiply, divide)") \
+        .add(
+            source_agent=lightAgent.name,
+            target_agent=triageAgent.name,
+            description="Transfer to this agent when the request is NOT related to a light switch and or light bulb")  \
+        .add(
+            source_agent=basicAgent.name,
+            target_agent=triageAgent.name,
+            description="Transfer to this agent when the request is NOT a general culture")
+    # fmt: on
 
 
 container = Container()
@@ -112,7 +149,7 @@ container[ChatCompletionClientBase] = lambda c: c[AzureChatCompletion]
 container[Kernel] = lambda c: createKernel(c)  # pylint: disable=unnecessary-lambda
 
 
-container[AssistantBuiltinAgentInvoker] = lambda c: AssistantBuiltinAgentInvoker(
+container[BasicBuiltinAgentInvoker] = lambda c: BasicBuiltinAgentInvoker(
     kernel=createKernel(c),
 )
 
@@ -140,6 +177,10 @@ container[BlogPostsMCPBuiltinAgentInvoker] = lambda c: BlogPostsMCPBuiltinAgentI
     kernel=createKernel(c, [c[BlogPostsStdioMCPPlugin]]),
 )
 
+container[TriageBuiltinAgentInvoker] = lambda c: TriageBuiltinAgentInvoker(
+    kernel=createKernel(c),
+)
+
 
 container[CustomSemanticChatInvoker] = lambda c: CustomSemanticChatInvoker(
     kernel=createKernel(c),  # NOTE: No plugins
@@ -154,7 +195,7 @@ container[InProcessRuntime] = InProcessRuntime
 container[GroupChatManager] = lambda: RoundRobinGroupChatManager(max_rounds=5)
 
 # fmt: off
-container[GroupChatOrchestrationBuiltinAgentInvoker] = lambda c: GroupChatOrchestrationBuiltinAgentInvoker(
+container[GroupChatBuiltinOrchestrationInvoker] = lambda c: GroupChatBuiltinOrchestrationInvoker(
     logger=c[Logger],
     runtime=c[InProcessRuntime],
     group_chat_manager=c[GroupChatManager],
@@ -165,6 +206,23 @@ container[GroupChatOrchestrationBuiltinAgentInvoker] = lambda c: GroupChatOrches
     ],
 )
 # fmt: on
+
+
+container[OrchestrationHandoffs] = createOrchestrationHandoffs
+
+# fmt: off
+container[HandoffBuiltinOrchestrationInvoker] = lambda c: HandoffBuiltinOrchestrationInvoker(
+    logger=c[Logger],
+    runtime=c[InProcessRuntime],
+    handoffs=c[OrchestrationHandoffs],
+    agents=[
+        c[BasicBuiltinAgentInvoker].agent,
+        c[LightBuiltinAgentInvoker].agent,
+        c[MathBuiltinAgentInvoker].agent,
+    ],
+)
+# fmt: on
+
 
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(
     config=c[Config],
