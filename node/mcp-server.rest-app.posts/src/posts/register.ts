@@ -24,14 +24,10 @@ function registerAll(mcpServer: McpServer): McpServer {
 
   mcpServer.registerTool("posts_find", findPostsAsync.config, findPostsAsync);
 
-  mcpServer.registerTool(
-    "posts_get",
-    getPostByIdAsync.config,
-    getPostByIdAsync,
-  );
+  mcpServer.registerTool("post_get", getPostByIdAsync.config, getPostByIdAsync);
 
   mcpServer.registerTool(
-    "posts_create",
+    "post_create",
     createPostAsync.config,
     createPostAsync,
   );
@@ -39,13 +35,13 @@ function registerAll(mcpServer: McpServer): McpServer {
   mcpServer.registerTool("posts_update", putPostAsync.config, putPostAsync);
 
   mcpServer.registerTool(
-    "posts_delete",
+    "post_delete",
     deletePostByIdAsync.config,
     deletePostByIdAsync,
   );
 
   mcpServer.registerPrompt(
-    "posts_create",
+    "post_create",
     createPromptPayloadCreatePost.config,
     createPromptPayloadCreatePost,
   );

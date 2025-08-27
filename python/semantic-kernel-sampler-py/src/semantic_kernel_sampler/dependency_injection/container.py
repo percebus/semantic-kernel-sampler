@@ -23,13 +23,17 @@ from starlette.applications import Starlette
 
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.executor import A2AgentInvokerExecutor
 from semantic_kernel_sampler.ai.a2a.sk.invokers.single.protocol import SemanticA2AInvokerProtocol
+from semantic_kernel_sampler.ai.modules.content_reviewer.sk.agent.v1 import ContentReviewerBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.content_writer.sk.agent.v1 import ContentWriterBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.light.a2agent import LightCustomSemanticA2AgentInvoker
 from semantic_kernel_sampler.ai.modules.light.sk.agent.v2 import LightBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.light.sk.plugin.v1 import LightPlugin
 from semantic_kernel_sampler.ai.modules.math.sk.agent.v2 import MathBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
+from semantic_kernel_sampler.ai.modules.mcp__rest_app__posts.sk.agent.v2 import BlogPostsMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp__rest_app__posts.sk.plugin.stdio import BlogPostsStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.mcp_demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
-from semantic_kernel_sampler.ai.modules.mcp_demo.sk.agent.v1 import DemoMCPBuiltinAgentInvoker
+from semantic_kernel_sampler.ai.modules.mcp_demo.sk.agent.v2 import DemoMCPBuiltinAgentInvoker
 from semantic_kernel_sampler.ai.modules.mcp_demo.sk.plugin.stdio import DemoStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.with_kernel.sk.agent.v1 import AssistantBuiltinAgentInvoker
 from semantic_kernel_sampler.configuration.config import Config
@@ -112,6 +116,14 @@ container[AssistantBuiltinAgentInvoker] = lambda c: AssistantBuiltinAgentInvoker
     kernel=createKernel(c),
 )
 
+container[ContentWriterBuiltinAgentInvoker] = lambda c: ContentWriterBuiltinAgentInvoker(
+    kernel=createKernel(c),
+)
+
+container[ContentReviewerBuiltinAgentInvoker] = lambda c: ContentReviewerBuiltinAgentInvoker(
+    kernel=createKernel(c),
+)
+
 container[MathBuiltinAgentInvoker] = lambda c: MathBuiltinAgentInvoker(
     kernel=createKernel(c, [c[MathPlugin]]),
 )
@@ -122,6 +134,10 @@ container[LightBuiltinAgentInvoker] = lambda c: LightBuiltinAgentInvoker(
 
 container[DemoMCPBuiltinAgentInvoker] = lambda c: DemoMCPBuiltinAgentInvoker(
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
+)
+
+container[BlogPostsMCPBuiltinAgentInvoker] = lambda c: BlogPostsMCPBuiltinAgentInvoker(
+    kernel=createKernel(c, [c[BlogPostsStdioMCPPlugin]]),
 )
 
 
@@ -143,10 +159,9 @@ container[GroupChatOrchestrationBuiltinAgentInvoker] = lambda c: GroupChatOrches
     runtime=c[InProcessRuntime],
     group_chat_manager=c[GroupChatManager],
     agents=[
-        c[MathBuiltinAgentInvoker].agent,
-        c[LightBuiltinAgentInvoker].agent,
-        # c[AssistantBuiltinAgentInvoker].agent,  # XXX?
-        # c[DemoStdioMCPBuiltinAgentInvoker].agent  # XXX? Add 2 numbers is covered in the MathPlugin
+        c[ContentWriterBuiltinAgentInvoker].agent,
+        c[ContentReviewerBuiltinAgentInvoker].agent,
+        # c[BlogPostsMCPBuiltinAgentInvoker].agent,   # TODO? or XXX? the 2 other agents are VERY chatty
     ],
 )
 # fmt: on

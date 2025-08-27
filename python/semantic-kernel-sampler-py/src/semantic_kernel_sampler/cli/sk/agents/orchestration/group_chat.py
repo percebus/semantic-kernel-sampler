@@ -8,10 +8,7 @@ from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group impo
 
 # Simulate a conversation with the orchestrator
 USER_INPUTS = [
-    "Is the light on?",
-    # "Turn on the light",
-    # "What is 2 + 2?",
-    # "Divide 14 by 9",
+    "Create a slogan for a new electric SUV that is affordable and fun to drive",
 ]
 
 
