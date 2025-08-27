@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from logging import Logger
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING
 
-from semantic_kernel.agents import Agent, HandoffOrchestration, OrchestrationHandoffs  # pylint: disable=no-name-in-module
+from semantic_kernel.agents import HandoffOrchestration  # pylint: disable=no-name-in-module
 from semantic_kernel.agents.runtime import InProcessRuntime
 from semantic_kernel.contents import ChatMessageContent
 
@@ -18,27 +18,7 @@ class HandoffBuiltinOrchestrationInvoker(BuiltinOrchestrationInvokerProtocol):
 
     runtime: InProcessRuntime = field()
 
-    handoffs: OrchestrationHandoffs = field()
-
-    agents: list[Agent] = field(default_factory=list)  # pyright: ignore[reportUnknownVariableType]
-
-    human_response_callback: Optional[Callable[[], ChatMessageContent]] = field(default=None)
-
-    orchestration: HandoffOrchestration = field(init=False)
-
-    def agent_response_callback(self, message: ChatMessageContent) -> None:
-        """Observer function to print the messages from the agents."""
-        self.logger.info("**%s**\n%s", message.name, message.content)
-
-    def __post_init__(self) -> None:
-        # fmt: off
-        self.orchestration = HandoffOrchestration(
-            members=self.agents,
-            handoffs=self.handoffs,
-            agent_response_callback=self.agent_response_callback,  # pyright: ignore[reportArgumentType]
-            human_response_function=self.human_response_callback,  # pyright: ignore[reportArgumentType]
-        )
-        # fmt: on
+    orchestration: HandoffOrchestration = field()
 
     async def invoke(self, messages: list[ChatMessageContent]) -> list[ChatMessageContent]:
         firstChatMessageContent: ChatMessageContent = messages[0]

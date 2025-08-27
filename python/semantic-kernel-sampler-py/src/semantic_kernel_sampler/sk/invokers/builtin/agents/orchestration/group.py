@@ -16,31 +16,9 @@ if TYPE_CHECKING:
 class GroupChatBuiltinOrchestrationInvoker(BuiltinOrchestrationInvokerProtocol):
     logger: Logger = field()
 
-    group_chat_manager: GroupChatManager = field()
-
     runtime: InProcessRuntime = field()
 
-    agents: list[Agent] = field(default_factory=list)  # pyright: ignore[reportUnknownVariableType]
-
-    orchestration: GroupChatOrchestration = field(init=False)
-
-    def agent_response_callback(self, message: ChatMessageContent) -> None:
-        """Observer function to print the messages from the agents."""
-        self.logger.info("**%s**\n%s", message.name, message.content)
-        for oChatMessageContent in message.items:
-            if isinstance(oChatMessageContent, FunctionCallContent):
-                self.logger.debug("Calling %s with arguments %s", oChatMessageContent.name, oChatMessageContent.arguments)
-            if isinstance(oChatMessageContent, FunctionResultContent):
-                self.logger.debug("Result from %s is %s", oChatMessageContent.name, oChatMessageContent.result)
-
-    def __post_init__(self) -> None:
-        # fmt: off
-        self.orchestration = GroupChatOrchestration(
-            members=self.agents,
-            manager=self.group_chat_manager,
-            agent_response_callback=self.agent_response_callback,  # pyright: ignore[reportArgumentType]
-        )
-        # fmt: on
+    orchestration: GroupChatOrchestration = field()
 
     async def invoke(self, messages: list[ChatMessageContent]) -> list[ChatMessageContent]:
         firstChatMessageContent: ChatMessageContent = messages[0]

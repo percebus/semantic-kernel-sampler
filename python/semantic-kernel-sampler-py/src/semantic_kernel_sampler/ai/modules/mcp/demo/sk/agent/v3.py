@@ -12,8 +12,7 @@ class DemoMCPChatCompletionAgent(ChatCompletionAgent):
 
         # fmt: off
         self.instructions = dedent("""
-            You are an excellent content reviewer. You review the content and provide feedback to the writer."
-
+            Use your MCP integrations.
             You can use tools like:
             - add: Adds two numbers
 

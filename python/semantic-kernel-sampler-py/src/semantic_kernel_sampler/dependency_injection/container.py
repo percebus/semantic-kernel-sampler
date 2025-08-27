@@ -44,9 +44,6 @@ from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureO
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
 from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.group import GroupChatBuiltinOrchestrationInvoker
-from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.handoff import (
-    HandoffBuiltinOrchestrationInvoker,  # pyright: ignore[reportAttributeAccessIssue]
-)
 from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
@@ -198,35 +195,8 @@ container[InProcessRuntime] = InProcessRuntime
 
 container[GroupChatManager] = lambda: RoundRobinGroupChatManager(max_rounds=5)
 
-# fmt: off
-container[GroupChatBuiltinOrchestrationInvoker] = lambda c: GroupChatBuiltinOrchestrationInvoker(
-    logger=c[Logger],
-    runtime=c[InProcessRuntime],
-    group_chat_manager=c[GroupChatManager],
-    agents=[
-        c[ContentWriterChatCompletionAgent],
-        c[ContentReviewerChatCompletionAgent],
-        # c[BlogPostsMCPChatCompletionAgent],   # TODO? or XXX? the 2 other agents are VERY chatty
-    ],
-)
-# fmt: on
-
 
 container[OrchestrationHandoffs] = createOrchestrationHandoffs
-
-# fmt: off
-container[HandoffBuiltinOrchestrationInvoker] = lambda c: HandoffBuiltinOrchestrationInvoker(
-    logger=c[Logger],
-    runtime=c[InProcessRuntime],
-    handoffs=c[OrchestrationHandoffs],
-    agents=[
-        c[TriageChatCompletionAgent],
-        c[BasicChatCompletionAgent],
-        c[LightChatCompletionAgent],
-        c[MathChatCompletionAgent],
-    ],
-)
-# fmt: on
 
 
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(
