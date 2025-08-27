@@ -120,13 +120,16 @@ container[A2ASettings] = lambda c: c[Settings].a2a
 container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
 container[DemoStdioMCPPlugin] = lambda c: DemoStdioMCPPlugin(logger=c[Logger])
+container[BlogPostsStdioMCPPlugin] = lambda c: BlogPostsStdioMCPPlugin(logger=c[Logger])
 
 # NOTE: If you need all Plugins for w/e reason
 # fmt: off
 container[list[PluginProtocol]] = lambda c: [
     c[MathPlugin],
     c[LightPlugin],
-    c[DemoStdioMCPPlugin]]
+    c[DemoStdioMCPPlugin],
+    c[BlogPostsStdioMCPPlugin],
+]
 # fmt: on
 
 container[ChatHistory] = lambda c: createChatHistory(c)  # pylint: disable=unnecessary-lambda
@@ -203,7 +206,7 @@ container[GroupChatBuiltinOrchestrationInvoker] = lambda c: GroupChatBuiltinOrch
     agents=[
         c[ContentWriterChatCompletionAgent],
         c[ContentReviewerChatCompletionAgent],
-        # c[BlogPostsMCPBuiltinAgentInvoker].agent,   # TODO? or XXX? the 2 other agents are VERY chatty
+        # c[BlogPostsMCPChatCompletionAgent],   # TODO? or XXX? the 2 other agents are VERY chatty
     ],
 )
 # fmt: on
