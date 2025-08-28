@@ -2,13 +2,14 @@
 
 import express from "express";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { mcpServer } from "../../../mcp/server.ts";
+import { createMcpServer } from "../../../mcp/server.ts";
 import { corsMiddleware } from "../cors.ts";
 
-const app = express();
-app.use(express.json());
+const oExpress = express();
+const oNextHandleFunction = express.json();
+oExpress.use(oNextHandleFunction);
 
-app.post("/mcp", async (req: Request, res: Response) => {
+oExpress.post("/mcp", async (req: Request, res: Response) => {
   // In stateless mode, create a new instance of transport and server for each request
   // to ensure complete isolation. A single instance would cause request ID collisions
   // when multiple clients connect concurrently.
@@ -16,12 +17,14 @@ app.post("/mcp", async (req: Request, res: Response) => {
   try {
     const transport: StreamableHTTPServerTransport =
       new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+
+    const disposableMcpServer = createMcpServer();
     res.on("close", () => {
       console.log("Request closed");
       transport.close();
-      mcpServer.close();
+      disposableMcpServer.close();
     });
-    await mcpServer.connect(transport);
+    await disposableMcpServer.connect(transport);
     await transport.handleRequest(req, res, req.body);
   } catch (error) {
     console.error("Error handling MCP request:", error);
@@ -36,7 +39,7 @@ app.post("/mcp", async (req: Request, res: Response) => {
 });
 
 // SSE notifications not supported in stateless mode
-app.get("/mcp", async (req: Request, res: Response) => {
+oExpress.get("/mcp", async (req: Request, res: Response) => {
   console.log("Received GET MCP request");
   res.writeHead(405).end(
     JSON.stringify({
@@ -48,7 +51,7 @@ app.get("/mcp", async (req: Request, res: Response) => {
 });
 
 // Session termination not needed in stateless mode
-app.delete("/mcp", async (req: Request, res: Response) => {
+oExpress.delete("/mcp", async (req: Request, res: Response) => {
   console.log("Received DELETE MCP request");
   res.writeHead(405).end(
     JSON.stringify({
@@ -59,6 +62,6 @@ app.delete("/mcp", async (req: Request, res: Response) => {
   );
 });
 
-app.use(corsMiddleware);
+oExpress.use(corsMiddleware);
 
-export { app };
+export { oExpress as app };

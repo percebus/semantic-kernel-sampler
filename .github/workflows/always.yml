@@ -212,5 +212,11 @@ jobs:
       - name: gil clone
         run: gil clone
 
+      - name: config
+        run: |
+          cd node/mcp-server.rest-app.posts/src/config/
+          cp docker.windows.ts active.ts
+          cd ../../../..
+
       - name: docker compose build
         run: docker compose build

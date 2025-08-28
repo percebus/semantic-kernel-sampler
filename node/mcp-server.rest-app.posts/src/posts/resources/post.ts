@@ -2,7 +2,7 @@ import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import type { ResourceMetadata } from "@modelcontextprotocol/sdk/server/mcp.js";
 
-import { baseURI } from "../config.ts";
+import { baseURI } from "../../config/active.ts";
 import { PostSchema } from "../schemas/full.ts";
 
 const postResourceTemplate = new ResourceTemplate("posts://{id}", {
