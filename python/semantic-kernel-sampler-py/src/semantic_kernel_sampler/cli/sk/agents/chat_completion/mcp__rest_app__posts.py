@@ -1,5 +1,4 @@
 import asyncio
-from calendar import c
 
 from semantic_kernel.contents import ChatMessageContent
 from semantic_kernel.contents.utils.author_role import AuthorRole

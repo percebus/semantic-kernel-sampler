@@ -13,13 +13,14 @@ USER_INPUTS = [
     "How do I make a Python chat completion request in Semantic Kernel using Azure OpenAI?",
 ]
 
+
 # SRC: https://github.com/microsoft/semantic-kernel/blob/python-1.35.2/python/samples/concepts/mcp/agent_with_http_mcp_plugin.py
 async def main():
     oAgent = container[MsLearnMCPChatCompletionAgent]
     oThreadedBuiltinAgentInvoker = ThreadedBuiltinAgentInvoker(agent=oAgent)
 
     async with container[LearnSiteMCPStreamableHttpPlugin]:
-         for user_input in USER_INPUTS:
+        for user_input in USER_INPUTS:
             # Invoke the agent for a response
             oChatMessageContent = ChatMessageContent(role=AuthorRole.USER, content=user_input)
             response = await oThreadedBuiltinAgentInvoker.invoke(messages=[oChatMessageContent])

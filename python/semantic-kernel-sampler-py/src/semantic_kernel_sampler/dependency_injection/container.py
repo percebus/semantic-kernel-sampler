@@ -1,6 +1,5 @@
 from logging import Logger
 from typing import Optional
-from venv import create
 
 from a2a.server.agent_execution import AgentExecutor
 from a2a.server.apps import A2AStarletteApplication
@@ -197,11 +196,14 @@ container[DemoMCPChatCompletionAgent] = lambda c: DemoMCPChatCompletionAgent(
 )
 
 container[BlogPostsMCPChatCompletionAgent] = lambda c: BlogPostsMCPChatCompletionAgent(
-    kernel=createKernel(c, [
-        # NOTE: Choose one or the other
-        # c[BlogPostsStdioMCPPlugin]
-        c[BlogPostsStreamableHttpMCPPlugin]
-    ]),
+    kernel=createKernel(
+        c,
+        [
+            # NOTE: Choose one or the other
+            # c[BlogPostsStdioMCPPlugin]
+            c[BlogPostsStreamableHttpMCPPlugin]
+        ],
+    ),
 )
 
 

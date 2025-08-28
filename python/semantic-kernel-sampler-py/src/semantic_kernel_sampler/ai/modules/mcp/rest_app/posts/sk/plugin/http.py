@@ -5,7 +5,6 @@ from semantic_kernel.connectors.mcp import MCPStreamableHttpPlugin
 
 @dataclass
 class BlogPostsStreamableHttpMCPPlugin(MCPStreamableHttpPlugin):
-
     name: str = field(default="BlogPosts stdio MCP Client")
 
     description: str = field(default="stdio MCP Client for rest-app Blog Posts")
