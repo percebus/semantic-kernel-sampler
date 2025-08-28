@@ -1,5 +1,6 @@
 from logging import Logger
 from typing import Optional
+from venv import create
 
 from a2a.server.agent_execution import AgentExecutor
 from a2a.server.apps import A2AStarletteApplication
@@ -40,7 +41,9 @@ from semantic_kernel_sampler.ai.modules.math.sk.plugin.v1 import MathPlugin
 from semantic_kernel_sampler.ai.modules.mcp.demo.a2agent import DemoStdioMCPCustomSemanticA2Agent
 from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v3 import DemoMCPChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.mcp.demo.sk.plugin.stdio import DemoStdioMCPPlugin
+from semantic_kernel_sampler.ai.modules.mcp.mslearn.sk.agent.v1 import MsLearnMCPChatCompletionAgent
 from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.agent.v3 import BlogPostsMCPChatCompletionAgent
+from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.plugin.http import BlogPostsStreamableHttpMCPPlugin
 from semantic_kernel_sampler.ai.modules.mcp.rest_app.posts.sk.plugin.stdio import BlogPostsStdioMCPPlugin
 from semantic_kernel_sampler.ai.modules.triage.sk.agent.v1 import TriageChatCompletionAgent
 from semantic_kernel_sampler.configuration.config import Config
@@ -58,6 +61,7 @@ from semantic_kernel_sampler.sk.agents.builtin.orchestration.group import GroupC
 from semantic_kernel_sampler.sk.agents.builtin.orchestration.handoff import HandoffBuiltinOrchestrationInvoker
 from semantic_kernel_sampler.sk.agents.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
+from semantic_kernel_sampler.third_party.microsoft.learn.api.mcp import LearnSiteMCPStreamableHttpPlugin, createMCPStreamableHttpPlugin
 
 
 def createKernel(c: ReadableContainer, plugins: Optional[list[PluginProtocol]] = None) -> Kernel:
@@ -130,6 +134,8 @@ container[MathPlugin] = MathPlugin
 container[LightPlugin] = LightPlugin
 container[DemoStdioMCPPlugin] = lambda c: DemoStdioMCPPlugin(logger=c[Logger])
 container[BlogPostsStdioMCPPlugin] = lambda c: BlogPostsStdioMCPPlugin(logger=c[Logger])
+container[BlogPostsStreamableHttpMCPPlugin] = BlogPostsStreamableHttpMCPPlugin
+container[LearnSiteMCPStreamableHttpPlugin] = createMCPStreamableHttpPlugin
 
 # NOTE: If you need all Plugins for w/e reason
 # fmt: off
@@ -137,7 +143,8 @@ container[list[PluginProtocol]] = lambda c: [
     c[MathPlugin],
     c[LightPlugin],
     c[DemoStdioMCPPlugin],
-    c[BlogPostsStdioMCPPlugin],
+    c[BlogPostsStreamableHttpMCPPlugin],
+    c[LearnSiteMCPStreamableHttpPlugin]
 ]
 # fmt: on
 
@@ -181,12 +188,20 @@ container[MathChatCompletionAgent] = lambda c: MathChatCompletionAgent(
     kernel=createKernel(c, [c[MathPlugin]]),
 )
 
+container[MsLearnMCPChatCompletionAgent] = lambda c: MsLearnMCPChatCompletionAgent(
+    kernel=createKernel(c, [c[LearnSiteMCPStreamableHttpPlugin]]),
+)
+
 container[DemoMCPChatCompletionAgent] = lambda c: DemoMCPChatCompletionAgent(
     kernel=createKernel(c, [c[DemoStdioMCPPlugin]]),
 )
 
 container[BlogPostsMCPChatCompletionAgent] = lambda c: BlogPostsMCPChatCompletionAgent(
-    kernel=createKernel(c, [c[BlogPostsStdioMCPPlugin]]),
+    kernel=createKernel(c, [
+        # NOTE: Choose one or the other
+        # c[BlogPostsStdioMCPPlugin]
+        c[BlogPostsStreamableHttpMCPPlugin]
+    ]),
 )
 
 

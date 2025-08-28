@@ -12,7 +12,7 @@ class BlogPostsMCPChatCompletionAgent(ChatCompletionAgent):
 
         # fmt: off
         self.instructions = dedent("""
-            Use your MCP integrations to manage blog posts.
+            Use ONLY your MCP integrations to manage blog posts.
             You can use the following tools:
             - posts_find
             - post_get
