@@ -18,10 +18,6 @@
 				"src/main.ts"
 			]
 		},
-		"my-mcp-server-4ae02704": {
-			"url": "http://localhost:4002/mcp",
-			"type": "http"
-		}
 	},
 	"inputs": []
 }
