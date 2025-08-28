@@ -7,7 +7,7 @@ from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecut
 from semantic_kernel.contents import ChatHistory
 from semantic_kernel.contents.kernel_content import KernelContent
 
-from semantic_kernel_sampler.sk.invokers.protocol import InvokerProtocol
+from semantic_kernel_sampler.sk.agents.protocol import InvokerProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.contents.chat_message_content import ChatMessageContent

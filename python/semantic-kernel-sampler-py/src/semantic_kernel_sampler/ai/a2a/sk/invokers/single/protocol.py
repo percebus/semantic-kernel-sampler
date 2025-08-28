@@ -1,5 +1,5 @@
 from semantic_kernel_sampler.a2a.cards.protocol import A2ACardsProtocol
-from semantic_kernel_sampler.sk.invokers.protocol import InvokerProtocol
+from semantic_kernel_sampler.sk.agents.protocol import InvokerProtocol
 
 
 class SemanticA2AInvokerProtocol(A2ACardsProtocol, InvokerProtocol):

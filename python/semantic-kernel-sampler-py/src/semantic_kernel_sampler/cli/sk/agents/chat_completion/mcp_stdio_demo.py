@@ -5,7 +5,7 @@ from semantic_kernel.contents.utils.author_role import AuthorRole
 
 from semantic_kernel_sampler.ai.modules.mcp.demo.sk.agent.v3 import DemoMCPChatCompletionAgent
 from semantic_kernel_sampler.dependency_injection.container import container
-from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.invoker import ThreadedBuiltinAgentInvoker
+from semantic_kernel_sampler.sk.agents.builtin.threaded.invoker import ThreadedBuiltinAgentInvoker
 
 # Simulate a conversation with the agent
 USER_INPUTS = [
