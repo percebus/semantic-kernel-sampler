@@ -7,7 +7,7 @@ from semantic_kernel.contents.utils.author_role import AuthorRole
 
 from semantic_kernel_sampler.ai.modules.basic.sk.agent.v2 import BasicChatCompletionAgent
 from semantic_kernel_sampler.dependency_injection.container import container
-from semantic_kernel_sampler.sk.invokers.builtin.agents.threaded.invoker import ThreadedBuiltinAgentInvoker
+from semantic_kernel_sampler.sk.agents.builtin.threaded.invoker import ThreadedBuiltinAgentInvoker
 
 """
 The following sample demonstrates how to create a chat completion agent that
