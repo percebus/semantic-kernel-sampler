@@ -12,7 +12,13 @@ from lagom.interfaces import ReadableContainer
 
 # from semantic_kernel.functions import KernelArguments  # TODO?
 from semantic_kernel import Kernel
-from semantic_kernel.agents import GroupChatManager, OrchestrationHandoffs, RoundRobinGroupChatManager  # pylint: disable=no-name-in-module
+from semantic_kernel.agents import (  # pylint: disable=no-name-in-module
+    GroupChatManager,
+    GroupChatOrchestration,
+    HandoffOrchestration,
+    OrchestrationHandoffs,
+    RoundRobinGroupChatManager,
+)
 from semantic_kernel.agents.runtime import InProcessRuntime
 from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
@@ -43,7 +49,14 @@ from semantic_kernel_sampler.configuration.os_environ.a2a import A2ASettings
 from semantic_kernel_sampler.configuration.os_environ.azure_openai import AzureOpenAISettings
 from semantic_kernel_sampler.configuration.os_environ.settings import Settings
 from semantic_kernel_sampler.configuration.os_environ.utils import load_dotenv_files
-from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
+from semantic_kernel_sampler.sk.agents.builtin.contents.agent.function import FunctionObservabilityTracker
+from semantic_kernel_sampler.sk.agents.builtin.contents.agent.protocol import AgentResponseProtocol
+from semantic_kernel_sampler.sk.agents.builtin.contents.agent.simple import SimpleObservabilityTracker
+from semantic_kernel_sampler.sk.agents.builtin.contents.human.cli import InputHumanResponse
+from semantic_kernel_sampler.sk.agents.builtin.contents.human.protocol import HumanResponseProtocol
+from semantic_kernel_sampler.sk.agents.builtin.orchestration.group import GroupChatBuiltinOrchestrationInvoker
+from semantic_kernel_sampler.sk.agents.builtin.orchestration.handoff import HandoffBuiltinOrchestrationInvoker
+from semantic_kernel_sampler.sk.agents.custom.chat.invoker import CustomSemanticChatInvoker
 from semantic_kernel_sampler.sk.plugins.protocol import PluginProtocol
 
 
@@ -195,6 +208,59 @@ container[InProcessRuntime] = InProcessRuntime
 container[GroupChatManager] = lambda: RoundRobinGroupChatManager(max_rounds=5)
 
 container[OrchestrationHandoffs] = createOrchestrationHandoffs
+
+container[SimpleObservabilityTracker] = lambda c: SimpleObservabilityTracker(logger=c[Logger])
+
+container[FunctionObservabilityTracker] = lambda c: FunctionObservabilityTracker(logger=c[Logger])
+
+# Default Tracker for Agents
+container[AgentResponseProtocol] = lambda c: c[FunctionObservabilityTracker]
+
+container[InputHumanResponse] = lambda c: InputHumanResponse(logger=c[Logger])
+
+# Default Input for Agents
+container[HumanResponseProtocol] = lambda c: c[InputHumanResponse]
+
+
+# NOTE: Agents don't have plugins, so we use the lightweight kernel SimpleObservabilityTracker
+# fmt: off
+container[GroupChatOrchestration] = lambda c: GroupChatOrchestration(
+    manager=container[GroupChatManager],
+    agent_response_callback=c[SimpleObservabilityTracker].agent_response_callback,  # pyright: ignore[reportArgumentType]
+    members=[
+        container[ContentWriterChatCompletionAgent],
+        container[ContentReviewerChatCompletionAgent],
+        # c[BlogPostsMCPChatCompletionAgent],   # TODO? or XXX? the 2 other agents are VERY chatty
+    ])
+# fmt: on
+
+# fmt: off
+container[GroupChatBuiltinOrchestrationInvoker] = lambda c: GroupChatBuiltinOrchestrationInvoker(
+    logger=container[Logger],
+    runtime=container[InProcessRuntime],
+    orchestration=c[GroupChatOrchestration])
+# fmt: on
+
+
+# fmt: off
+container[HandoffOrchestration] = lambda c: HandoffOrchestration(
+    agent_response_callback=c[FunctionObservabilityTracker].agent_response_callback,  # pyright: ignore[reportArgumentType]
+    human_response_function=c[InputHumanResponse].human_response_function,
+    handoffs=container[OrchestrationHandoffs],
+    members=[
+        container[TriageChatCompletionAgent],
+        container[BasicChatCompletionAgent],
+        container[LightChatCompletionAgent],
+        container[MathChatCompletionAgent]])
+# fmt: on
+
+
+# fmt: off
+container[HandoffBuiltinOrchestrationInvoker] = lambda c: HandoffBuiltinOrchestrationInvoker(
+    logger=container[Logger],
+    runtime=container[InProcessRuntime],
+    orchestration=c[HandoffOrchestration])
+# fmt: on
 
 
 container[LightCustomSemanticA2AgentInvoker] = lambda c: LightCustomSemanticA2AgentInvoker(

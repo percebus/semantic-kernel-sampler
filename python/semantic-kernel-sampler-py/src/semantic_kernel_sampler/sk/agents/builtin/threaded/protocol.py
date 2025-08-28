@@ -2,7 +2,7 @@ from typing import Generic, Optional, Protocol, TypeVar
 
 from semantic_kernel.agents.agent import Agent, TMessage, TThreadType
 
-from semantic_kernel_sampler.sk.invokers.builtin.agents.protocol import BuiltinAgentInvokerProtocol
+from semantic_kernel_sampler.sk.agents.builtin.protocol import BuiltinAgentInvokerProtocol
 
 TAgent = TypeVar("TAgent", bound=Agent)
 

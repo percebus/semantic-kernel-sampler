@@ -5,7 +5,7 @@ from typing import Optional
 from semantic_kernel import Kernel
 from semantic_kernel.contents.kernel_content import KernelContent
 
-from semantic_kernel_sampler.sk.invokers.protocol import InvokerProtocol
+from semantic_kernel_sampler.sk.agents.protocol import InvokerProtocol
 
 
 @dataclass

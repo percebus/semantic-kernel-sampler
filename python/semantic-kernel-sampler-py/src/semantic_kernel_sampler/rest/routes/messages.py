@@ -7,7 +7,7 @@ from semantic_kernel.contents.utils.author_role import AuthorRole
 from semantic_kernel_sampler.dependency_injection.container import container
 from semantic_kernel_sampler.rest.models.request import RequestModel
 from semantic_kernel_sampler.rest.models.response import ResponseModel
-from semantic_kernel_sampler.sk.invokers.custom.chat.invoker import CustomSemanticChatInvoker
+from semantic_kernel_sampler.sk.agents.custom.chat.invoker import CustomSemanticChatInvoker
 
 if TYPE_CHECKING:
     from flask.wrappers import Response as FlaskResponse

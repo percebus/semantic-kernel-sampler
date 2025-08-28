@@ -6,7 +6,7 @@ from semantic_kernel.agents import GroupChatOrchestration  # pylint: disable=no-
 from semantic_kernel.agents.runtime import InProcessRuntime
 from semantic_kernel.contents import ChatMessageContent
 
-from semantic_kernel_sampler.sk.invokers.builtin.agents.orchestration.protocol import BuiltinOrchestrationInvokerProtocol
+from semantic_kernel_sampler.sk.agents.builtin.orchestration.protocol import BuiltinOrchestrationInvokerProtocol
 
 if TYPE_CHECKING:
     from semantic_kernel.agents.orchestration.orchestration_base import DefaultTypeAlias, OrchestrationResult
