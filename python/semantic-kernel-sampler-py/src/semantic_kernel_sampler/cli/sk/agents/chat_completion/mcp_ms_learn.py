@@ -27,7 +27,7 @@ async def main():
             print(f"# {response.name}: {response}")
 
     # Cleanup: Clear the thread
-    # await oThreadedBuiltinAgentInvoker.cleanup()
+    await oThreadedBuiltinAgentInvoker.cleanup()
 
 
 if __name__ == "__main__":
