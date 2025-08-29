@@ -1,5 +1,7 @@
 # semantic-kernel-sampler
 
+[![[C]ontinuous [I]ntegration](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml)
+
 Semantic-Kernel monorepo sampler
 
 ## Sub-Projecs/Repos
