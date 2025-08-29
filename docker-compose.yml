@@ -53,13 +53,21 @@ services:
   # TODO typescript-app?:
 
   modelcontextprotocol.inspector:
-    build:
-      target: modelcontextprotocol.inspector
+    # NOTE: If you want to build it from `npm install`
+    # build:
+    #   target: modelcontextprotocol.inspector
+    #
+    # NOTE: Using the pre-built image from GitHub Container Registry
+    image: ghcr.io/modelcontextprotocol/inspector:latest
+    # command: ["--config", "/app/mcp.json"] # Point to a configuration file if needed
+    #
+    # List all MCP servers so that the inspector can connect to them
     depends_on:
       - mcp-server.examples.quick-start
       - mcp-server.rest-app.posts
     ports:
       - 6274:6274
+      - 6277:6277
 
   a2a-inspector:
     build:
