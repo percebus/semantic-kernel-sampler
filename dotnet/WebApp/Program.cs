@@ -1,20 +1,9 @@
-using System.Text.Json;
-using Microsoft.AspNetCore.Http.Json;
+using JCystems.SemanticKernelSampler.Dotnet.WebApp.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.Configure<JsonOptions>(oJsonOptions =>
-{
-    JsonSerializerOptions oJsonSerializerOptions = oJsonOptions.SerializerOptions;
-    oJsonSerializerOptions.PropertyNameCaseInsensitive = false;
-    oJsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-});
+// NOTE: See <see cref="DependencyInjection/ServiceRegistrar.cs"/> for more details
+builder.RegisterServices();
 
 var app = builder.Build();
 
