@@ -1,5 +1,4 @@
 from typing import Protocol
 
 
-class PluginProtocol(Protocol):
-    pass
+class PluginProtocol(Protocol): ...

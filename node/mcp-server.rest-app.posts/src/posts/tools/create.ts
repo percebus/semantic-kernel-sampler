@@ -1,4 +1,4 @@
-import { baseURI } from "../config.ts";
+import { baseURI } from "../../config/active.ts";
 import { NewPostSchema, type NewPost } from "../schemas/new.ts";
 import { PostSchema } from "../schemas/full.ts";
 

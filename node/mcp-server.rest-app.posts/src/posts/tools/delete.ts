@@ -1,4 +1,4 @@
-import { baseURI } from "../config.ts";
+import { baseURI } from "../../config/active.ts";
 import { PostIdentifierSchema } from "../schemas/id.ts";
 
 async function deletePostByIdAsync({ id }: { id: string }): Promise<object> {

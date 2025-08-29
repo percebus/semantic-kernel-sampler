@@ -1,3 +1,4 @@
+src/config/active.ts
 
 # mcp servers
 !.vscode/mcp.json

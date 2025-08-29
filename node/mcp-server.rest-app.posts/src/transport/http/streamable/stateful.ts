@@ -1,20 +1,23 @@
 // SRC: https://github.com/modelcontextprotocol/typescript-sdk/tree/1.17.3?tab=readme-ov-file#with-session-management
 
 import express from "express";
+import type { NextHandleFunction } from "connect";
+import type { Express } from "express-serve-static-core";
 import { randomUUID } from "node:crypto";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { createMcpServer } from "../../../mcp/server.ts";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { corsMiddleware } from "../cors.ts";
 
-const app = express();
-app.use(express.json());
+const oExpress: Express = express();
+const oNextHandleFunction: NextHandleFunction = express.json();
+oExpress.use(oNextHandleFunction);
 
 // Map to store transports by session ID
 const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {};
 
 // Handle POST requests for client-to-server communication
-app.post("/mcp", async (req, res) => {
+oExpress.post("/mcp", async (req, res) => {
   // Check for existing session ID
   const sessionId = req.headers["mcp-session-id"] as string | undefined;
   let transport: StreamableHTTPServerTransport;
@@ -42,12 +45,13 @@ app.post("/mcp", async (req, res) => {
         delete transports[transport.sessionId];
       }
     };
-    const server = new McpServer({ name: "example-server", version: "1.0.0" });
+
+    const singleMcpServer = createMcpServer();
 
     // ... set up server resources, tools, and prompts ...
 
     // Connect to the MCP server
-    await server.connect(transport);
+    await singleMcpServer.connect(transport);
   } else {
     // Invalid request
     res.status(400).json({
@@ -81,11 +85,11 @@ const handleSessionRequest = async (
 };
 
 // Handle GET requests for server-to-client notifications via SSE
-app.get("/mcp", handleSessionRequest);
+oExpress.get("/mcp", handleSessionRequest);
 
 // Handle DELETE requests for session termination
-app.delete("/mcp", handleSessionRequest);
+oExpress.delete("/mcp", handleSessionRequest);
 
-app.use(corsMiddleware);
+oExpress.use(corsMiddleware);
 
-export { app };
+export { oExpress as app };

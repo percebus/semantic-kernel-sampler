@@ -19,9 +19,9 @@ class BlogPostsStdioMCPPlugin(StdioMCPPlugin):
             f"{mcpPath}",
         ]
 
-    name: str = field(default="Demo Server")
+    name: str = field(default="BlogPosts stdio MCP Client")
 
-    description: str = field(default="Demo Server for TypeScript SDK")
+    description: str = field(default="stdio MCP Client for rest-app Blog Posts")
 
     command: str = field(default="npm")
 

@@ -6,11 +6,11 @@
       "args": ["ts-node", "src/main.ts"]
     },
     "rest-app.posts@express": {
-      "url": "http://local:3000/mcp",
+      "url": "http://localhost:3000/mcp",
       "type": "http"
     },
     "rest-app.posts@docker": {
-      "url": "http://local:4002/mcp",
+      "url": "http://localhost:4002/mcp",
       "type": "http"
     }
   },

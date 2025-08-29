@@ -1,11 +1,12 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { mcpServer } from "../mcp/server.ts";
+import { createMcpServer } from "../mcp/server.ts";
 
-const stdioServerTransport = new StdioServerTransport();
+const oStdioServerTransport = new StdioServerTransport();
 
 async function runAsync() {
   // Start receiving messages on stdin and sending messages on stdout
-  await mcpServer.connect(stdioServerTransport);
+  const singleMcpServer = createMcpServer();
+  await singleMcpServer.connect(oStdioServerTransport);
   console.log("MCP server is running...");
 }
 

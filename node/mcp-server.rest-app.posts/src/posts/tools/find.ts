@@ -1,4 +1,4 @@
-import { baseURI } from "../config.ts";
+import { baseURI } from "../../config/active.ts";
 import { PostSchema, type Post } from "../schemas/full.ts";
 
 async function findPostsAsync(/* postSchema */): Promise<object> {
