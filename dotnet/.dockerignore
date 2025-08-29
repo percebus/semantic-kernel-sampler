@@ -5,8 +5,6 @@
 # appsettings.ai*.json
 # appsettings*.secrets.json
 
-# appsettings.Development.json
-
 
 # NOTE: vvv Do NOT add below this point
 # It is meant to be a copy+paste from well established .gitignore files
