@@ -1,14 +1,16 @@
 // SRC: https://github.com/modelcontextprotocol/typescript-sdk/tree/1.17.3?tab=readme-ov-file#with-session-management
 
 import express from "express";
+import type { NextHandleFunction } from "connect";
+import type { Express } from "express-serve-static-core";
 import { randomUUID } from "node:crypto";
 import { createMcpServer } from "../../../mcp/server.ts";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { corsMiddleware } from "../cors.ts";
 
-const oExpress = express();
-const oNextHandleFunction = express.json();
+const oExpress: Express = express();
+const oNextHandleFunction: NextHandleFunction = express.json();
 oExpress.use(oNextHandleFunction);
 
 // Map to store transports by session ID
@@ -44,12 +46,12 @@ oExpress.post("/mcp", async (req, res) => {
       }
     };
 
-    const singlefulMcpServer = createMcpServer();
+    const singleMcpServer = createMcpServer();
 
     // ... set up server resources, tools, and prompts ...
 
     // Connect to the MCP server
-    await singlefulMcpServer.connect(transport);
+    await singleMcpServer.connect(transport);
   } else {
     // Invalid request
     res.status(400).json({

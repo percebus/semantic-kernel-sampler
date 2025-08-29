@@ -1,12 +1,14 @@
 // SRC: https://github.com/modelcontextprotocol/typescript-sdk/tree/1.17.3?tab=readme-ov-file#without-session-management-stateless
 
 import express from "express";
+import type { NextHandleFunction } from "connect";
+import type { Express } from "express-serve-static-core";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { createMcpServer } from "../../../mcp/server.ts";
 import { corsMiddleware } from "../cors.ts";
 
-const oExpress = express();
-const oNextHandleFunction = express.json();
+const oExpress: Express = express();
+const oNextHandleFunction: NextHandleFunction = express.json();
 oExpress.use(oNextHandleFunction);
 
 oExpress.post("/mcp", async (req: Request, res: Response) => {
