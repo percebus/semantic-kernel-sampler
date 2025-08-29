@@ -15,11 +15,6 @@
         private const string ContainerConfigLocation = "/mnt/app-appSettings-map";
         private const string AppVersion = "1.0.0";
 
-        /// <summary>
-        /// Registers services and configures the application.
-        /// </summary>
-        /// <param name="builder">The <see cref="WebApplicationBuilder"/> to configure.</param>
-        /// <returns>The configured <see cref="WebApplicationBuilder"/>.</returns>
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
             builder.Configuration.AddJsonFile("appsettings.json", optional: false);
