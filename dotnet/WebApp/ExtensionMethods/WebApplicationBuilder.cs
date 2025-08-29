@@ -11,7 +11,6 @@
     using Microsoft.Extensions.Options;
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
-    using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
     using Scrutor;
     using Serilog;
 
@@ -72,19 +71,12 @@
                 return new ChatHistory();
             });
 
-            builder.Services.AddSingleton<IChatCompletionService>(provider => new AzureOpenAIChatCompletionService(
-                endpoint: appSettings.AiModel.Endpoint.ToString(),
-                deploymentName: appSettings.AiModel.DeploymentId,
-                modelId: appSettings.AiModel.ModelId,
-                apiKey: appSettings.AiModel.ApiKey));
-
-
             // TODO? or XXX?
-            //builder.Services.AddTransient<IChatClient>(provider =>
-            //{
-            //    var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
-            //    return oAzureOpenAIClient.GetChatClient(appSettings.AiModel.DeploymentId).AsIChatClient();
-            //});
+            // builder.Services.AddTransient<IChatClient>(provider =>
+            // {
+            //     var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
+            //     return oAzureOpenAIClient.GetChatClient(appSettings.AiModel.DeploymentId).AsIChatClient();
+            // });
 
             builder.Services.AddTransient<IKernelBuilder>(provider => Kernel.CreateBuilder());
 
@@ -94,7 +86,9 @@
                 var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
                 var oChatCompletionService = provider.GetRequiredService<IChatCompletionService>();
 
-                oKernelBuilder.AddAzureOpenAIChatClient(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
+                // NOTE: Chose 1 or the other?
+                // oKernelBuilder.AddAzureOpenAIChatClient(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
+                oKernelBuilder.AddAzureOpenAIChatCompletion(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
 
                 // oKernelBuilder.Plugins.AddFromType<YourTypeHere>(); // TODO: Add your plugins here
 
@@ -109,11 +103,11 @@
             builder.Services.AddHealthChecks();
 
             // TODO: Add resiliency
-            //builder.Services.ConfigureHttpClientDefaults(http =>
-            //{
-            //    // Turn on resilience by default
-            //    http.AddStandardResilienceHandler();
-            //});
+            // builder.Services.ConfigureHttpClientDefaults(http =>
+            // {
+            //     // Turn on resilience by default
+            //     http.AddStandardResilienceHandler();
+            // });
 
             builder.Services.Configure<JsonOptions>(oJsonOptions =>
             {
