@@ -1,12 +1,12 @@
 {
-    "JCystems": {
-        "SemanticKernelSampler.DotNet.WebApp": {
-            "AiModel": {
-                "Endpoint": "https://{YOUR URL}.cognitiveservices.azure.com/openai/deployments/{AZURE_OPENAI_DEPLOYMENT_ID}/chat/completions?api-version={API_VERSION}",
-                "DeploymentId": "{AZURE_OPENAI_DEPLOYMENT_ID}",
-                "ModelId": "{AZURE_OPENAI_MODEL_ID}",
-                "ApiVersion": "{AZURE_OPENAI_API_VERSION}"
-            }
-        }
+  "JCystems": {
+    "SemanticKernelSampler.DotNet.WebApp": {
+      "AiModel": {
+        "Endpoint": "https://{YOUR URL}.cognitiveservices.azure.com/openai/deployments/{AZURE_OPENAI_DEPLOYMENT_ID}/chat/completions?api-version={API_VERSION}",
+        "DeploymentId": "{AZURE_OPENAI_DEPLOYMENT_ID}",
+        "ModelId": "{AZURE_OPENAI_MODEL_ID}",
+        "ApiVersion": "{AZURE_OPENAI_API_VERSION}"
+      }
     }
+  }
 }
