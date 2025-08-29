@@ -31,10 +31,6 @@ Semantic-Kernel monorepo sampler
 - [`@modelcontextprotocol/inspector`](./package.json):
   - `$> npm start:mcp:inspector`
 
-### Examples
-
-- [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
-
 ## R&D
 
 ### npm (global)
@@ -71,7 +67,7 @@ TODO
 $> bash scripts/pip/upgrade.ba.sh
 
 # git clone a2a-instpector ./repositories
-$> bash scripts/gil/clone.ba.sh
+$> gil clone
 
 $> cd repositories/a2a-inspector
 ```
@@ -122,6 +118,11 @@ $> bash ./run.sh
 1. `$> docker-compose up`
 
 ## Resources
+
+### Examples
+
+- [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
+- [`a2a-samples`](https://github.com/a2aproject/a2a-samples)
 
 ### GitHub
 
