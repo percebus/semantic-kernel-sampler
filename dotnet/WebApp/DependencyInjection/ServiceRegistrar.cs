@@ -11,10 +11,6 @@
     [ExcludeFromCodeCoverage]
     public static class ServiceRegistrar
     {
-        // location of Kubernetes ConfigMap mount within the Pod
-        private const string ContainerConfigLocation = "/mnt/app-appSettings-map";
-        private const string AppVersion = "1.0.0";
-
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
             builder.Configuration.AddJsonFile("appsettings.json", optional: false);
@@ -25,6 +21,7 @@
 
             builder.Services.AddOptions<AppSettingsOptions>()
                 .BindConfiguration(AppSettingsOptions.Key)
+                .ValidateDataAnnotations()
                 .ValidateOnStart();
 
             var provider = builder.Services.BuildServiceProvider();
