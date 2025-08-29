@@ -62,5 +62,5 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = [
-    "src/*"
+    "src/semantic_kernel_sampler"
 ]
