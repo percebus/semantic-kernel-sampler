@@ -22,8 +22,10 @@
         /// <returns>The configured <see cref="WebApplicationBuilder"/>.</returns>
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
-            builder.Configuration.AddJsonFile("appsettings.json", true);
-            builder.Configuration.AddJsonFile("appsettings.Development.json", true);
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false);
+            builder.Configuration.AddJsonFile("appsettings.ai.json", optional: false, reloadOnChange: true);
+            builder.Configuration.AddJsonFile("appsettings.ai.secrets.json", optional: false, reloadOnChange: true);
+            builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
             builder.Configuration.AddEnvironmentVariables();
 
             builder.Services.AddOptions<AppSettingsOptions>()
@@ -53,7 +55,7 @@
             builder.Services.AddSwaggerGen();
             builder.Services.AddHealthChecks();
 
-            // TODO: Add resiliency            
+            // TODO: Add resiliency
             //builder.Services.ConfigureHttpClientDefaults(http =>
             //{
             //    // Turn on resilience by default
