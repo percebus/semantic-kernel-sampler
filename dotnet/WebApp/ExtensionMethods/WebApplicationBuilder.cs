@@ -95,6 +95,11 @@
                 return oKernelBuilder.Build();
             });
 
+            builder.Services.AddTransient<IChatCompletionService>(provider =>
+            {
+                var oKernel = provider.GetRequiredService<Kernel>();
+                return oKernel.GetRequiredService<IChatCompletionService>();
+            });
 
             // Add services to the container.
             builder.Services.AddControllers();

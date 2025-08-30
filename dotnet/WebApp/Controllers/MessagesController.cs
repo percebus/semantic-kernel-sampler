@@ -5,14 +5,12 @@
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
 
-    public class MessagesController(ILogger<MessagesController> logger, Kernel kernel, ChatHistory chatHistory) : ObservableControllerBase(logger)
+    public class MessagesController(ILogger<MessagesController> logger, IChatCompletionService chatCompletionService, ChatHistory chatHistory) : ObservableControllerBase(logger)
     {
-        private Kernel Kernel { get; set; } = kernel;
-
         // TODO wrap in a provider
         private ChatHistory ChatHistory { get; set; } = chatHistory;
 
-        private IChatCompletionService ChatCompletionService => this.Kernel.GetRequiredService<IChatCompletionService>();
+        private IChatCompletionService ChatCompletionService => chatCompletionService;
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)
