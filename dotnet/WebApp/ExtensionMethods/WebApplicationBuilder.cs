@@ -5,9 +5,11 @@
     using System.Text.Json;
     using Azure;
     using Azure.AI.OpenAI;
+    using JCystems.SemanticKernelSampler.Dotnet.WebApp.Controllers;
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Options;
     using Microsoft.AspNetCore.Http.Json;
     using Microsoft.Extensions.AI;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
@@ -32,7 +34,6 @@
 
             var provider = builder.Services.BuildServiceProvider();
 
-            ILoggerFactory loggerFactory = provider.GetRequiredService<ILoggerFactory>();
             ILogger logger = Log.ForContext<Program>();
 
             AppSettingsOptions appSettings;
@@ -47,8 +48,8 @@
                 throw;
             }
 
-            builder.Services.AddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
-            builder.Services.AddSingleton<PromptExecutionSettings>(provider =>
+            builder.Services.TryAddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
+            builder.Services.TryAddSingleton<PromptExecutionSettings>(provider =>
             {
                 var oFunctionChoiceBehavior = provider.GetRequiredService<FunctionChoiceBehavior>();
                 return new()
@@ -58,14 +59,14 @@
             });
 
             // SRC: https://github.com/microsoft/semantic-kernel/blob/dotnet-1.64.0/dotnet/samples/Concepts/Agents/ChatCompletion_ServiceSelection.cs
-            builder.Services.AddTransient<ApiKeyCredential>(provider => new AzureKeyCredential(appSettings.AiModel.ApiKey));
-            builder.Services.AddTransient<AzureOpenAIClient>(provider =>
+            builder.Services.TryAddScoped<ApiKeyCredential>(provider => new AzureKeyCredential(appSettings.AiModel.ApiKey));
+            builder.Services.TryAddScoped<AzureOpenAIClient>(provider =>
             {
                 var oApiKeyCredential = provider.GetRequiredService<ApiKeyCredential>();
                 return new(appSettings.AiModel.Endpoint, oApiKeyCredential);
             });
 
-            builder.Services.AddTransient<ChatHistory>(provider =>
+            builder.Services.TryAddScoped<ChatHistory>(provider =>
             {
                 // TODO: Add System Message
                 return new ChatHistory();
@@ -78,9 +79,9 @@
             //     return oAzureOpenAIClient.GetChatClient(appSettings.AiModel.DeploymentId).AsIChatClient();
             // });
 
-            builder.Services.AddTransient<IKernelBuilder>(provider => Kernel.CreateBuilder());
+            builder.Services.TryAddTransient<IKernelBuilder>(provider => Kernel.CreateBuilder());
 
-            builder.Services.AddTransient<Kernel>(provider =>
+            builder.Services.TryAddTransient<Kernel>(provider =>
             {
                 var oKernelBuilder = provider.GetRequiredService<IKernelBuilder>();
                 var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
@@ -95,11 +96,17 @@
                 return oKernelBuilder.Build();
             });
 
-            builder.Services.AddTransient<IChatCompletionService>(provider =>
+            builder.Services.TryAddScoped<IChatCompletionService>(provider =>
             {
                 var oKernel = provider.GetRequiredService<Kernel>();
                 return oKernel.GetRequiredService<IChatCompletionService>();
             });
+
+            builder.Services.Scan(
+                s => s.FromAssemblyOf<Program>()
+                      .AddClasses()
+                      .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                      .AsMatchingInterface());
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -121,11 +128,16 @@
                 oJsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
 
-            builder.Services.Scan(
-                s => s.FromAssemblyOf<Program>()
-                      .AddClasses()
-                      .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-                      .AsMatchingInterface());
+            // FIXME why is Scrutor not doing this?
+            builder.Services.AddScoped<MessagesController>(provider =>
+            {
+                ILoggerFactory loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                ILogger<MessagesController> oLogger = loggerFactory.CreateLogger<MessagesController>();
+                var oChatCompletionService = provider.GetRequiredService<IChatCompletionService>();
+                var oChatHistory = provider.GetRequiredService<ChatHistory>();
+
+                return new MessagesController(oLogger, oChatCompletionService, oChatHistory);
+            });
 
             return builder;
         }
