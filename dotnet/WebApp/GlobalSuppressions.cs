@@ -5,4 +5,20 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Scope = "module", Justification = "Too noisy")]
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.DocumentationRules",
+    "SA1600:Elements should be documented",
+    Scope = "module",
+    Justification = "Too noisy")]
+
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.LayoutRules",
+    "SA1512:Single-line comments should not be followed by blank line",
+    Scope = "module",
+    Justification = "Readability is KING")]
+
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.LayoutRules",
+    "SA1507:Code should not contain multiple blank lines in a row",
+    Scope = "member",
+    Justification = "Readability is KING")]

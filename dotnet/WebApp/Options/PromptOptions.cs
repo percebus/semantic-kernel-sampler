@@ -1,18 +1,15 @@
 ﻿namespace JCystems.SemanticKernelSampler.Dotnet.WebApp.Options
 {
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.Connectors.OpenAI;
 
     public class PromptOptions
     {
         public const string Key = "PromptOptions";
 
-        public PromptExecutionSettings? PromptExecutionSettings { get; set; } = null;
-
-        public OpenAIPromptExecutionSettings OpenAIPromptExecutionSettings { get; set; } = new OpenAIPromptExecutionSettings
-        {
-            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
-        };
+        // Auto-invoke Plugins
+        [Required]
+        public FunctionChoiceBehavior FunctionChoiceBehavior { get; set; } = FunctionChoiceBehavior.Auto();
 
         public static class ErrorMessages
         {

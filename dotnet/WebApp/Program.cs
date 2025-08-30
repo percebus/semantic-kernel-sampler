@@ -1,4 +1,4 @@
-using JCystems.SemanticKernelSampler.Dotnet.WebApp.DependencyInjection;
+using JCystems.SemanticKernelSampler.Dotnet.WebApp.Extensions.WebApplicationBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 

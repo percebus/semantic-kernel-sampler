@@ -2,16 +2,29 @@
 {
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Models;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.ChatCompletion;
 
-    public class MessagesController : ObservableControllerBase
+    public class MessagesController(ILogger<MessagesController> logger, IChatCompletionService chatCompletionService, ChatHistory chatHistory) : ObservableControllerBase(logger)
     {
+        // TODO wrap in a provider
+        private ChatHistory ChatHistory { get; set; } = chatHistory;
+
+        private IChatCompletionService ChatCompletionService => chatCompletionService;
+
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)
         {
+            // SRC: https://github.com/microsoft/semantic-kernel/blob/dotnet-1.64.0/dotnet/samples/Concepts/ChatCompletion/AzureOpenAI_ChatCompletion.cs
+            this.ChatHistory.AddUserMessage(request.Message);
+
+            ChatMessageContent replyChatMessageContent = await this.ChatCompletionService.GetChatMessageContentAsync(this.ChatHistory);
+            this.ChatHistory.Add(replyChatMessageContent);
+
             var response = new Response
             {
                 Request = request,
-                Message = "Times are tough",
+                Message = replyChatMessageContent.Content,
             };
 
             var result = this.Ok(response);
