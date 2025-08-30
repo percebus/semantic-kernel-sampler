@@ -85,7 +85,6 @@
             {
                 var oKernelBuilder = provider.GetRequiredService<IKernelBuilder>();
                 var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
-                var oChatCompletionService = provider.GetRequiredService<IChatCompletionService>();
 
                 // NOTE: Chose 1 or the other?
                 // oKernelBuilder.AddAzureOpenAIChatClient(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
