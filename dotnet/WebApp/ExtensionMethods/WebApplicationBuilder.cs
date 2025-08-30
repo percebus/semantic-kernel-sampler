@@ -5,7 +5,6 @@
     using System.Text.Json;
     using Azure;
     using Azure.AI.OpenAI;
-    using JCystems.SemanticKernelSampler.Dotnet.WebApp.Controllers;
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Options;
     using Microsoft.AspNetCore.Http.Json;
     using Microsoft.Extensions.AI;
@@ -125,17 +124,6 @@
                 JsonSerializerOptions oJsonSerializerOptions = oJsonOptions.SerializerOptions;
                 oJsonSerializerOptions.PropertyNameCaseInsensitive = false;
                 oJsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            });
-
-            // FIXME why is Scrutor not doing this?
-            builder.Services.AddScoped<MessagesController>(provider =>
-            {
-                ILoggerFactory loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-                ILogger<MessagesController> oLogger = loggerFactory.CreateLogger<MessagesController>();
-                var oChatCompletionService = provider.GetRequiredService<IChatCompletionService>();
-                var oChatHistory = provider.GetRequiredService<ChatHistory>();
-
-                return new MessagesController(oLogger, oChatCompletionService, oChatHistory);
             });
 
             return builder;
