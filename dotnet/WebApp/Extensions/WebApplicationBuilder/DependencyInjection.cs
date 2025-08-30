@@ -1,4 +1,4 @@
-﻿namespace JCystems.SemanticKernelSampler.Dotnet.WebApp.ExtensionMethods
+﻿namespace JCystems.SemanticKernelSampler.Dotnet.WebApp.Extensions.WebApplicationBuilder
 {
     using System.ClientModel;
     using System.Diagnostics.CodeAnalysis;
@@ -16,7 +16,7 @@
     using Serilog;
 
     [ExcludeFromCodeCoverage]
-    public static class WebApplicationBuilder
+    public static class DependencyInjection
     {
         public static Microsoft.AspNetCore.Builder.WebApplicationBuilder RegisterServices(this Microsoft.AspNetCore.Builder.WebApplicationBuilder builder)
         {
@@ -47,7 +47,7 @@
                 throw;
             }
 
-            builder.Services.TryAddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
+            builder.Services.TryAddSingleton(FunctionChoiceBehavior.Auto());
             builder.Services.TryAddSingleton<PromptExecutionSettings>(provider =>
             {
                 var oFunctionChoiceBehavior = provider.GetRequiredService<FunctionChoiceBehavior>();
@@ -65,7 +65,7 @@
                 return new(appSettings.AiModel.Endpoint, oApiKeyCredential);
             });
 
-            builder.Services.TryAddScoped<ChatHistory>(provider =>
+            builder.Services.TryAddScoped(provider =>
             {
                 // TODO: Add System Message
                 return new ChatHistory();
@@ -78,9 +78,9 @@
             //     return oAzureOpenAIClient.GetChatClient(appSettings.AiModel.DeploymentId).AsIChatClient();
             // });
 
-            builder.Services.TryAddTransient<IKernelBuilder>(provider => Kernel.CreateBuilder());
+            builder.Services.TryAddTransient(provider => Kernel.CreateBuilder());
 
-            builder.Services.TryAddTransient<Kernel>(provider =>
+            builder.Services.TryAddTransient(provider =>
             {
                 var oKernelBuilder = provider.GetRequiredService<IKernelBuilder>();
                 var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
@@ -94,7 +94,7 @@
                 return oKernelBuilder.Build();
             });
 
-            builder.Services.TryAddScoped<IChatCompletionService>(provider =>
+            builder.Services.TryAddScoped(provider =>
             {
                 var oKernel = provider.GetRequiredService<Kernel>();
                 return oKernel.GetRequiredService<IChatCompletionService>();

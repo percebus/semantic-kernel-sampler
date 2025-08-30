@@ -1,4 +1,4 @@
-using JCystems.SemanticKernelSampler.Dotnet.WebApp.ExtensionMethods;
+using JCystems.SemanticKernelSampler.Dotnet.WebApp.Extensions.WebApplicationBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 
