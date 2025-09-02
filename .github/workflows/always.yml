@@ -151,7 +151,11 @@ jobs:
         working-directory: ./dotnet
 
       - name: dotnet build
-        run: dotnet build ${{ env.DOTNET_PROJECT }} --no-restore --configuration ${{ env.DOTNET_CONFIGURATION }}
+        run: |
+          dotnet build ${{ env.DOTNET_PROJECT }} \
+            --no-restore \
+            --configuration ${{ env.DOTNET_CONFIGURATION }} \
+            /p:TreatWarningsAsErrors=true
         working-directory: ./dotnet
 
       - name: bin.zip
