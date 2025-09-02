@@ -1,32 +1,31 @@
 ﻿namespace JCystems.SemanticKernelSampler.Dotnet.WebApp.Controllers
 {
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Models;
+    using JCystems.SemanticKernelSampler.Dotnet.WebApp.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
 
-    public class MessagesController(ILogger<MessagesController> logger, IChatCompletionService chatCompletionService, ChatHistory chatHistory) : ObservableControllerBase(logger)
+    public class MessagesController(ILogger<MessagesController> logger, ICustomAgent agent) : ObservableControllerBase(logger)
     {
-        // TODO wrap in a provider
-        private ChatHistory ChatHistory { get; set; } = chatHistory;
-
-        private IChatCompletionService ChatCompletionService => chatCompletionService;
+        private IBuiltInAgent Agent => agent;
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)
         {
-            // SRC: https://github.com/microsoft/semantic-kernel/blob/dotnet-1.64.0/dotnet/samples/Concepts/ChatCompletion/AzureOpenAI_ChatCompletion.cs
-            this.ChatHistory.AddUserMessage(request.Message);
-
-            ChatMessageContent replyChatMessageContent = await this.ChatCompletionService.GetChatMessageContentAsync(this.ChatHistory);
-            this.ChatHistory.Add(replyChatMessageContent);
+            this.Logger.LogInformation("Received request: {Request}", request);
+            var requestChatMessageContent = new ChatMessageContent(AuthorRole.User, request.Message);
+            var requestMessages = new ChatMessageContentItemCollection { requestChatMessageContent };
+            IReadOnlyList<KernelContent> replyMessages = await this.Agent.InvokeAsync(requestMessages);
+            KernelContent firstReplyChatMessageContent = replyMessages[0];
 
             var response = new Response
             {
                 Request = request,
-                Message = replyChatMessageContent.Content,
+                Message = firstReplyChatMessageContent.ToString(),
             };
 
+            this.Logger.LogInformation("Sending response: {Response}", response);
             var result = this.Ok(response);
             return await Task.FromResult(result);
         }
