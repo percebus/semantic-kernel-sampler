@@ -1,6 +1,3 @@
-# Disable Copyright Headers
-dotnet_diagnostic.SA1633.severity = none
-
 [*.{cs,vb}]
 #### Naming styles ####
 
@@ -71,3 +68,6 @@ csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:silent
+
+# Disable Copyright Headers
+dotnet_diagnostic.SA1633.severity = none
