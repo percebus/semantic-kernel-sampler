@@ -18,7 +18,7 @@
             var requestMessages = new List<ChatMessageContent> { requestChatMessageContent };
 
             AgentThread? thread = null;
-            await foreach (var item in this.Agent.InvokeAsync(requestMessages, thread))
+            await foreach (AgentResponseItem<ChatMessageContent> item in this.Agent.InvokeAsync(requestMessages, thread))
             {
                 thread = item.Thread;
                 this.Logger.LogInformation("Request message content item: {Item}", item);
