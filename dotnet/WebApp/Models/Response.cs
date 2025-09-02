@@ -9,13 +9,13 @@
         private Request request = null!;
         public required Request Request
         {
+            get => this.request;
+
             set
             {
                 this.request = value;
                 this.Id = value.Id;
             }
-
-            get => this.request;
         }
     }
 }

@@ -6,14 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>JCystems.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>JCystems.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1633,1701;1702</NoWarn>
+    <NoWarn>1591;1633,1701;1702</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1633,1701;1702</NoWarn>
+    <NoWarn>1591;1633,1701;1702</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
