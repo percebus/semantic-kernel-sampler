@@ -20,5 +20,17 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage(
     "StyleCop.CSharp.LayoutRules",
     "SA1507:Code should not contain multiple blank lines in a row",
-    Scope = "member",
+    Scope = "module",
     Justification = "Readability is KING")]
+
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.OrderingRules",
+    "SA1201:Elements should appear in the correct order",
+    Scope = "module",
+    Justification = "Self documented code When properties and fields go together")]
+
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.LayoutRules",
+    "SA1516:Elements should be separated by blank line",
+    Scope = "module",
+    Justification = "Self documented code When properties and fields go together")]

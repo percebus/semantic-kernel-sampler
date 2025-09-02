@@ -24,7 +24,7 @@
             public const string EndpointRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(Endpoint)} cannot be empty";
 
             // TODO
-            //public const string EndpointHttpSchemaRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(Endpoint)} field is not a valid HTTP/HTTPS URI.";
+            // public const string EndpointHttpSchemaRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(Endpoint)} field is not a valid HTTP/HTTPS URI.";
 
             public const string DeploymentIdRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(DeploymentId)} cannot be empty";
 
