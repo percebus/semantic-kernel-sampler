@@ -8,7 +8,7 @@
 
     public class MessagesController(ILogger<MessagesController> logger, ICustomAgent agent) : ObservableControllerBase(logger)
     {
-        private IBuiltinAgent Agent => agent;
+        private IBuiltIn_Agent Agent => agent;
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)
@@ -16,7 +16,7 @@
             this.Logger.LogInformation("Received request: {Request}", request);
             var requestChatMessageContent = new ChatMessageContent(AuthorRole.User, request.Message);
             var requestMessages = new ChatMessageContentItemCollection { requestChatMessageContent };
-            ChatMessageContentItemCollection replyMessages = await this.Agent.InvokeAsync(requestMessages);
+            IReadOnlyList<KernelContent> replyMessages = await this.Agent.InvokeAsync(requestMessages);
             KernelContent firstReplyChatMessageContent = replyMessages[0];
 
             var response = new Response

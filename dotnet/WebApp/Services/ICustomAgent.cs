@@ -2,7 +2,7 @@
 {
     using Microsoft.SemanticKernel;
 
-    public interface ICustomAgent : IBuiltinAgent
+    public interface ICustomAgent : IBuiltIn_Agent
     {
         public Task<KernelContent> InvokeAsync(KernelContent userMessage);
     }
