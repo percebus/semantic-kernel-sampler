@@ -13,6 +13,7 @@
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.Agents;
     using Microsoft.SemanticKernel.Agents.Copilot;
     using Microsoft.SemanticKernel.ChatCompletion;
     using Scrutor;
@@ -120,6 +121,8 @@
                 var oCopilotClient = provider.GetRequiredService<CopilotClient>();
                 return new(oCopilotClient);
             });
+
+            builder.Services.TryAddTransient<Agent, CopilotStudioAgent>();
 #pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
             builder.Services.Scan(

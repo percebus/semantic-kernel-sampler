@@ -2,8 +2,8 @@
 {
     using Microsoft.SemanticKernel;
 
-    public interface ICustomAgent
+    public interface ICustomAgent : IBuiltinAgent
     {
-        public Task<ChatMessageContent> InvokeAsync(string userMessage);
+        public Task<KernelContent> InvokeAsync(KernelContent userMessage);
     }
 }
