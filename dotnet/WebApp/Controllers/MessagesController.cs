@@ -8,7 +8,7 @@
 
     public class MessagesController(ILogger<MessagesController> logger, ICustomAgent agent) : ObservableControllerBase(logger)
     {
-        private IBuiltIn_Agent Agent => agent;
+        private IBuiltInAgent Agent => agent;
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)

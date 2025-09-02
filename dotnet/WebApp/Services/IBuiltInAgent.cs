@@ -2,7 +2,7 @@
 {
     using Microsoft.SemanticKernel;
 
-    public interface IBuiltIn_Agent
+    public interface IBuiltInAgent
     {
         public Task<IReadOnlyList<KernelContent>> InvokeAsync(IReadOnlyList<KernelContent> messages);
     }
