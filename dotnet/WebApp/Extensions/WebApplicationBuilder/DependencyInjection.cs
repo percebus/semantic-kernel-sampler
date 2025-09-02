@@ -115,7 +115,11 @@
             builder.Services.TryAddSingleton<CopilotStudioConnectionSettings>(provider => new(
                 appSettings.CopilotStudio.TenantId,
                 appSettings.CopilotStudio.ClientId,
-                appSettings.CopilotStudio.ClientSecret));
+                appSettings.CopilotStudio.ClientSecret)
+            {
+                EnvironmentId = appSettings.CopilotStudio.EnvironmentId,
+                SchemaName = appSettings.CopilotStudio.SchemaName,
+            });
 
             builder.Services.TryAddScoped<CopilotClient>(provider =>
             {
@@ -129,9 +133,10 @@
                 return new(oCopilotClient);
             });
 
+            // builder.Services.TryAddTransient<Agent>(provider => provider.GetRequiredService<ChatCompletionAgent>());
+            builder.Services.TryAddTransient<Agent>(provider => provider.GetRequiredService<CopilotStudioAgent>());
 #pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-            builder.Services.TryAddTransient<Agent>(provider => provider.GetRequiredService<ChatCompletionAgent>());
 
             builder.Services.Scan(
                 s => s.FromAssemblyOf<Program>()

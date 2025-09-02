@@ -18,24 +18,32 @@
             var requestMessages = new List<ChatMessageContent> { requestChatMessageContent };
 
             AgentThread? thread = null;
-            await foreach (AgentResponseItem<ChatMessageContent> item in this.Agent.InvokeAsync(requestMessages, thread))
+            try
             {
-                thread = item.Thread;
-                this.Logger.LogInformation("Request message content item: {Item}", item);
-
-                ChatMessageContent responseChatMessageContent = item.Message;
-                var response = new Response
+                await foreach (AgentResponseItem<ChatMessageContent> item in this.Agent.InvokeAsync(requestMessages, thread))
                 {
-                    Request = request,
-                    Message = responseChatMessageContent.Content,
-                };
+                    thread = item.Thread;
+                    this.Logger.LogInformation("Request message content item: {Item}", item);
 
-                this.Logger.LogInformation("Sending response: {Response}", response);
-                var result = this.Ok(response);
-                return await Task.FromResult(result);
+                    ChatMessageContent responseChatMessageContent = item.Message;
+                    var response = new Response
+                    {
+                        Request = request,
+                        Message = responseChatMessageContent.Content,
+                    };
+
+                    this.Logger.LogInformation("Sending response: {Response}", response);
+                    var result = this.Ok(response);
+                    return await Task.FromResult(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Error processing request: {Request}", request);
+                return this.StatusCode(500, "Internal server error");
             }
 
-            throw new Exception("No response received");
+            return this.StatusCode(500, "No response");
         }
     }
 }
