@@ -18,6 +18,10 @@
             var requestMessages = new List<ChatMessageContent> { requestChatMessageContent };
 
             AgentThread? thread = null;
+            var response = new Response
+            {
+                Request = request,
+            };
             try
             {
                 await foreach (AgentResponseItem<ChatMessageContent> item in this.Agent.InvokeAsync(requestMessages, thread))
@@ -26,15 +30,7 @@
                     this.Logger.LogInformation("Request message content item: {Item}", item);
 
                     ChatMessageContent responseChatMessageContent = item.Message;
-                    var response = new Response
-                    {
-                        Request = request,
-                        Message = responseChatMessageContent.Content,
-                    };
-
-                    this.Logger.LogInformation("Sending response: {Response}", response);
-                    var result = this.Ok(response);
-                    return await Task.FromResult(result);
+                    response.Message = responseChatMessageContent.Content;
                 }
             }
             catch (Exception ex)
@@ -43,7 +39,14 @@
                 return this.StatusCode(500, "Internal server error");
             }
 
-            return this.StatusCode(500, "No response");
+            if (string.IsNullOrWhiteSpace(response.Message))
+            {
+                return this.StatusCode(500, "No response");
+            }
+
+            this.Logger.LogInformation("Sending response: {Response}", response);
+            var result = this.Ok(response);
+            return await Task.FromResult(result);
         }
     }
 }
