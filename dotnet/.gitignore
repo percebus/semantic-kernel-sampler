@@ -3,6 +3,7 @@
 
 # switch w/ different models
 appsettings.ai*.json
+appsettings.copilotstudio.json
 appsettings*.secrets.json
 
 

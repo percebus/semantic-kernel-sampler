@@ -5,7 +5,8 @@
         "Endpoint": "https://{YOUR URL}.cognitiveservices.azure.com",
         "DeploymentId": "{AZURE_OPENAI_DEPLOYMENT_ID}",
         "ModelId": "{AZURE_OPENAI_MODEL_ID}",
-        "ApiVersion": "{AZURE_OPENAI_API_VERSION}"
+        "ApiVersion": "{AZURE_OPENAI_API_VERSION}",
+        "ApiKey": "***"
       }
     }
   }

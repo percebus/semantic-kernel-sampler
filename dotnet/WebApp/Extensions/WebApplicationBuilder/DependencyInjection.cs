@@ -6,11 +6,14 @@
     using Azure;
     using Azure.AI.OpenAI;
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Options;
+    using JCystems.SemanticKernelSampler.Dotnet.WebApp.Services;
+    using Microsoft.Agents.CopilotStudio.Client;
     using Microsoft.AspNetCore.Http.Json;
     using Microsoft.Extensions.AI;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.Agents.Copilot;
     using Microsoft.SemanticKernel.ChatCompletion;
     using Scrutor;
     using Serilog;
@@ -22,7 +25,7 @@
         {
             builder.Configuration.AddJsonFile("appsettings.json", optional: false);
             builder.Configuration.AddJsonFile("appsettings.ai.json", optional: false, reloadOnChange: true);
-            builder.Configuration.AddJsonFile("appsettings.ai.secrets.json", optional: false, reloadOnChange: true);
+            builder.Configuration.AddJsonFile("appsettings.copilotstudio.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
             builder.Configuration.AddEnvironmentVariables();
 
@@ -47,7 +50,7 @@
                 throw;
             }
 
-            builder.Services.TryAddSingleton(FunctionChoiceBehavior.Auto());
+            builder.Services.TryAddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
             builder.Services.TryAddSingleton<PromptExecutionSettings>(provider =>
             {
                 var oFunctionChoiceBehavior = provider.GetRequiredService<FunctionChoiceBehavior>();
@@ -65,10 +68,10 @@
                 return new(appSettings.AiModel.Endpoint, oApiKeyCredential);
             });
 
-            builder.Services.TryAddScoped(provider =>
+            builder.Services.TryAddScoped<ChatHistory>(provider =>
             {
                 // TODO: Add System Message
-                return new ChatHistory();
+                return new();
             });
 
             // TODO? or XXX?
@@ -78,9 +81,9 @@
             //     return oAzureOpenAIClient.GetChatClient(appSettings.AiModel.DeploymentId).AsIChatClient();
             // });
 
-            builder.Services.TryAddTransient(provider => Kernel.CreateBuilder());
+            builder.Services.TryAddTransient<IKernelBuilder>(provider => Kernel.CreateBuilder());
 
-            builder.Services.TryAddTransient(provider =>
+            builder.Services.TryAddTransient<Kernel>(provider =>
             {
                 var oKernelBuilder = provider.GetRequiredService<IKernelBuilder>();
                 var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
@@ -94,17 +97,38 @@
                 return oKernelBuilder.Build();
             });
 
-            builder.Services.TryAddScoped(provider =>
+            builder.Services.TryAddScoped<IChatCompletionService>(provider =>
             {
                 var oKernel = provider.GetRequiredService<Kernel>();
                 return oKernel.GetRequiredService<IChatCompletionService>();
             });
+
+#pragma warning disable SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+            builder.Services.TryAddSingleton<CopilotStudioConnectionSettings>(provider => new(
+                appSettings.CopilotStudio.TenantId,
+                appSettings.CopilotStudio.ClientId,
+                appSettings.CopilotStudio.ClientSecret));
+
+            builder.Services.TryAddScoped<CopilotClient>(provider =>
+            {
+                var oCopilotStudioConnectionSettings = provider.GetRequiredService<CopilotStudioConnectionSettings>();
+                return CopilotStudioAgent.CreateClient(oCopilotStudioConnectionSettings);
+            });
+
+            builder.Services.TryAddTransient<CopilotStudioAgent>(provider =>
+            {
+                var oCopilotClient = provider.GetRequiredService<CopilotClient>();
+                return new(oCopilotClient);
+            });
+#pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
             builder.Services.Scan(
                 s => s.FromAssemblyOf<Program>()
                       .AddClasses()
                       .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                       .AsMatchingInterface());
+
+            builder.Services.TryAddScoped<ICustomAgent, CustomChatAgent>();
 
             // Add services to the container.
             builder.Services.AddControllers();

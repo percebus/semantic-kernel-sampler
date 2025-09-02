@@ -1,25 +1,18 @@
 ﻿namespace JCystems.SemanticKernelSampler.Dotnet.WebApp.Controllers
 {
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Models;
+    using JCystems.SemanticKernelSampler.Dotnet.WebApp.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.ChatCompletion;
 
-    public class MessagesController(ILogger<MessagesController> logger, IChatCompletionService chatCompletionService, ChatHistory chatHistory) : ObservableControllerBase(logger)
+    public class MessagesController(ILogger<MessagesController> logger, ICustomAgent agent) : ObservableControllerBase(logger)
     {
-        // TODO wrap in a provider
-        private ChatHistory ChatHistory { get; set; } = chatHistory;
-
-        private IChatCompletionService ChatCompletionService => chatCompletionService;
+        private ICustomAgent Agent => agent;
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)
         {
-            // SRC: https://github.com/microsoft/semantic-kernel/blob/dotnet-1.64.0/dotnet/samples/Concepts/ChatCompletion/AzureOpenAI_ChatCompletion.cs
-            this.ChatHistory.AddUserMessage(request.Message);
-
-            ChatMessageContent replyChatMessageContent = await this.ChatCompletionService.GetChatMessageContentAsync(this.ChatHistory);
-            this.ChatHistory.Add(replyChatMessageContent);
+            ChatMessageContent replyChatMessageContent = await this.Agent.InvokeAsync(request.Message);
 
             var response = new Response
             {
