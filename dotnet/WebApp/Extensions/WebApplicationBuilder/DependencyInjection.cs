@@ -75,12 +75,10 @@
                 return new();
             });
 
-            // TODO? or XXX?
-            // builder.Services.AddTransient<IChatClient>(provider =>
-            // {
-            //     var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
-            //     return oAzureOpenAIClient.GetChatClient(appSettings.AiModel.DeploymentId).AsIChatClient();
-            // });
+            builder.Services.AddTransient<IChatClient>(provider => provider
+                .GetRequiredService<AzureOpenAIClient>()
+                .GetChatClient(appSettings.AiModel.DeploymentId)
+                .AsIChatClient());
 
             builder.Services.TryAddTransient<IKernelBuilder>(provider => Kernel.CreateBuilder());
 
@@ -90,25 +88,38 @@
                 var oAzureOpenAIClient = provider.GetRequiredService<AzureOpenAIClient>();
 
                 // NOTE: Chose 1 or the other?
-                // oKernelBuilder.AddAzureOpenAIChatClient(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
-                oKernelBuilder.AddAzureOpenAIChatCompletion(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
+                oKernelBuilder.AddAzureOpenAIChatClient(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
+                // oKernelBuilder.AddAzureOpenAIChatCompletion(appSettings.AiModel.DeploymentId, oAzureOpenAIClient);
 
                 // oKernelBuilder.Plugins.AddFromType<YourTypeHere>(); // TODO: Add your plugins here
 
                 return oKernelBuilder.Build();
             });
 
-            builder.Services.TryAddScoped<IChatCompletionService>(provider =>
+            builder.Services.TryAddTransient<IChatCompletionService>(provider => provider
+                .GetRequiredService<Kernel>()
+                .GetRequiredService<IChatCompletionService>());
+
+            builder.Services.TryAddTransient<ChatCompletionAgent>(provider =>
             {
                 var oKernel = provider.GetRequiredService<Kernel>();
-                return oKernel.GetRequiredService<IChatCompletionService>();
+                return new()
+                {
+                    Name = "ChatCompletionAgent",
+                    Instructions = "You are a helpful AI assistant.",
+                    Kernel = oKernel,
+                };
             });
 
 #pragma warning disable SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
             builder.Services.TryAddSingleton<CopilotStudioConnectionSettings>(provider => new(
                 appSettings.CopilotStudio.TenantId,
                 appSettings.CopilotStudio.ClientId,
-                appSettings.CopilotStudio.ClientSecret));
+                appSettings.CopilotStudio.ClientSecret)
+            {
+                EnvironmentId = appSettings.CopilotStudio.EnvironmentId,
+                SchemaName = appSettings.CopilotStudio.SchemaName,
+            });
 
             builder.Services.TryAddScoped<CopilotClient>(provider =>
             {
@@ -122,8 +133,10 @@
                 return new(oCopilotClient);
             });
 
-            builder.Services.TryAddTransient<Agent, CopilotStudioAgent>();
+            // builder.Services.TryAddTransient<Agent>(provider => provider.GetRequiredService<ChatCompletionAgent>());
+            builder.Services.TryAddTransient<Agent>(provider => provider.GetRequiredService<CopilotStudioAgent>());
 #pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
 
             builder.Services.Scan(
                 s => s.FromAssemblyOf<Program>()
@@ -131,7 +144,7 @@
                       .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                       .AsMatchingInterface());
 
-            builder.Services.TryAddScoped<ICustomAgent, CustomChatAgent>();
+            builder.Services.TryAddTransient<ICustomChatAgent, CustomChatAgent>();
 
             // Add services to the container.
             builder.Services.AddControllers();

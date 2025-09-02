@@ -31,6 +31,12 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage(
     "StyleCop.CSharp.LayoutRules",
+    "SA1515:Single-line comment should be preceded by blank line",
+    Scope = "module",
+    Justification = "Sometimes comments should go right after code")]
+
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.LayoutRules",
     "SA1516:Elements should be separated by blank line",
     Scope = "module",
     Justification = "Self documented code When properties and fields go together")]

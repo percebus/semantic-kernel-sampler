@@ -128,7 +128,9 @@ $> bash ./run.sh
 
 ### GitHub
 
-- [`microsoft`](https://github.com/microsoft) / [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
+- [`microsoft`](https://github.com/microsoft)
+  - [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
+  - [`Agents`](https://github.com/microsoft/Agents)
 - [`a2aproject`](https://github.com/a2aproject) /
   - [`A2A`](https://github.com/a2aproject/A2A)
   - [`a2a-samples`](https://github.com/a2aproject/a2a-samples)

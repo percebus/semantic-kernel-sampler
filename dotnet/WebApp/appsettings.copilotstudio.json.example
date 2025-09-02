@@ -2,6 +2,7 @@
   "JCystems": {
     "SemanticKernelSampler.DotNet.WebApp": {
       "CopilotStudio": {
+        "EnvironmentId": "{YOUR_ENVIRONMENT_ID}",
         "TenantId": "{YOUR TENANT_ID}",
         "ClientId": "{YOUR_CLIENT_ID}",
         "ClientSecret": "***"
