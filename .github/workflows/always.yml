@@ -103,7 +103,9 @@ jobs:
       matrix:
         project:
           - semantic-kernel-sampler-py
-    name: pypyr ci @ ${{ matrix.project }}
+          - ai-evaluator-py
+
+    name: ci.ba.sh @ ${{ matrix.project }}
     steps:
       - name: python @ ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v5
@@ -122,12 +124,8 @@ jobs:
         run: bash scripts/install.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
-      - name: pypyr lint
-        run: pypyr lint stats=True
-        working-directory: ./python/${{ matrix.project }}
-
-      - name: pypyr test
-        run: pypyr ci lint=False
+      - name: ci (lint and/or test)
+        run: bash scripts/ci.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
   dotnet_build:

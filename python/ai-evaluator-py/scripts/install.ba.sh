@@ -12,6 +12,7 @@ set -x
 
 # Upgrades top-level dependencies, like pipx
 bash ${scripts_path}/pip/upgrade.ba.sh
+pipx ensurepath
 
 # pipx installs CLI executables, like poetry
 bash ${scripts_path}/pipx/install.ba.sh
@@ -20,8 +21,10 @@ bash ${scripts_path}/pipx/install.ba.sh
 bash ${scripts_path}/uv/tool/install.ba.sh ${target_config}
 
 # uv sync
+uv run -- poe sync
+
 # uv build
-uv run -- pypyr build
+uv run -- poe build
 
 set +x
 set +e

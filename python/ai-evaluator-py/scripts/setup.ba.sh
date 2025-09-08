@@ -20,8 +20,10 @@ bash ${scripts_path}/pipx/install.ba.sh
 bash ${scripts_path}/uv/tool/install.ba.sh ${target_config}
 
 # uv sync
+uv run -- poe sync
+
 # uv build
-uv run -- pypyr build
+uv run -- poe build
 
 set +x
 set +e
