@@ -1,5 +1,7 @@
 """.env os.environ ENVIRONMENT VARIABLES settings module."""
 
+from typing import Optional
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -23,4 +25,8 @@ class Settings(BaseSettings):
 
     azure_openai: AzureOpenAISettings = Field(default_factory=AzureOpenAISettings)  # type: ignore[assignment]  # FIXME
 
-    azure_ai_project: AzureAIProjectSettings = Field(default_factory=AzureAIProjectSettings)  # type: ignore[assignment]  # FIXME
+    # Option A): Azure AI Hub
+    azure_ai_project: Optional[AzureAIProjectSettings] = Field(default_factory=AzureAIProjectSettings)  # type: ignore[assignment]  # FIXME
+
+    # Option B): Azure AI Foundry Connection
+    azure_ai_project_endpoint: Optional[str] = Field(default=None)
