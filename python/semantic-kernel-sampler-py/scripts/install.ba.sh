@@ -22,7 +22,7 @@ bash ${scripts_path}/uv/tool/install.ba.sh ${target_config}
 
 # uv sync
 # uv build
-uvx -- pypyr build
+uv run -- pypyr build
 
 set +x
 set +e
