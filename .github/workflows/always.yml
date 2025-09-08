@@ -103,6 +103,7 @@ jobs:
       matrix:
         project:
           - semantic-kernel-sampler-py
+          # - ai-evaluator-py  # TODO
     name: pypyr ci @ ${{ matrix.project }}
     steps:
       - name: python @ ${{ env.PYTHON_VERSION }}
