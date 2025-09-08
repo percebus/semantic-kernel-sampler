@@ -105,7 +105,7 @@ jobs:
           - semantic-kernel-sampler-py
           - ai-evaluator-py
 
-    name: pypyr ci @ ${{ matrix.project }}
+    name: ci.ba.sh @ ${{ matrix.project }}
     steps:
       - name: python @ ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v5
