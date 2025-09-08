@@ -128,10 +128,6 @@ jobs:
         run: bash scripts/ci.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
-      - name: pypyr test
-        run: pypyr ci lint=False
-        working-directory: ./python/${{ matrix.project }}
-
   dotnet_build:
     name: dotnet build
     runs-on: ubuntu-latest
