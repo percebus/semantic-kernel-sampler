@@ -7,6 +7,7 @@ def load_dotenv_files() -> None:
     """Load environment variables from .env* files."""
     _env_files = [
         ".env",  # Global
+        ".env.ai.project.local",
         ".env.ai.local",
         ".env.local",
     ]
