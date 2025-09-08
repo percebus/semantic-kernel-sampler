@@ -4,7 +4,6 @@ from azure.ai.evaluation import GroundednessEvaluator, evaluate  # pyright: igno
 from azure.ai.evaluation._evaluators._common._base_eval import EvaluatorBase
 from lagom import Container
 
-from ai_evaluator.configuration.os_environ.utils import load_dotenv_files
 from ai_evaluator.dependency_injection.container import container
 from utils.lodash import noop
 

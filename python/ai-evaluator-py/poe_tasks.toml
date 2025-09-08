@@ -3,30 +3,29 @@
         help = "Clean the project"
         cmd = "uvx pyclean src"
 
-    # clean code tasks
     [tasks.ruff_format]
-        cmd = "ruff format ./src"
         help = "format codebase with ruff"
+        cmd = "ruff format ./src"
 
     [tasks.ruff_check-fix]
-        cmd = "ruff check --fix ./src"
         help = "fix codebase with ruff"
+        cmd = "ruff check --fix ./src"
 
     [tasks.ruff_check]
-        cmd = "ruff check ./src"
         help = "lint codebase with ruff"
+        cmd = "ruff check ./src"
 
     [tasks.uv-sort]
-        cmd = "uv run uv-sort"
         help = "fixes order of imports"
+        cmd = "uv run uv-sort"
 
     [tasks.uv-sort_check]
-        cmd = "uv run uv-sort --check"
         help = "Checks if uv-sort was fixed"
+        cmd = "uv run uv-sort --check"
 
     [tasks.pyright]
-        cmd = "uv run pyright --warnings"
         help = "Checks type hints with pyright"
+        cmd = "uv run pyright --warnings"
 
     [tasks.lint]
         help = "Checks linting"
