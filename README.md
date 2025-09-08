@@ -27,6 +27,11 @@ Semantic-Kernel monorepo sampler
   - [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts)
     - Uses [`rest-app`](./node/rest-app)
 
+### AI Evaluation
+
+- `python/`
+  - [`ai-evaluator-py`](./python/ai-evaluator-py)
+
 ### External
 
 - [`a2a-inspector`](https://github.com/a2aproject/a2a-inspector)
