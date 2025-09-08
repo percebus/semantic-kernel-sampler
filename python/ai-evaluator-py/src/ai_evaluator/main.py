@@ -5,7 +5,7 @@ from azure.ai.evaluation._evaluators._common._base_eval import EvaluatorBase
 from lagom import Container
 
 from ai_evaluator.dependency_injection.container import container
-from utils.lodash import noop
+from ai_evaluator.utils.lodash import noop
 
 if TYPE_CHECKING:
     from azure.ai.evaluation._evaluate._evaluate import EvaluationResult  # pyright: ignore[reportPrivateImportUsage]
@@ -25,6 +25,7 @@ def run(ctr: Container) -> None:
 
     dataset_path: str = "./assets/examples/01_turn_on_the_light/03_experiments/01/01_responses/turns.jsonl"
     # dataset_path: str = "./assets/examples/01_turn_on_the_light/03_experiments/01/03_dataset/conversations.jsonl"
+
     oEvaluationResult: EvaluationResult = evaluate(
         data=dataset_path,
         evaluators=evaluators,  #  # pyright: ignore[reportArgumentType]
