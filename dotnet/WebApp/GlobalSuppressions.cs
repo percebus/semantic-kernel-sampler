@@ -40,3 +40,9 @@ using System.Diagnostics.CodeAnalysis;
     "SA1516:Elements should be separated by blank line",
     Scope = "module",
     Justification = "Self documented code When properties and fields go together")]
+
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.OrderingRules",
+    "SA1212:Property accessors should follow order",
+    Scope = "module",
+    Justification = "Things are 'set'ted before they are 'get'ted")]

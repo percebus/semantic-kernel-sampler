@@ -42,6 +42,8 @@ services:
       - 8082:9999
 
   semantic-app.net:
+    depends_on:
+      - semantic-app-py
     build:
       context: ./dotnet
       target: webapp
