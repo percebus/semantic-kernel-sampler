@@ -152,6 +152,9 @@
             builder.Services.AddSwaggerGen();
             builder.Services.AddHealthChecks();
 
+            // Add HTTP client for A2A communication
+            builder.Services.AddHttpClient();
+
             // TODO: Add resiliency
             // builder.Services.ConfigureHttpClientDefaults(http =>
             // {
