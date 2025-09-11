@@ -146,6 +146,9 @@
 
             builder.Services.TryAddTransient<ICustomChatAgent, CustomChatAgent>();
 
+            // A2A agent card resolver
+            builder.Services.TryAddTransient<IA2ACardResolver, A2ACardResolver>();
+
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
