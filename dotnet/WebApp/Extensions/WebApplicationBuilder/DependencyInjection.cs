@@ -137,6 +137,23 @@
             builder.Services.TryAddTransient<Agent>(provider => provider.GetRequiredService<CopilotStudioAgent>());
 #pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
+            // SRC: https://github.com/microsoft/semantic-kernel/blob/main/dotnet/samples/GettingStartedWithAgents/A2A/Step01_A2AAgent.cs
+            builder.Services.TryAddTransient<HttpClientHandler>();
+            // builder.Services.TryAddTransient<LoggingHandler>(); // FIXME
+            builder.Services.TryAddScoped<HttpClient>(provider =>
+            {
+                var oHttpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+                // var oLoggingHandler = provider.GetRequiredService<LoggingHandler>(); // FIXME
+                return oHttpClientFactory.CreateClient();
+            });
+
+            builder.Services.TryAddScoped<IA2AService>(provider =>
+            {
+                // FIXME read from Options
+                Uri baseURI = new Uri("http://localhost:9999"); // /.well-known/agent-card.json");
+                var oHttpClient = provider.GetRequiredService<HttpClient>();
+                return new A2AService(oHttpClient, baseURI);
+            });
 
             builder.Services.Scan(
                 s => s.FromAssemblyOf<Program>()
@@ -151,6 +168,9 @@
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHealthChecks();
+
+            // Add HTTP client for A2A communication
+            builder.Services.AddHttpClient();
 
             // TODO: Add resiliency
             // builder.Services.ConfigureHttpClientDefaults(http =>
