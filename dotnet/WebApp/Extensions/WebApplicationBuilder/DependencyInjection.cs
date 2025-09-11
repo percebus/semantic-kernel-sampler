@@ -154,6 +154,7 @@
 
             // Add HTTP client for A2A communication
             builder.Services.AddHttpClient();
+            builder.Services.TryAddScoped<HttpClient>(provider => provider.GetRequiredService<IHttpClientFactory>().CreateClient());
 
             // TODO: Add resiliency
             // builder.Services.ConfigureHttpClientDefaults(http =>

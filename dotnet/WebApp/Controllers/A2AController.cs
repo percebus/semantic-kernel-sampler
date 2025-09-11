@@ -3,9 +3,9 @@
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Models.A2A;
     using Microsoft.AspNetCore.Mvc;
 
-    public class A2AController(ILogger<A2AController> logger, IHttpClientFactory httpClientFactory) : ObservableControllerBase(logger)
+    public class A2AController(ILogger<A2AController> logger, HttpClient httpClient) : ObservableControllerBase(logger)
     {
-        private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
+        private readonly HttpClient httpClient = httpClient;
 
         [HttpGet("agent-card")]
         public async Task<IActionResult> GetAgentCardAsync()
@@ -14,8 +14,7 @@
             {
                 this.Logger.LogInformation("Fetching agent card from remote A2A service");
 
-                using var httpClient = this.httpClientFactory.CreateClient();
-                var response = await httpClient.GetAsync("http://localhost:8082/.well-known/agent-card.json");
+                using var response = await this.httpClient.GetAsync("http://localhost:8082/.well-known/agent-card.json");
 
                 if (!response.IsSuccessStatusCode)
                 {
