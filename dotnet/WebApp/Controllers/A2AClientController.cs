@@ -7,13 +7,17 @@
     [Route("api/a2a/client")]
     public class A2AClientController(ILogger<A2AClientController> logger, IA2AService a2aService) : ObservableControllerBase(logger)
     {
-
         [HttpGet("agent-card")]
         public async Task<IActionResult> GetAgentCardAsync()
         {
             if (a2aService.Card is null)
             {
                 await a2aService.InitializeAsync();
+            }
+
+            if (a2aService.Card is null)
+            {
+                throw new Exception("Something went wrong, could not fetch Agent Card!");
             }
 
             try
