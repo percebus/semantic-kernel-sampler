@@ -7,6 +7,7 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Quick Start - Repository Setup
+
 - Bootstrap the repository:
   - `npm run setup` -- installs global dependencies (1 second). NEVER CANCEL.
   - `npm install` -- installs all Node.js dependencies (25 seconds). NEVER CANCEL. Set timeout to 60+ seconds. Expect Node.js version warnings for @modelcontextprotocol/inspector.
@@ -14,28 +15,31 @@ Always reference these instructions first and fallback to search or bash command
   - `gil clone` -- clones external repositories (6 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
 
 ### Language-Specific Builds
+
 - **Node.js projects**: `npm test` -- runs linting and tests for all workspaces (7 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
-- **.NET projects**: 
+- **.NET projects**:
   - `cd dotnet && dotnet restore` -- restores packages (16 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
   - `cd dotnet && dotnet build --no-restore --configuration Release` -- builds project (8 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
 - **Java projects**: `cd java && mvn --batch-mode --update-snapshots verify` -- builds and tests (18 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
 - **Python projects**: Python installs may timeout due to network limitations in CI environments. Use `uv` if available, or document timeouts as expected.
 
 ### Running Applications
-- **REST API**: 
+
+- **REST API**:
   - `cd node/rest-app && npm start` -- starts JSON server on port 3000 (5-10 seconds)
   - Test with: `curl http://localhost:3000/posts`
-- **MCP Inspector**: 
+- **MCP Inspector**:
   - `npm run start:mcp:inspector` -- starts MCP inspector on port 6274 with web interface
   - Opens browser automatically with authentication token
 - **.NET WebApp**: Available in `dotnet/WebApp/bin/Release/net8.0/` after build
-- **Docker Compose**: 
+- **Docker Compose**:
   - First setup: `cd node/mcp-server.rest-app.posts/src/config && cp docker.windows.ts active.ts`
   - Then: `docker compose up --build` -- builds and starts all services
 
 ## Validation
 
 ### Manual Testing Requirements
+
 - ALWAYS test REST API functionality by starting the server and making actual HTTP requests: `curl http://localhost:3000/posts`
 - ALWAYS test MCP inspector by starting it and verifying the web interface loads at the provided URL
 - For any Node.js changes: Run `npm test` to ensure all workspace tests pass
@@ -43,6 +47,7 @@ Always reference these instructions first and fallback to search or bash command
 - Integration tests (`npm run validate`) require running services - failures are expected when services aren't running
 
 ### Pre-commit Validation
+
 - ALWAYS run `npm run lint` before committing (2 seconds) - uses Prettier for code formatting
 - ALWAYS run `npm test` to ensure no regressions (7 seconds)
 - For .NET changes: Run `dotnet build` in dotnet/ directory
@@ -51,23 +56,28 @@ Always reference these instructions first and fallback to search or bash command
 ## Common Issues and Solutions
 
 ### Network Timeouts
+
 - Python pip installs may timeout - this is normal in CI environments
 - If pip timeout occurs, document it but continue with other validations
 
 ### Missing Configuration
+
 - If REST validation tests fail with "Cannot find module '../../config/environments/environment'":
   - Run: `cd __tests__/config/environments && cp local.js environment.js`
 
 ### Node.js Version Warnings
+
 - @modelcontextprotocol/inspector requires Node.js >=22.7.5 but still works with 20.x
 - These warnings are expected and non-blocking
 
 ### Docker Compose Setup
+
 - Must configure MCP server before running docker compose: `cd node/mcp-server.rest-app.posts/src/config && cp docker.windows.ts active.ts`
 
 ## Architecture Overview
 
 ### Project Structure
+
 ```
 ├── node/                     # Node.js projects (workspaces)
 │   ├── rest-app/            # JSON server REST API
@@ -89,6 +99,7 @@ Always reference these instructions first and fallback to search or bash command
 ```
 
 ### Key Services and Ports
+
 - REST API (json-server): http://localhost:3000
 - MCP Inspector: http://localhost:6274
 - MCP Server Quick Start: http://localhost:4001
@@ -98,6 +109,7 @@ Always reference these instructions first and fallback to search or bash command
 - A2A Inspector: http://localhost:5001
 
 ### External Dependencies
+
 - gil: For managing external git repositories
 - @modelcontextprotocol/inspector: Web-based MCP debugging tool
 - json-server: Provides REST API endpoints
