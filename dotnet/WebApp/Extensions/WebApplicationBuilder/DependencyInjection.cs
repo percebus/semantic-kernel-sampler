@@ -93,30 +93,66 @@
                 return new(oTokenCredential);
             });
 
-            // SRC: // SRC: https://github.com/Azure/azure-sdk-for-net/blob/Azure.ResourceManager.ApiManagement_1.3.0/sdk/apimanagement/Azure.ResourceManager.ApiManagement/tests/Generated/Samples/Sample_ServiceProductApiLinkCollection.cs
-            builder.Services.TryAddSingleton<ResourceIdentifier>(provider =>
+
+            builder.Services.TryAddSingleton<ApiManagementServiceResource>(provider =>
             {
                 AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
-                return ApiManagementProductResource.CreateResourceIdentifier(
-                    oApiMProductOptions.SubscriptionId,
-                    oApiMProductOptions.ResourceGroupName,
-                    oApiMProductOptions.ServiceName,
-                    oApiMProductOptions.ProductId);
+                var oResourceIdentifier = ApiManagementServiceResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName);
+
+                return provider
+                    .GetRequiredService<ArmClient>()
+                    .GetApiManagementServiceResource(oResourceIdentifier);
             });
 
+            // SRC: // SRC: https://github.com/Azure/azure-sdk-for-net/blob/Azure.ResourceManager.ApiManagement_1.3.0/sdk/apimanagement/Azure.ResourceManager.ApiManagement/tests/Generated/Samples/Sample_ServiceProductApiLinkCollection.cs
             builder.Services.TryAddSingleton<ApiManagementProductResource>(provider =>
             {
-                var oResourceIdentifier = provider.GetRequiredService<ResourceIdentifier>();
+                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
+                var oResourceIdentifier = ApiManagementProductResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName,
+                        oApiMProductOptions.ProductId);
+
                 return provider
                     .GetRequiredService<ArmClient>()
                     .GetApiManagementProductResource(oResourceIdentifier);
             });
 
-            builder.Services.TryAddSingleton<ServiceProductApiLinkCollection>(provider =>
+            builder.Services.TryAddSingleton<ApiCollection>(provider =>
             {
                 return provider
-                    .GetRequiredService<ApiManagementProductResource>()
-                    .GetServiceProductApiLinks();
+                    .GetRequiredService<ApiManagementServiceResource>()
+                    .GetApis();
+            });
+
+            // Add APIM Subscription Resource to get subscription keys
+            builder.Services.TryAddSingleton<ApiManagementSubscriptionResource>(provider =>
+            {
+                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
+                AzureCredentialOptions oAzureCredentialOptions = appSettings.AzureCredential;
+                
+                // Use the ClientId from AzureCredential as the subscription ID in APIM
+                var oResourceIdentifier = ApiManagementSubscriptionResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName,
+                        oAzureCredentialOptions.ClientId); // This is your APIM subscription ID
+
+                return provider
+                    .GetRequiredService<ArmClient>()
+                    .GetApiManagementSubscriptionResource(oResourceIdentifier);
+            });
+
+            // Add service to retrieve APIM subscription keys
+            builder.Services.TryAddScoped<Func<Task<string>>>(provider => async () =>
+            {
+                var subscriptionResource = provider.GetRequiredService<ApiManagementSubscriptionResource>();
+                var subscriptionKeys = await subscriptionResource.GetSecretsAsync();
+                return subscriptionKeys.Value.PrimaryKey; // or SecondaryKey
             });
 
             builder.Services.TryAddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
