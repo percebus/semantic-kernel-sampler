@@ -16,6 +16,9 @@
         [Required(ErrorMessage = ErrorMessages.ProductIdRequired)]
         public string ProductId { get; set; } = null!;
 
+        [Required(ErrorMessage = ErrorMessages.SubscriptionKeyRequired)]
+        public string SubscriptionKey { get; set; } = null!;
+
         public static class ErrorMessages
         {
             public const string SubscriptionIdRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(SubscriptionId)} cannot be empty";
@@ -25,6 +28,8 @@
             public const string ServiceNameRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(ServiceName)} cannot be empty";
 
             public const string ProductIdRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(ProductId)} cannot be empty";
+
+            public const string SubscriptionKeyRequired = $"{AppSettingsOptions.Key}:{nameof(AiModelOptions)}:{nameof(SubscriptionKey)} cannot be empty";
         }
     }
 }

@@ -94,6 +94,23 @@
             });
 
 
+            // Add APIM Subscription Resource to get subscription keys
+            builder.Services.TryAddSingleton<ApiManagementSubscriptionResource>(provider =>
+            {
+                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
+
+                // Use the ClientId from AzureCredential as the subscription ID in APIM
+                var oResourceIdentifier = ApiManagementSubscriptionResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName,
+                        oApiMProductOptions.SubscriptionKey);
+
+                return provider
+                    .GetRequiredService<ArmClient>()
+                    .GetApiManagementSubscriptionResource(oResourceIdentifier);
+            });
+
             builder.Services.TryAddSingleton<ApiManagementServiceResource>(provider =>
             {
                 AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
@@ -127,24 +144,6 @@
                 return provider
                     .GetRequiredService<ApiManagementServiceResource>()
                     .GetApis();
-            });
-
-            // Add APIM Subscription Resource to get subscription keys
-            builder.Services.TryAddSingleton<ApiManagementSubscriptionResource>(provider =>
-            {
-                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
-                AzureCredentialOptions oAzureCredentialOptions = appSettings.AzureCredential;
-                
-                // Use the ClientId from AzureCredential as the subscription ID in APIM
-                var oResourceIdentifier = ApiManagementSubscriptionResource.CreateResourceIdentifier(
-                        oApiMProductOptions.SubscriptionId,
-                        oApiMProductOptions.ResourceGroupName,
-                        oApiMProductOptions.ServiceName,
-                        oAzureCredentialOptions.ClientId); // This is your APIM subscription ID
-
-                return provider
-                    .GetRequiredService<ArmClient>()
-                    .GetApiManagementSubscriptionResource(oResourceIdentifier);
             });
 
             // Add service to retrieve APIM subscription keys
