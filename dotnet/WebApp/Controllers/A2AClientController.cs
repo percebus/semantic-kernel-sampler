@@ -17,7 +17,7 @@
 
             if (a2aService.Card is null)
             {
-                throw new Exception("Something went wrong, could not fetch Agent Card!");
+                return this.StatusCode(500, "Something went wrong, could not fetch Agent Card!");
             }
 
             try

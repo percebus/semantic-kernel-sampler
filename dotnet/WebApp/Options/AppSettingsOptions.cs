@@ -19,6 +19,14 @@
         [Required(ErrorMessage = ErrorMessages.CopilotStudioOptionsRequired)]
         public CopilotStudioOptions CopilotStudio { get; set; } = new();
 
+        [ValidateObjectMembers]
+        [Required(ErrorMessage = ErrorMessages.AzureApiMProductOptionsRequired)]
+        public AzureApiMProductOptions AzureApiMProduct { get; set; } = new();
+
+        [ValidateObjectMembers]
+        [Required(ErrorMessage = ErrorMessages.AzureCredentialOptionsRequired)]
+        public AzureCredentialOptions AzureCredential { get; set; } = new();
+
         public static class ErrorMessages
         {
             public const string PromptOptionsRequired = $"{Key}:{nameof(Prompt)} cannot be empty";
@@ -26,6 +34,10 @@
             public const string AiModelOptionsRequired = $"{Key}:{nameof(AiModel)} cannot be empty";
 
             public const string CopilotStudioOptionsRequired = $"{Key}:{nameof(CopilotStudio)} cannot be empty";
+
+            public const string AzureApiMProductOptionsRequired = $"{Key}:{nameof(AzureApiMProduct)} cannot be empty";
+
+            public const string AzureCredentialOptionsRequired = $"{Key}:{nameof(AzureCredential)} cannot be empty";
         }
     }
 }

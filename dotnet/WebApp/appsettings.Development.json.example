@@ -1,0 +1,23 @@
+{
+  "JCystems": {
+    "SemanticKernelSampler.DotNet.WebApp": {
+      "AzureApiMProduct": {
+        "SubscriptionId": "FIXME,
+        "ResourceGroupName": "FIXME,
+        "ServiceName": "FIXME,,
+        "ProductId": "FIXME
+      },
+      "AzureCredential": {
+        "TenantId": "FIXME,
+        "ClientId": "FIXME,
+        "ClientSecret": "FIXME,
+      }
+    }
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Debug"
+    }
+  }
+}
