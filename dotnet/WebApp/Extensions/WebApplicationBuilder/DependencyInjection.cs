@@ -83,8 +83,8 @@
             builder.Services.TryAddSingleton<TokenCredential>(provider =>
             {
                 // NOTE: Choose either or
-                // return provider.GetRequiredService<DefaultAzureCredential>();
-                return provider.GetRequiredService<ClientSecretCredential>();
+                return provider.GetRequiredService<DefaultAzureCredential>();
+                // return provider.GetRequiredService<ClientSecretCredential>();
             });
 
             builder.Services.TryAddSingleton<ArmClient>(provider =>
@@ -124,7 +124,7 @@
                     .GetApiManagementServiceResource(oResourceIdentifier);
             });
 
-            // SRC: // SRC: https://github.com/Azure/azure-sdk-for-net/blob/Azure.ResourceManager.ApiManagement_1.3.0/sdk/apimanagement/Azure.ResourceManager.ApiManagement/tests/Generated/Samples/Sample_ServiceProductApiLinkCollection.cs
+            // XXX? Not being used
             builder.Services.TryAddSingleton<ApiManagementProductResource>(provider =>
             {
                 AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
