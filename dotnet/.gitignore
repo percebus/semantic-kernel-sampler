@@ -5,6 +5,7 @@
 appsettings.ai*.json
 appsettings.copilotstudio.json
 appsettings*.secrets.json
+appsettings.Development.json
 
 
 # NOTE: vvv Do NOT add below this point
