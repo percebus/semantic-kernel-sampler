@@ -87,9 +87,9 @@
             builder.Services.TryAddSingleton<TokenCredential>(provider =>
             {
                 // NOTE: Choose either or
-                // return provider.GetRequiredService<DefaultAzureCredential>();
                 return provider.GetRequiredService<AzureCliCredential>();
                 // return provider.GetRequiredService<VisualStudioCredential>();
+                // return provider.GetRequiredService<DefaultAzureCredential>();
                 // return provider.GetRequiredService<ClientSecretCredential>();
             });
 
