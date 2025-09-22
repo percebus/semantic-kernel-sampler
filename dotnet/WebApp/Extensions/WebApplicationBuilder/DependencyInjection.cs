@@ -130,7 +130,13 @@
                     .GetApiManagementServiceResource(oResourceIdentifier);
             });
 
-            // XXX? Not being used
+            builder.Services.TryAddSingleton<ApiCollection>(provider =>
+            {
+                return provider
+                    .GetRequiredService<ApiManagementServiceResource>()
+                    .GetApis();
+            });
+
             builder.Services.TryAddSingleton<ApiManagementProductResource>(provider =>
             {
                 AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
@@ -145,19 +151,11 @@
                     .GetApiManagementProductResource(oResourceIdentifier);
             });
 
-            builder.Services.TryAddSingleton<ApiCollection>(provider =>
+            // SRC: https://github.com/Azure/azure-sdk-for-net/blob/Azure.ResourceManager.ApiManagement_1.3.0/sdk/apimanagement/Azure.ResourceManager.ApiManagement/tests/Generated/Samples/Sample_ServiceProductApiLinkCollection.cs
+            builder.Services.TryAddSingleton<ServiceProductApiLinkCollection>(provider =>
             {
-                return provider
-                    .GetRequiredService<ApiManagementServiceResource>()
-                    .GetApis();
-            });
-
-            // Add service to retrieve APIM subscription keys
-            builder.Services.TryAddScoped<Func<Task<string>>>(provider => async () =>
-            {
-                var subscriptionResource = provider.GetRequiredService<ApiManagementSubscriptionResource>();
-                var subscriptionKeys = await subscriptionResource.GetSecretsAsync();
-                return subscriptionKeys.Value.PrimaryKey; // or SecondaryKey
+                var oApiManagementProductResource = provider.GetRequiredService<ApiManagementProductResource>();
+                return oApiManagementProductResource.GetServiceProductApiLinks();
             });
 
             builder.Services.TryAddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
