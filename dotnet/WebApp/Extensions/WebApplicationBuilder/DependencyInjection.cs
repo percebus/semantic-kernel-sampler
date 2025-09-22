@@ -64,7 +64,7 @@
                 new DefaultAzureCredentialOptions()
                 {
                     // Exclude credentials that often fail with CA policies
-                    ExcludeSharedTokenCacheCredential = true,
+                    // ExcludeSharedTokenCacheCredential = true, // XXX OBSOLETE
                     ExcludeInteractiveBrowserCredential = true,
                     ExcludeAzurePowerShellCredential = true,
 
