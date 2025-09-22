@@ -2,16 +2,16 @@
   "JCystems": {
     "SemanticKernelSampler.DotNet.WebApp": {
       "AzureApiMProduct": {
-        "SubscriptionId": "FIXME,
-        "ResourceGroupName": "FIXME,
-        "ServiceName": "FIXME,
-        "ProductId": "FIXME
-        "SubscriptionKey": "FIXME
+        "SubscriptionId": "FIXME",
+        "ResourceGroupName": "FIXME",
+        "ServiceName": "FIXME",
+        "ProductId": "FIXME",
+        "SubscriptionKey": "FIXME"
       },
       "AzureCredential": {
-        "TenantId": "FIXME,
-        "ClientId": "FIXME,
-        "ClientSecret": "FIXME,
+        "TenantId": "FIXME",
+        "ClientId": "FIXME",
+        "ClientSecret": "FIXME"
       }
     }
   },
