@@ -5,6 +5,10 @@
     using System.Text.Json;
     using Azure;
     using Azure.AI.OpenAI;
+    using Azure.Core;
+    using Azure.Identity;
+    using Azure.ResourceManager;
+    using Azure.ResourceManager.ApiManagement;
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Options;
     using JCystems.SemanticKernelSampler.Dotnet.WebApp.Services;
     using Microsoft.Agents.CopilotStudio.Client;
@@ -18,6 +22,7 @@
     using Microsoft.SemanticKernel.ChatCompletion;
     using Scrutor;
     using Serilog;
+
 
     [ExcludeFromCodeCoverage]
     public static class DependencyInjection
@@ -50,6 +55,108 @@
                 logger.Fatal(ex, "Invalid configuration, please verify that your configuration is correct. Error: {ex}", ex.Message);
                 throw;
             }
+
+            builder.Services.TryAddSingleton<AzureCliCredential>();
+
+            builder.Services.TryAddSingleton<VisualStudioCredential>();
+
+            builder.Services.TryAddSingleton<DefaultAzureCredential>(provider => new(
+                new DefaultAzureCredentialOptions()
+                {
+                    // Exclude credentials that often fail with CA policies
+                    // ExcludeSharedTokenCacheCredential = true, // XXX OBSOLETE
+                    ExcludeInteractiveBrowserCredential = true,
+                    ExcludeAzurePowerShellCredential = true,
+
+                    // Keep these for development
+                    ExcludeAzureCliCredential = false,
+                    ExcludeVisualStudioCredential = true,
+                    ExcludeVisualStudioCodeCredential = true,
+                    ExcludeManagedIdentityCredential = true,
+                }));
+
+            builder.Services.TryAddSingleton<ClientSecretCredential>(provider =>
+            {
+                AzureCredentialOptions oAzureCredentialOptions = appSettings.AzureCredential;
+                return new(
+                    oAzureCredentialOptions.TenantId,
+                    oAzureCredentialOptions.ClientId,
+                    oAzureCredentialOptions.ClientSecret);
+            });
+
+            builder.Services.TryAddSingleton<TokenCredential>(provider =>
+            {
+                // NOTE: Choose either or
+                return provider.GetRequiredService<AzureCliCredential>();
+                // return provider.GetRequiredService<VisualStudioCredential>();
+                // return provider.GetRequiredService<DefaultAzureCredential>();
+                // return provider.GetRequiredService<ClientSecretCredential>();
+            });
+
+            builder.Services.TryAddSingleton<ArmClient>(provider =>
+            {
+                var oTokenCredential = provider.GetRequiredService<TokenCredential>();
+                return new(oTokenCredential);
+            });
+
+
+            // Add APIM Subscription Resource to get subscription keys
+            builder.Services.TryAddSingleton<ApiManagementSubscriptionResource>(provider =>
+            {
+                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
+
+                // Use the ClientId from AzureCredential as the subscription ID in APIM
+                var oResourceIdentifier = ApiManagementSubscriptionResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName,
+                        oApiMProductOptions.SubscriptionKey);
+
+                return provider
+                    .GetRequiredService<ArmClient>()
+                    .GetApiManagementSubscriptionResource(oResourceIdentifier);
+            });
+
+            builder.Services.TryAddSingleton<ApiManagementServiceResource>(provider =>
+            {
+                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
+                var oResourceIdentifier = ApiManagementServiceResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName);
+
+                return provider
+                    .GetRequiredService<ArmClient>()
+                    .GetApiManagementServiceResource(oResourceIdentifier);
+            });
+
+            builder.Services.TryAddSingleton<ApiCollection>(provider =>
+            {
+                return provider
+                    .GetRequiredService<ApiManagementServiceResource>()
+                    .GetApis();
+            });
+
+            builder.Services.TryAddSingleton<ApiManagementProductResource>(provider =>
+            {
+                AzureApiMProductOptions oApiMProductOptions = appSettings.AzureApiMProduct;
+                var oResourceIdentifier = ApiManagementProductResource.CreateResourceIdentifier(
+                        oApiMProductOptions.SubscriptionId,
+                        oApiMProductOptions.ResourceGroupName,
+                        oApiMProductOptions.ServiceName,
+                        oApiMProductOptions.ProductId);
+
+                return provider
+                    .GetRequiredService<ArmClient>()
+                    .GetApiManagementProductResource(oResourceIdentifier);
+            });
+
+            // SRC: https://github.com/Azure/azure-sdk-for-net/blob/Azure.ResourceManager.ApiManagement_1.3.0/sdk/apimanagement/Azure.ResourceManager.ApiManagement/tests/Generated/Samples/Sample_ServiceProductApiLinkCollection.cs
+            builder.Services.TryAddSingleton<ServiceProductApiLinkCollection>(provider =>
+            {
+                var oApiManagementProductResource = provider.GetRequiredService<ApiManagementProductResource>();
+                return oApiManagementProductResource.GetServiceProductApiLinks();
+            });
 
             builder.Services.TryAddSingleton<FunctionChoiceBehavior>(FunctionChoiceBehavior.Auto());
             builder.Services.TryAddSingleton<PromptExecutionSettings>(provider =>
@@ -147,6 +254,7 @@
                 return oHttpClientFactory.CreateClient();
             });
 
+            // XXX dynamic from APIM + APIC
             builder.Services.TryAddScoped<IA2AService>(provider =>
             {
                 // FIXME read from Options

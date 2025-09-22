@@ -2,6 +2,7 @@
 !example.*
 
 # switch w/ different models
+appsettings.Development.json
 appsettings.ai*.json
 appsettings.copilotstudio.json
 appsettings*.secrets.json

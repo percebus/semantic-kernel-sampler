@@ -2,6 +2,8 @@
   "recommendations": [
     "vscjava.vscode-maven",
     "ms-python.python",
-    "humao.rest-client"
+    "humao.rest-client",
+    "apidev.azure-api-center",
+    "ms-azuretools.vscode-apimanagement"
   ]
 }
