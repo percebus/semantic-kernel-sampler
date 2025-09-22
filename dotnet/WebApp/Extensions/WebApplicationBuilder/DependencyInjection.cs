@@ -56,6 +56,10 @@
                 throw;
             }
 
+            builder.Services.TryAddSingleton<AzureCliCredential>();
+
+            builder.Services.TryAddSingleton<VisualStudioCredential>();
+
             builder.Services.TryAddSingleton<DefaultAzureCredential>(provider => new(
                 new DefaultAzureCredentialOptions()
                 {
@@ -66,9 +70,9 @@
 
                     // Keep these for development
                     ExcludeAzureCliCredential = false,
-                    ExcludeVisualStudioCredential = false,
-                    ExcludeVisualStudioCodeCredential = false,
-                    ExcludeManagedIdentityCredential = false,
+                    ExcludeVisualStudioCredential = true,
+                    ExcludeVisualStudioCodeCredential = true,
+                    ExcludeManagedIdentityCredential = true,
                 }));
 
             builder.Services.TryAddSingleton<ClientSecretCredential>(provider =>
@@ -83,7 +87,9 @@
             builder.Services.TryAddSingleton<TokenCredential>(provider =>
             {
                 // NOTE: Choose either or
-                return provider.GetRequiredService<DefaultAzureCredential>();
+                // return provider.GetRequiredService<DefaultAzureCredential>();
+                return provider.GetRequiredService<AzureCliCredential>();
+                // return provider.GetRequiredService<VisualStudioCredential>();
                 // return provider.GetRequiredService<ClientSecretCredential>();
             });
 
