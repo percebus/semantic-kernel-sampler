@@ -33,28 +33,6 @@ services:
     ports:
       - 4002:3000
 
-  semantic-app-py:
-    depends_on:
-      - mcp-server.rest-app.posts
-    build:
-      context: ./python/semantic-kernel-sampler-py
-      target: release
-    ports:
-      - 8082:9999
-
-  semantic-app.net:
-    depends_on:
-      - semantic-app-py
-    build:
-      context: ./dotnet
-      target: webapp
-    ports:
-      - 8083:8080
-
-  # TODO java-app:
-
-  # TODO typescript-app?:
-
   modelcontextprotocol.inspector:
     # NOTE: If you want to build it from `npm install`
     # build:
@@ -76,6 +54,34 @@ services:
     # SRC: https://github.com/modelcontextprotocol/inspector/issues/788
     environment:
       - HOST=0.0.0.0
+
+  semantic-app-py:
+    depends_on:
+      - mcp-server.rest-app.posts
+    build:
+      context: ./python/semantic-kernel-sampler-py
+      target: release
+    ports:
+      - 8082:9999
+    environment:
+      DEBUG: "True"
+      ENVIRONMENT: "docker"
+      A2A__HOST: "0.0.0.0"
+      A2A__PORT: "9999"
+      A2A__NEXT_URL: "http://host.docker.internal:8082"
+
+  semantic-app.net:
+    depends_on:
+      - semantic-app-py
+    build:
+      context: ./dotnet
+      target: webapp
+    ports:
+      - 8083:8080
+
+  # TODO? XXX? java-app:
+
+  # TODO? XXX? typescript-app?:
 
   a2a-inspector:
     build:

@@ -6,4 +6,4 @@ class A2ASettings(BaseModel):
 
     port: int = Field(default=9999)
 
-    url: str = Field(default="http://localhost:9999")
+    next_url: str = Field(default="http://localhost:9999")

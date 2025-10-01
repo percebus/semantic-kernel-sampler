@@ -1,5 +1,5 @@
 !*.env
-# .env.*.local
+.env.*.local
 
 
 # NOTE: vvv Do NOT add below this point
@@ -155,10 +155,10 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# .env
 .venv
-env/
-venv/
+# env/
+# venv/
 ENV/
 env.bak/
 venv.bak/

@@ -47,7 +47,7 @@ class DemoStdioMCPCustomSemanticA2Agent(ConfigurableMixin, CustomSemanticChatInv
         return AgentCard(
             name="Quick Start MCP Agent",
             description="Couple of MCP tools",
-            url=oA2ASettings.url,
+            url=oA2ASettings.next_url,
             version='1.0.0', # FIXME READ from pyproject.toml
             default_input_modes=["text"],
             default_output_modes=["text"],
