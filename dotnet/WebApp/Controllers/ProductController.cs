@@ -19,7 +19,8 @@
                 contracts.Add(item);
             }
 
-            return this.Ok(contracts);
+            IEnumerable<string> apiIds = contracts.Select(o => o.Data.ApiId);
+            return this.Ok(apiIds);
         }
     }
 }

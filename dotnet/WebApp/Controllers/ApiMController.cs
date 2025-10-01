@@ -19,7 +19,8 @@
                 contracts.Add(item);
             }
 
-            return this.Ok(contracts);
+            IEnumerable<string> paths = contracts.Select(o => o.Data.Path);
+            return this.Ok(paths);
         }
     }
 }
