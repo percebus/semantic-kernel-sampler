@@ -70,6 +70,11 @@ services:
     ports:
       - 6274:6274
       - 6277:6277
+    #
+    # ISSUE
+    # SRC: https://github.com/modelcontextprotocol/inspector/issues/788
+    environment:
+      - HOST=0.0.0.0
 
   a2a-inspector:
     build:
