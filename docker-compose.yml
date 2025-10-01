@@ -11,14 +11,15 @@ services:
     ports:
       - 3000:3000
 
-  mcp-server.examples.quick-start:
-    build:
-      context: ./node/mcp-server.examples.quick-start
-      target: mcp-server
-    command: start
-    stdin_open: true
-    ports:
-      - 4001:3000
+  # TODO enable when Streamable HTTP
+  # mcp-server.examples.quick-start:
+  #   build:
+  #     context: ./node/mcp-server.examples.quick-start
+  #     target: mcp-server
+  #   command: start
+  #   stdin_open: true
+  #   ports:
+  #     - 4001:3000
 
   # FIXME change to [Streamable]HTTPServerTransport
   mcp-server.rest-app.posts:
@@ -65,7 +66,7 @@ services:
     #
     # List all MCP servers so that the inspector can connect to them
     depends_on:
-      - mcp-server.examples.quick-start
+      # - mcp-server.examples.quick-start  # TODO
       - mcp-server.rest-app.posts
     ports:
       - 6274:6274
