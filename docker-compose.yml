@@ -78,6 +78,12 @@ services:
       target: webapp
     ports:
       - 8083:8080
+      - 8483:8081
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+      DOTNET_CONFIGURATION: DEBUG
+      DOTNET_RUNNING_IN_CONTAINER: "true"
 
   # TODO? XXX? java-app:
 

@@ -14,7 +14,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// TODO Move to appSettings.json
+string? isDotNETRunningInContainer = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
+
+// Only use HTTPS redirection when not running in a container
+if (string.IsNullOrEmpty(isDotNETRunningInContainer))
+{
+    app.UseHttpsRedirection();
+}
+else
+{
+    // Skip HTTPS redirection in containers
+}
 
 app.UseAuthorization();
 
