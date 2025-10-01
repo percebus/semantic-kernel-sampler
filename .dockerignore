@@ -19,6 +19,9 @@ __tests__/config/environments/environment.js
 # env/*.src.sh
 env/
 
+# Azure API Center
+.api-center-rules/
+
 
 ##################################
 ### VisualStudioCode.gitignore ### SRC: https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore

@@ -1,5 +1,7 @@
 !*.env
-.env.*.local
+.env.local
+# .env.ai.local # TODO?
+# .env.*.local # TODO?
 
 
 # NOTE: vvv Do NOT add below this point
