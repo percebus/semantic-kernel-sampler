@@ -126,6 +126,8 @@ $> bash ./run.sh
 
 ## Resources
 
+- [Introducing Microsoft Agent Framework](https://azure.microsoft.com/en-us/blog/introducing-microsoft-agent-framework/)
+
 ### Examples
 
 - [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
@@ -136,6 +138,8 @@ $> bash ./run.sh
 - [`microsoft`](https://github.com/microsoft)
   - [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
   - [`Agents`](https://github.com/microsoft/Agents)
+    - - [`/samples`](https://github.com/microsoft/Agents/tree/main/samples)
+  - [`agent-framework`](https://github.com/microsoft/agent-framework)
 - [`a2aproject`](https://github.com/a2aproject) /
   - [`A2A`](https://github.com/a2aproject/A2A)
   - [`a2a-samples`](https://github.com/a2aproject/a2a-samples)
