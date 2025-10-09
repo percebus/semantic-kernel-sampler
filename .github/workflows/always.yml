@@ -52,16 +52,15 @@ jobs:
       NPM_CLI_OPTS: --prefix ./node/${{ matrix.project }}
     name: npm test @ ${{ matrix.project }}
     steps:
-      - name: node @ ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
       - name: checkout
         uses: actions/checkout@v3
       - name: ls
         run: ls -la ./node/${{ matrix.project }}
 
+      - name: node @ ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
       - name: npm run setup:ci
         run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
       - name: npm install
@@ -104,6 +103,7 @@ jobs:
       matrix:
         project:
           - semantic-kernel-sampler-py
+          - agent-framework-sampler-py
           - ai-evaluator-py
 
     name: ci.ba.sh @ ${{ matrix.project }}
@@ -203,17 +203,14 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: python @ ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
+      - name: node @ ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
         with:
-          architecture: ${{ env.ARCHITECTURE }}
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: pip upgrade
-        run: |
-          pip install --upgrade pip
-          pip install --upgrade --requirement requirements.upgrade.txt
-      - name: gil clone
-        run: gil clone
+          node-version: ${{ env.NODE_VERSION }}
+      - name: npm run setup:ci
+        run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
+      - name: bower install
+        run: npm run bower:install:production
 
       - name: config
         run: |
