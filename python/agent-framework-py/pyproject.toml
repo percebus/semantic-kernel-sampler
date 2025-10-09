@@ -1,0 +1,23 @@
+[project]
+name = "agent-framework-py"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13.6,<4.0.0"
+dependencies = [
+    "agent-framework==1.0.0b251007",
+    "lagom>=2.7.7,<3.0.0",
+    "pydantic>=2.12.0,<3.0.0",
+    "pydantic-settings>=2.11.0,<3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.2,<9.0.0",
+    "pytest-cov>=7.0.0,<8.0.0",
+    "pytest-dotenv>=0.5.2,<0.6.0",
+]
+cli = [
+    "pyright>=1.1.406,<2.0.0",
+    "ruff>=0.14.0,<0.15.0",
+]
