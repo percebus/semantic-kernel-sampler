@@ -25,7 +25,7 @@ class ThreadedBuiltinAgentInvoker(ThreadedBuiltinAgentInvokerProtocol[Agent, Age
 
         return response
 
-    # TODO REFACTOR convert to dispisable w/ __exit__
+    # TODO REFACTOR convert to disposable w/ __exit__
     async def cleanup(self) -> None:
         if self.agent_thread:
             await self.agent_thread.delete()
