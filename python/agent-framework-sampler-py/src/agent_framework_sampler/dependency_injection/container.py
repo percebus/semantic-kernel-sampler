@@ -5,7 +5,7 @@ from agent_framework.azure import AzureOpenAIChatClient
 from azure.identity import AzureCliCredential
 from lagom import Container, Singleton
 
-from agent_framework_sampler.ai.modules.weather.ms.agent.v1 import WeatherAgent
+from agent_framework_sampler.ai.modules.weather.ms.agent.v1 import WeatherChatAgent
 from agent_framework_sampler.config.configuration import Configuration
 from agent_framework_sampler.config.logs import LoggingConfig
 from agent_framework_sampler.config.os_environ.settings import A2ASettings, AzureOpenAISettings, Settings
@@ -32,8 +32,9 @@ container[AzureOpenAIChatClient] = lambda c: AzureOpenAIChatClient(
     api_version=c[AzureOpenAISettings].api_version,
     credential=c[AzureCliCredential],
 )
+
 container[ChatClientProtocol] = lambda c: c[AzureOpenAIChatClient]
 
-container[WeatherAgent] = lambda c: WeatherAgent(
+container[WeatherChatAgent] = lambda c: WeatherChatAgent(
     chat_client=c[ChatClientProtocol],
 )
