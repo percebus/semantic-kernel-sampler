@@ -3,10 +3,10 @@ name = "semantic-kernel-sampler-py"
 version = "0.1.0"
 readme = "README.md"
 description = "semantic-kernel sampler"
+requires-python = ">=3.10,<4.0.0"
 authors = [
     {name = "JCystems"}
 ]
-requires-python = ">=3.10,<4.0.0"
 dependencies = [
     "a2a-sdk[http-server] (>=0.3.1,<0.4.0)",
     "asyncio (>=3.4.3,<4.0.0)",

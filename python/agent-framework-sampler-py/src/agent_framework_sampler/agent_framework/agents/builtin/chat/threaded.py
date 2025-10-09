@@ -10,9 +10,9 @@ from agent_framework_sampler.agent_framework.agents.builtin.chat.protocol import
 class ThreadedChatAgentRunner(AgentRunnerProtocol):
     chat_agent: ChatAgent = field()
 
-    service_thread_id: Optional[str] = field(default=None)
-
     agent_thread: AgentThread = field(init=False)
+
+    service_thread_id: Optional[str] = field(default=None)
 
     def __post_init__(self) -> None:
         self.agent_thread = self.chat_agent.get_new_thread(service_thread_id=self.service_thread_id)

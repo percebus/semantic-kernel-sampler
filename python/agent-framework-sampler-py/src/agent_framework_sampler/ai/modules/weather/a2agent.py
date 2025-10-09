@@ -1,18 +1,37 @@
-from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Optional
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
+from agent_framework import AgentRunResponse, AgentThread, ChatAgent, ChatMessage
 
+from agent_framework_sampler.a2a.cards.mixin import A2ACardsMixin
 from agent_framework_sampler.a2a.cards.protocol import A2ACardsProtocol
 from agent_framework_sampler.agent_framework.agents.builtin.chat.threaded import ThreadedChatAgentRunner
 from agent_framework_sampler.config.mixin import ConfigurableMixin
+from agent_framework_sampler.utils.lodash import noop
 
 if TYPE_CHECKING:
     from agent_framework_sampler.config.os_environ.a2a import A2ASettings
 
 
+noop(A2ACardsMixin)
+noop(ThreadedChatAgentRunner)
 @dataclass
-class WeatherA2AgentRunner(ConfigurableMixin, ThreadedChatAgentRunner, A2ACardsProtocol):
+class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMixin, ThreadedChatAgentRunner):
+
+    chat_agent: ChatAgent = field()
+
+    extended_agent_card: Optional[AgentCard] = field(default=None)
+
+    service_thread_id: Optional[str] = field(default=None)
+
+    agent_card: AgentCard = field(init=False)
+
+    agent_thread: AgentThread = field(init=False)
+
+    async def run_async(self, messages: list[ChatMessage]) -> AgentRunResponse:
+        return await self.chat_agent.run(messages, thread=self.agent_thread)
+
     def createAgentSkill__get_weather(self) -> AgentSkill:
         return AgentSkill(
             id="get_weather",
@@ -63,8 +82,6 @@ class WeatherA2AgentRunner(ConfigurableMixin, ThreadedChatAgentRunner, A2ACardsP
         # fmt: on
 
     def __post_init__(self):
-        # TODO use plugin's methods as skills instead
-
         get_weather_AgentSkill: AgentSkill = self.createAgentSkill__get_weather()
         get_time_AgentSkill: AgentSkill = self.createAgentSkill__get_time()
 
@@ -73,3 +90,5 @@ class WeatherA2AgentRunner(ConfigurableMixin, ThreadedChatAgentRunner, A2ACardsP
 
         self.agent_card = self.createAgentCard__public(skills=skills)
         self.extended_agent_card = self.createAgentCard__authenticated(skills=authenticated_skills)
+
+        self.agent_thread = self.chat_agent.get_new_thread(service_thread_id=self.service_thread_id)
