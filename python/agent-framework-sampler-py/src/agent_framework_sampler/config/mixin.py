@@ -11,9 +11,9 @@ from agent_framework_sampler.config.os_environ.settings import Settings
 class ConfigurableMixin(ABC):
     """Mixin class to provide configuration and settings access."""
 
-    config: Configuration = field()
+    configuration: Configuration = field()
 
     @property
     def settings(self) -> Settings:
         """Returns the settings from the configuration."""
-        return self.config.settings
+        return self.configuration.settings

@@ -162,6 +162,7 @@ dependencies = [
     { name = "lagom" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "uvicorn" },
 ]
 
 [package.optional-dependencies]
@@ -188,6 +189,7 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=7.0.0,<8.0.0" },
     { name = "pytest-dotenv", marker = "extra == 'dev'", specifier = ">=0.5.2,<0.6.0" },
     { name = "ruff", marker = "extra == 'cli'", specifier = ">=0.14.0,<0.15.0" },
+    { name = "uvicorn", specifier = ">=0.37.0,<0.38.0" },
 ]
 provides-extras = ["dev", "cli"]
 

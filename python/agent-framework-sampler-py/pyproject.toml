@@ -1,9 +1,12 @@
 [project]
 name = "agent-framework-sampler-py"
 version = "0.1.0"
-description = "Add your description here"
 readme = "README.md"
+description = "agent-framework sampler"
 requires-python = ">=3.13.6,<4.0.0"
+authors = [
+    {name = "JCystems"}
+]
 dependencies = [
     "a2a-sdk[http-server]>=0.3.8,<0.4.0",
     "agent-framework==1.0.0b251007",
@@ -11,6 +14,7 @@ dependencies = [
     "lagom>=2.7.7,<3.0.0",
     "pydantic-settings>=2.11.0,<3.0.0",
     "pydantic>=2.12.0,<3.0.0",
+    "uvicorn>=0.37.0,<0.38.0",
 ]
 
 [project.optional-dependencies]
