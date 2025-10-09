@@ -1,7 +1,7 @@
 import asyncio
 
-from agent_framework_sampler.dependency_injection.container import container
 from agent_framework_sampler.ai.modules.weather.ms.agent.v1 import WeatherAgent
+from agent_framework_sampler.dependency_injection.container import container
 
 
 # SRC: https://github.com/microsoft/agent-framework/blob/python-1.0.0b251007/python/samples/getting_started/agents/azure_ai/azure_ai_with_function_tools.py
