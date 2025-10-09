@@ -7,6 +7,6 @@ from agent_framework.azure import AzureOpenAIChatClient
 
 container = Container()
 
-container[AzureOpenAIChatClient] = AzureOpenAIChatClient
-container[BaseChatClient] = lambda c: c[AzureOpenAIChatClient]
 container[AzureCliCredential] = AzureCliCredential
+container[AzureOpenAIChatClient] = lambda c: AzureOpenAIChatClient(credential=c[AzureCliCredential])
+container[BaseChatClient] = lambda c: c[AzureOpenAIChatClient]
