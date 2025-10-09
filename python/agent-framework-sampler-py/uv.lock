@@ -130,9 +130,24 @@ wheels = [
 ]
 
 [[package]]
-name = "agent-framework-py"
+name = "agent-framework-redis"
+version = "1.0.0b251007"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "agent-framework-core" },
+    { name = "numpy" },
+    { name = "redis" },
+    { name = "redisvl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/43/50/d00ba5406e5d570e3e8cada8454b6d94d78ac221d4a52f98589af0577f9a/agent_framework_redis-1.0.0b251007.tar.gz", hash = "sha256:1b13f339f5e40446cb7b4640674e9024b8a44616006e14887df8c85976da96db", size = 22679, upload-time = "2025-10-07T21:55:16.721Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c3/1b/4aec0bb3976f47396fdc59c2ebdba759078f49f41b4e52a0a2c289d04a1e/agent_framework_redis-1.0.0b251007-py3-none-any.whl", hash = "sha256:4633f2e94d68ea9b4374f564bd622a1766913010b151fc04e01a751343f04804", size = 15606, upload-time = "2025-10-07T21:55:15.112Z" },
+]
+
+[[package]]
+name = "agent-framework-sampler-py"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "agent-framework" },
     { name = "lagom" },
@@ -164,21 +179,6 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'cli'", specifier = ">=0.14.0,<0.15.0" },
 ]
 provides-extras = ["dev", "cli"]
-
-[[package]]
-name = "agent-framework-redis"
-version = "1.0.0b251007"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "agent-framework-core" },
-    { name = "numpy" },
-    { name = "redis" },
-    { name = "redisvl" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/43/50/d00ba5406e5d570e3e8cada8454b6d94d78ac221d4a52f98589af0577f9a/agent_framework_redis-1.0.0b251007.tar.gz", hash = "sha256:1b13f339f5e40446cb7b4640674e9024b8a44616006e14887df8c85976da96db", size = 22679, upload-time = "2025-10-07T21:55:16.721Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c3/1b/4aec0bb3976f47396fdc59c2ebdba759078f49f41b4e52a0a2c289d04a1e/agent_framework_redis-1.0.0b251007-py3-none-any.whl", hash = "sha256:4633f2e94d68ea9b4374f564bd622a1766913010b151fc04e01a751343f04804", size = 15606, upload-time = "2025-10-07T21:55:15.112Z" },
-]
 
 [[package]]
 name = "aiofiles"
