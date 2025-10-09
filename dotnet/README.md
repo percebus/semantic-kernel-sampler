@@ -1,5 +1,7 @@
 # SemanticKernelSampler.DotNet
 
+`FIXME` `REFACTOR` to use `agent-framework` instead.
+
 ## References
 
 ### GitHub

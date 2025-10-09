@@ -1,8 +1,8 @@
-# semantic-kernel-sampler
+# agent-framework-sampler
 
 [![[C]ontinuous [I]ntegration](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml)
 
-Semantic-Kernel monorepo sampler
+~~Semantic-Kernel~~ `agent-framework` monorepo sampler
 
 ## Sub-Projecs/Repos
 
@@ -18,7 +18,8 @@ Semantic-Kernel monorepo sampler
 - `java/`
   - TODO
 - `python/`
-  - [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py)
+  - [`agent-framework-sampler-py`](./python/agent-framework-sampler-py)
+  - [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py): `DEPRECATED` use `agent-framework` instead
 
 ### MCP
 
@@ -136,10 +137,10 @@ $> bash ./run.sh
 ### GitHub
 
 - [`microsoft`](https://github.com/microsoft)
-  - [`semantic-kernel`](https://github.com/microsoft/semantic-kernel)
-  - [`Agents`](https://github.com/microsoft/Agents)
-    - - [`/samples`](https://github.com/microsoft/Agents/tree/main/samples)
+  - ~~[`semantic-kernel`](https://github.com/microsoft/semantic-kernel)~~
   - [`agent-framework`](https://github.com/microsoft/agent-framework)
+  - [`Agents`](https://github.com/microsoft/Agents)
+    - [`/samples`](https://github.com/microsoft/Agents/tree/main/samples)
 - [`a2aproject`](https://github.com/a2aproject) /
   - [`A2A`](https://github.com/a2aproject/A2A)
   - [`a2a-samples`](https://github.com/a2aproject/a2a-samples)
