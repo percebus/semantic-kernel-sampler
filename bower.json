@@ -1,0 +1,14 @@
+{
+  "name": "semantic-kernel-sampler",
+  "private": true,
+  "dependencies": {
+    "a2a-inspector": "https://github.com/a2aproject/a2a-inspector.git#1d4bf10df701544a710f3168166b623e223c1057"
+  },
+  "devDependencies": {
+    "a2a-samples": "https://github.com/a2aproject/a2a-samples.git#main",
+    "semantic-kernel": "https://github.com/microsoft/semantic-kernel.git#main",
+    "Agents": "https://github.com/microsoft/Agents.git#main",
+    "Agents-for-net": "https://github.com/microsoft/Agents-for-net.git#main",
+    "agent-framework": "https://github.com/microsoft/agent-framework.git#main"
+  }
+}
