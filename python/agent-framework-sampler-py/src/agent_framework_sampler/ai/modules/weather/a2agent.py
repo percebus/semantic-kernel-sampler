@@ -16,9 +16,10 @@ if TYPE_CHECKING:
 
 noop(A2ACardsMixin)
 noop(ThreadedChatAgentRunner)
+
+
 @dataclass
 class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMixin, ThreadedChatAgentRunner):
-
     chat_agent: ChatAgent = field()
 
     extended_agent_card: Optional[AgentCard] = field(default=None)
@@ -33,13 +34,18 @@ class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMi
         return await self.chat_agent.run(messages, thread=self.agent_thread)
 
     def createAgentSkill__get_weather(self) -> AgentSkill:
+        # fmt: off
         return AgentSkill(
             id="get_weather",
             name="get weather",
             description="Get the weather for a given location.",
             tags=["weather", "location"],
-            examples=["What's the weather like in New York?", "What's the weather in London?"],
+            examples=[
+                "What's the weather like in New York?",
+                "What's the weather in London?"
+            ],
         )
+        # fmt: on
 
     def createAgentSkill__get_time(self) -> AgentSkill:
         # fmt: off
@@ -52,6 +58,7 @@ class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMi
                 "What's the current UTC time?",
             ],
         )
+        # fmt: on
 
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
         oA2ASettings: A2ASettings = self.configuration.settings.a2a

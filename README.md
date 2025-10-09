@@ -46,15 +46,9 @@
 1. `$> npm run setup`
 1. `$> npm install`
 
-### python (global)
-
-1. [`python -m venv .venv`](./.venv/)
-1. Activate `venv`
-1. [`python -m pip install --upgrade --requirement ./requirements.upgrade.txt`](./requirements.upgrade.txt) : Installs `gil`
-
 ### External `repositories/`
 
-1. `gil clone`: [Installs `.gitlinks`](./.gitlinks) [under `repositories/`](./repositories/)
+1. `bower install`: [Installs `bower.json`](./bower.json) [under `repositories/`](./repositories/)
 
 ### @modelcontextprotcol/inspector
 
@@ -71,11 +65,8 @@ TODO
 #### Setup
 
 ```bash
-# installs gil
-$> bash scripts/pip/upgrade.ba.sh
-
 # git clone a2a-instpector ./repositories
-$> gil clone
+$> bower install
 
 $> cd repositories/a2a-inspector
 ```
