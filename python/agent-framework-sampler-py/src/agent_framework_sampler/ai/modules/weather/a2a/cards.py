@@ -13,12 +13,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class WeatherA2AgentCards(ConfigurableMixin, A2ACardsMixin):
-    extended_agent_card: Optional[AgentCard] = field(default=None)
-
-    service_thread_id: Optional[str] = field(default=None)
-
-    agent_card: AgentCard = field(init=False)
+class WeatherA2AgentCards(A2ACardsMixin, ConfigurableMixin):
 
     # TODO move to DI
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:

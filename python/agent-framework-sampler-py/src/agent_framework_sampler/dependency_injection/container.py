@@ -92,10 +92,8 @@ container[ExpertsPanelWorkflow] = lambda c: c[ConcurrentBuilder] \
     .build()
 # fmt: on
 
-container[Workflow] = lambda c: c[ExpertsPanelWorkflow]
-
 container[WorkflowRunner] = lambda c: WorkflowRunner(
-    workflow=c[Workflow],
+    workflow=c[ExpertsPanelWorkflow],
 )
 
 container[WorkflowRunnerProtocol] = lambda c: c[WorkflowRunner]
