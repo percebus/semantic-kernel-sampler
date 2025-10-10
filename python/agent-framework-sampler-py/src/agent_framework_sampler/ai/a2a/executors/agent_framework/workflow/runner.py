@@ -27,13 +27,20 @@ class WorkflowRunnerA2AgentFrameworkExecutor(ConfigurableMixin, AgentExecutor):
         oChatMessage = ChatMessage(role=Role.USER, text=user_input)
         input_messages: list[ChatMessage] = [oChatMessage]
         oWorkflowRunResult: WorkflowRunResult = await self.runner.run_async(input_messages)
-        output_messages: Sequence[ChatMessage] = oWorkflowRunResult.get_outputs()
+        conversations: Sequence[Sequence[ChatMessage]] = oWorkflowRunResult.get_outputs()
+
+        # fmt: off
+        output_messages: Sequence[ChatMessage] = [
+            message
+            for output_messages in conversations
+            for message in output_messages
+            if message.role != Role.USER]
+        # fmt: on
 
         # fmt: off
         responses = (
             message.text
-            for message in output_messages
-            if message.role != Role.USER)
+            for message in output_messages)
         # fmt: on
 
         message_text: str = self.settings.multi_agent_delimiter.join(responses)

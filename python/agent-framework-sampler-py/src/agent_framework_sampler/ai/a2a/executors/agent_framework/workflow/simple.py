@@ -6,7 +6,6 @@ from a2a.server.events import EventQueue
 from a2a.utils import new_agent_text_message
 
 from agent_framework import ChatMessage, Role, Workflow, WorkflowRunResult
-
 from agent_framework_sampler.config.mixin import ConfigurableMixin
 
 if TYPE_CHECKING:
@@ -24,16 +23,21 @@ class SimpleWorkflowA2AgentFrameworkExecutor(ConfigurableMixin, AgentExecutor):
         event_queue: EventQueue,
     ) -> None:
         user_input: str = context.get_user_input()
-        oChatMessage = ChatMessage(role=Role.USER, text=user_input)
-        messages: list[ChatMessage] = [oChatMessage]
-        oWorkflowRunResult: WorkflowRunResult = await self.workflow.run(messages)
-        output_messages: Sequence[ChatMessage] = oWorkflowRunResult.get_outputs()
+        oWorkflowRunResult: WorkflowRunResult = await self.workflow.run(user_input)
+        conversations: Sequence[Sequence[ChatMessage]] = oWorkflowRunResult.get_outputs()
+
+        # fmt: off
+        output_messages: Sequence[ChatMessage] = [
+            message
+            for output_messages in conversations
+            for message in output_messages
+            if message.role != Role.USER]
+        # fmt: on
 
         # fmt: off
         responses = (
             message.text
-            for message in output_messages
-            if message.role != Role.USER)
+            for message in output_messages)
         # fmt: on
 
         message_text: str = self.settings.multi_agent_delimiter.join(responses)

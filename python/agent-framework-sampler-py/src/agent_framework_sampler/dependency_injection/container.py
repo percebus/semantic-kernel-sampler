@@ -125,6 +125,8 @@ container[WorkflowRunnerA2AgentFrameworkExecutor] = lambda c: WorkflowRunnerA2Ag
 
 # Choose either or
 # container[AgentExecutor] = lambda c: container[ChatA2AgentFrameworkRunnerExecutor]
+# container[AgentExecutor] = lambda c: container[WorkflowRunnerA2AgentFrameworkExecutor]
+# container[AgentExecutor] = lambda c: container[SimpleWorkflowA2AgentFrameworkExecutor]
 container[AgentExecutor] = lambda c: container[StreamingWorkflowA2AgentFrameworkExecutor]
 
 # Where to store Tasks
