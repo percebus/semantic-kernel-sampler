@@ -54,7 +54,6 @@ services:
     # SRC: https://github.com/modelcontextprotocol/inspector/issues/788
     env_file:
       - .env.development
-      - .env.local
 
 
   semantic-kernel-sampler-py:
@@ -67,7 +66,8 @@ services:
       - 8082:9999
     env_file:
       - .env.development
-      - .env.local
+    environment:
+      A2A__NEXT_URL: "http://host.docker.internal:8082"
 
   agent-framework-sampler-py:
     depends_on:
@@ -76,10 +76,11 @@ services:
       context: ./python/agent-framework-sampler-py
       target: release
     ports:
-      - 8082:9999
+      - 8084:9999
     env_file:
       - .env.development
-      - .env.local
+    environment:
+      A2A__NEXT_URL: "http://host.docker.internal:8084"
 
 
   semantic-kernel-sampler.net:
@@ -93,7 +94,6 @@ services:
       - 8483:8081
     env_file:
       - .env.development
-      - .env.local
 
   # TODO? XXX? java-app:
 
