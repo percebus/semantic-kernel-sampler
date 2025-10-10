@@ -15,6 +15,7 @@ aiosignal==1.4.0
 annotated-types==0.7.0
 anyio==4.11.0
 asgiref==3.10.0
+asyncio==4.0.0
 attrs==25.4.0
 azure-ai-agents==1.2.0b5
 azure-ai-projects==1.1.0b4
