@@ -17,6 +17,8 @@ from agent_framework_sampler.agent_framework.builtin.agent.chat.runner.threaded 
 from agent_framework_sampler.agent_framework.builtin.workflow.runner.protocol import WorkflowRunnerProtocol
 from agent_framework_sampler.agent_framework.builtin.workflow.runner.simple import SimpleWorkflowRunner
 from agent_framework_sampler.ai.a2a.executors.agent_framework.chat_agent.runner import ChatAgentRunnerA2AgentFrameworkExecutor
+from agent_framework_sampler.ai.a2a.executors.agent_framework.workflow.runner import WorkflowRunnerA2AgentFrameworkExecutor
+from agent_framework_sampler.ai.a2a.executors.agent_framework.workflow.simple import SimpleWorkflowA2AgentFrameworkExecutor
 from agent_framework_sampler.ai.a2a.executors.agent_framework.workflow.streaming import StreamingWorkflowA2AgentFrameworkExecutor
 from agent_framework_sampler.ai.modules.chemistry_expert.agent_framework.agent.v1 import ChemistryExpertChatAgent
 from agent_framework_sampler.ai.modules.experts_panel.a2a.cards import ExpertsPanelA2AgentCards
@@ -104,7 +106,22 @@ container[WeatherA2AgentCards] = lambda c: WeatherA2AgentCards(configuration=c[C
 container[ExpertsPanelA2AgentCards] = lambda c: ExpertsPanelA2AgentCards(configuration=c[Configuration])
 
 container[ChatAgentRunnerA2AgentFrameworkExecutor] = lambda c: ChatAgentRunnerA2AgentFrameworkExecutor(runner=c[ChatAgentRunnerProtocol])
-container[StreamingWorkflowA2AgentFrameworkExecutor] = lambda c: StreamingWorkflowA2AgentFrameworkExecutor(workflow=c[ExpertsPanelWorkflow])
+
+container[StreamingWorkflowA2AgentFrameworkExecutor] = lambda c: StreamingWorkflowA2AgentFrameworkExecutor(
+    configuration=c[Configuration],
+    workflow=c[ExpertsPanelWorkflow],
+)
+
+container[SimpleWorkflowA2AgentFrameworkExecutor] = lambda c: SimpleWorkflowA2AgentFrameworkExecutor(
+    configuration=c[Configuration],
+    workflow=c[ExpertsPanelWorkflow],
+)
+
+container[WorkflowRunnerA2AgentFrameworkExecutor] = lambda c: WorkflowRunnerA2AgentFrameworkExecutor(
+    configuration=c[Configuration],
+    runner=c[WorkflowRunnerProtocol],
+)
+
 
 # Choose either or
 # container[AgentExecutor] = lambda c: container[ChatA2AgentFrameworkRunnerExecutor]
