@@ -6,7 +6,7 @@ from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.request_handlers.request_handler import RequestHandler
 from a2a.server.tasks import InMemoryTaskStore
 from a2a.server.tasks.task_store import TaskStore
-from agent_framework import ChatClientProtocol
+from agent_framework import ChatClientProtocol, ConcurrentBuilder, Workflow
 from agent_framework.azure import AzureOpenAIChatClient
 from azure.identity import AzureCliCredential
 from lagom import Container, Singleton
@@ -14,6 +14,8 @@ from starlette.applications import Starlette
 
 from agent_framework_sampler.ai.a2a.agent_framework.agent.executor import A2AgentInvokerExecutor
 from agent_framework_sampler.ai.a2a.agent_framework.agent.protocol import A2AgentFrameworkRunnerProtocol
+from agent_framework_sampler.ai.modules.chemistry_expert.agent_framework.agent.v1 import ChemistryExpertChatAgent
+from agent_framework_sampler.ai.modules.physics_expert.agent_framework.agent.v1 import PhysicsExpertChatAgent
 from agent_framework_sampler.ai.modules.weather.a2agent import WeatherA2AgentRunner
 from agent_framework_sampler.ai.modules.weather.agent_framework.agent.v1 import WeatherChatAgent
 from agent_framework_sampler.config.configuration import Configuration
@@ -45,10 +47,38 @@ container[AzureOpenAIChatClient] = lambda c: AzureOpenAIChatClient(
 
 container[ChatClientProtocol] = lambda c: c[AzureOpenAIChatClient]
 
+### Agents ###
+
 container[WeatherChatAgent] = lambda c: WeatherChatAgent(
     chat_client=c[ChatClientProtocol],
 )
 
+container[PhysicsExpertChatAgent] = lambda c: PhysicsExpertChatAgent(
+    chat_client=c[ChatClientProtocol],
+)
+
+container[ChemistryExpertChatAgent] = lambda c: ChemistryExpertChatAgent(
+    chat_client=c[ChatClientProtocol],
+)
+
+
+### Orchestration ###
+
+container[ConcurrentBuilder] = ConcurrentBuilder
+
+# fmt: off
+container[Workflow] = lambda c: c[ConcurrentBuilder] \
+    .participants(
+        [
+            c[PhysicsExpertChatAgent],
+            c[ChemistryExpertChatAgent],
+        ]
+    ) \
+    .build()
+# fmt: on
+
+
+### A2A Server ###
 
 container[WeatherA2AgentRunner] = lambda c: WeatherA2AgentRunner(
     configuration=c[Configuration],
