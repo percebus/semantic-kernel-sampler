@@ -6,7 +6,7 @@ from agent_framework import AgentRunResponse, AgentThread, ChatAgent, ChatMessag
 
 from agent_framework_sampler.a2a.cards.mixin import A2ACardsMixin
 from agent_framework_sampler.a2a.cards.protocol import A2ACardsProtocol
-from agent_framework_sampler.agent_framework.agents.builtin.chat.threaded import ThreadedChatAgentRunner
+from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.threaded import ThreadedChatAgentRunner
 from agent_framework_sampler.config.mixin import ConfigurableMixin
 from agent_framework_sampler.utils.lodash import noop
 
