@@ -48,6 +48,14 @@
     help = "Build the project"
     cmd = "uv build --all-packages --wheel"
 
-    [tasks.sync]
+    [tasks.sync_all]
     help = "uv sync everything"
     cmd = "uv sync --locked --all-extras"
+
+    [tasks.sync_release]
+    help = "uv sync only needed"
+    cmd = "uv sync --locked"
+
+    [tasks.sync]  # default alias
+    help = "uv sync"
+    sequence = ["sync_all"]

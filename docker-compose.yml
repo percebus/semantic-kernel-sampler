@@ -53,9 +53,9 @@ services:
     # ISSUE
     # SRC: https://github.com/modelcontextprotocol/inspector/issues/788
     environment:
-      - HOST=0.0.0.0
+      HOST: "0.0.0.0"
 
-  semantic-app-py:
+  semantic-kernel-sampler-py:
     depends_on:
       - mcp-server.rest-app.posts
     build:
@@ -63,16 +63,28 @@ services:
       target: release
     ports:
       - 8082:9999
+    env_file:
+      - .env.development
     environment:
-      DEBUG: "True"
-      ENVIRONMENT: "docker"
-      A2A__HOST: "0.0.0.0"
-      A2A__PORT: "9999"
       A2A__NEXT_URL: "http://host.docker.internal:8082"
 
-  semantic-app.net:
+  agent-framework-sampler-py:
     depends_on:
-      - semantic-app-py
+      - mcp-server.rest-app.posts
+    build:
+      context: ./python/agent-framework-sampler-py
+      target: release
+    ports:
+      - 8084:9999
+    env_file:
+      - .env.development
+    environment:
+      A2A__NEXT_URL: "http://localhost:8084"
+      # A2A__NEXT_URL: "http://host.docker.internal:8084"
+
+  semantic-kernel-sampler.net:
+    depends_on:
+      - semantic-kernel-sampler-py
     build:
       context: ./dotnet
       target: webapp
@@ -89,11 +101,13 @@ services:
 
   # TODO? XXX? typescript-app?:
 
-  a2a-inspector:
-    build:
-      context: ./repositories/a2a-inspector
-    ports:
-      - 5001:8080
-    depends_on:
-      - semantic-app-py
-      # - semantic-app-dotnet
+  # TODO Dockerfile is broken in official repository
+  # a2a-inspector:
+  #   build:
+  #     context: ./repositories/a2a-inspector
+  #   ports:
+  #     - 5001:8080
+  #   depends_on:
+  #     - semantic-kernel-sampler-py
+  #     - agent-framework-sampler-py
+  #     # - semantic-kernel-sampler-dotnet
