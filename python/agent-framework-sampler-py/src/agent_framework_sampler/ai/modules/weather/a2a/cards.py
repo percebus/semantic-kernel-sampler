@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Optional
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class WeatherA2AgentCards(A2ACardsMixin, ConfigurableMixin):
-
     # TODO move to DI
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
         oA2ASettings: A2ASettings = self.configuration.settings.a2a

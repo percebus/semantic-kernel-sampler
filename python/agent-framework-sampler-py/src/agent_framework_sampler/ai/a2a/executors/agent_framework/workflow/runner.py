@@ -1,12 +1,12 @@
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 
 from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.events import EventQueue
 from a2a.utils import new_agent_text_message
-from agent_framework import AgentRunResponse, ChatMessage, Role
 
-from agent_framework_sampler.agent_framework.builtin.agent.chat.runner.protocol import ChatAgentRunnerProtocol
+from agent_framework import ChatMessage, Role, WorkflowRunResult
+from agent_framework_sampler.agent_framework.builtin.workflow.runner.protocol import WorkflowRunnerProtocol
 
 if TYPE_CHECKING:
     from a2a.types import Message
@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 
 # SRC: https://github.com/a2aproject/a2a-samples/blob/main/samples/python/agents/helloworld/agent_executor.py
 @dataclass
-class ChatA2AgentFrameworkRunnerExecutor(AgentExecutor):
-    agent: ChatAgentRunnerProtocol = field()
+class WorkflowRunnerA2AgentFrameworkExecutor(AgentExecutor):
+    runner: WorkflowRunnerProtocol = field()
 
     async def execute(
         self,
@@ -24,11 +24,13 @@ class ChatA2AgentFrameworkRunnerExecutor(AgentExecutor):
     ) -> None:
         user_input: str = context.get_user_input()
         oChatMessage = ChatMessage(role=Role.USER, text=user_input)
-        messages: list[ChatMessage] = [oChatMessage]
-        oAgentRunResponse: AgentRunResponse = await self.agent.run_async(messages)  # type: ignore # FIXME
-        message_text: str = str(oAgentRunResponse)  # pyright: ignore[reportUnknownArgumentType]
-        oMessage: Message = new_agent_text_message(message_text)
-        await event_queue.enqueue_event(oMessage)
+        input_messages: list[ChatMessage] = [oChatMessage]
+        oWorkflowRunResult: WorkflowRunResult = await self.runner.run_async(input_messages)
+
+        output_messages: Sequence[ChatMessage] = oWorkflowRunResult.get_outputs()
+        message_text: str = "\n".join(response.text for response in output_messages)
+        a2aMessage: Message = new_agent_text_message(message_text)
+        await event_queue.enqueue_event(a2aMessage)
 
     async def cancel(self, context: RequestContext, event_queue: EventQueue) -> None:
         raise Exception("cancel not supported")  # pylint: disable=broad-exception-raised

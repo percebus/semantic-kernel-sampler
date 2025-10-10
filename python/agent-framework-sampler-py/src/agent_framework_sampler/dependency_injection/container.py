@@ -15,9 +15,9 @@ from starlette.applications import Starlette
 from agent_framework_sampler.agent_framework.builtin.agent.chat.runner.protocol import ChatAgentRunnerProtocol
 from agent_framework_sampler.agent_framework.builtin.agent.chat.runner.threaded import ThreadedChatAgentRunner
 from agent_framework_sampler.agent_framework.builtin.workflow.runner.protocol import WorkflowRunnerProtocol
-from agent_framework_sampler.agent_framework.builtin.workflow.runner.runner import WorkflowRunner
-from agent_framework_sampler.ai.a2a.agent_framework.chat_agent.executor import ChatA2AgentFrameworkRunnerExecutor
-from agent_framework_sampler.ai.a2a.agent_framework.workflow.executor import WorkflowA2AgentFrameworkRunnerExecutor
+from agent_framework_sampler.agent_framework.builtin.workflow.runner.simple import SimpleWorkflowRunner
+from agent_framework_sampler.ai.a2a.executors.agent_framework.chat_agent.runner import ChatAgentRunnerA2AgentFrameworkExecutor
+from agent_framework_sampler.ai.a2a.executors.agent_framework.workflow.streaming import StreamingWorkflowA2AgentFrameworkExecutor
 from agent_framework_sampler.ai.modules.chemistry_expert.agent_framework.agent.v1 import ChemistryExpertChatAgent
 from agent_framework_sampler.ai.modules.experts_panel.a2a.cards import ExpertsPanelA2AgentCards
 from agent_framework_sampler.ai.modules.physics_expert.agent_framework.agent.v1 import PhysicsExpertChatAgent
@@ -92,23 +92,23 @@ container[ExpertsPanelWorkflow] = lambda c: c[ConcurrentBuilder] \
     .build()
 # fmt: on
 
-container[WorkflowRunner] = lambda c: WorkflowRunner(
+container[SimpleWorkflowRunner] = lambda c: SimpleWorkflowRunner(
     workflow=c[ExpertsPanelWorkflow],
 )
 
-container[WorkflowRunnerProtocol] = lambda c: c[WorkflowRunner]
+container[WorkflowRunnerProtocol] = lambda c: c[SimpleWorkflowRunner]
 
 ### A2A Server ###
 
 container[WeatherA2AgentCards] = lambda c: WeatherA2AgentCards(configuration=c[Configuration])
 container[ExpertsPanelA2AgentCards] = lambda c: ExpertsPanelA2AgentCards(configuration=c[Configuration])
 
-container[ChatA2AgentFrameworkRunnerExecutor] = lambda c: ChatA2AgentFrameworkRunnerExecutor(agent=c[ChatAgentRunnerProtocol])
-container[WorkflowA2AgentFrameworkRunnerExecutor] = lambda c: WorkflowA2AgentFrameworkRunnerExecutor(workflow=c[WorkflowRunnerProtocol])
+container[ChatAgentRunnerA2AgentFrameworkExecutor] = lambda c: ChatAgentRunnerA2AgentFrameworkExecutor(runner=c[ChatAgentRunnerProtocol])
+container[StreamingWorkflowA2AgentFrameworkExecutor] = lambda c: StreamingWorkflowA2AgentFrameworkExecutor(workflow=c[ExpertsPanelWorkflow])
 
 # Choose either or
 # container[AgentExecutor] = lambda c: container[ChatA2AgentFrameworkRunnerExecutor]
-container[AgentExecutor] = lambda c: container[WorkflowA2AgentFrameworkRunnerExecutor]
+container[AgentExecutor] = lambda c: container[StreamingWorkflowA2AgentFrameworkExecutor]
 
 # Where to store Tasks
 container[TaskStore] = InMemoryTaskStore

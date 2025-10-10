@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 
 @dataclass
 class ExpertsPanelA2AgentCards(A2ACardsMixin, ConfigurableMixin):
-
     # TODO move to DI
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
         oA2ASettings: A2ASettings = self.configuration.settings.a2a

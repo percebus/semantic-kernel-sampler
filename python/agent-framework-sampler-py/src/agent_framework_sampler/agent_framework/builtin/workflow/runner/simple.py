@@ -6,7 +6,7 @@ from agent_framework_sampler.agent_framework.builtin.workflow.runner.protocol im
 
 
 @dataclass
-class WorkflowRunner(WorkflowRunnerProtocol):
+class SimpleWorkflowRunner(WorkflowRunnerProtocol):
     workflow: Workflow = field()
 
     async def run_async(self, messages: list[ChatMessage]) -> WorkflowRunResult:
