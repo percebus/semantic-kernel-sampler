@@ -3,11 +3,11 @@ from typing import Optional
 
 from agent_framework import AgentRunResponse, AgentThread, ChatAgent, ChatMessage
 
-from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.protocol import AgentRunnerProtocol
+from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.protocol import ChatAgentRunnerProtocol
 
 
 @dataclass
-class ThreadedChatAgentRunner(AgentRunnerProtocol):
+class ThreadedChatAgentRunner(ChatAgentRunnerProtocol):
     chat_agent: ChatAgent = field()
 
     service_thread_id: Optional[str] = field(default=None)

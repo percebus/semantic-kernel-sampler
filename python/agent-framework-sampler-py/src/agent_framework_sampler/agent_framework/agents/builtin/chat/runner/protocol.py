@@ -3,7 +3,7 @@ from typing import Optional, Protocol
 from agent_framework import AgentRunResponse, ChatAgent, ChatMessage
 
 
-class AgentRunnerProtocol(Protocol):
+class ChatAgentRunnerProtocol(Protocol):
     chat_agent: ChatAgent
 
     service_thread_id: Optional[str]
