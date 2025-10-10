@@ -52,9 +52,8 @@ services:
     #
     # ISSUE
     # SRC: https://github.com/modelcontextprotocol/inspector/issues/788
-    env_file:
-      - .env.development
-
+    environment:
+      HOST: "0.0.0.0"
 
   semantic-kernel-sampler-py:
     depends_on:
@@ -83,7 +82,6 @@ services:
       A2A__NEXT_URL: "http://localhost:8084"
       # A2A__NEXT_URL: "http://host.docker.internal:8084"
 
-
   semantic-kernel-sampler.net:
     depends_on:
       - semantic-kernel-sampler-py
@@ -93,8 +91,11 @@ services:
     ports:
       - 8083:8080
       - 8483:8081
-    env_file:
-      - .env.development
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+      DOTNET_CONFIGURATION: DEBUG
+      DOTNET_RUNNING_IN_CONTAINER: "true"
 
   # TODO? XXX? java-app:
 
