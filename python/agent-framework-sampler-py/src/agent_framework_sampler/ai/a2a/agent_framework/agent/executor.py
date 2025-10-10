@@ -25,8 +25,8 @@ class A2AgentInvokerExecutor(AgentExecutor):
         user_input: str = context.get_user_input()
         oChatMessage = ChatMessage(role=Role.USER, text=user_input)
         messages: list[ChatMessage] = [oChatMessage]
-        oAgentRunResponse: AgentRunResponse = await self.agent.run_async(messages)
-        message_text: str = str(oAgentRunResponse)
+        oAgentRunResponse: AgentRunResponse = await self.agent.run_async(messages)  # type: ignore # FIXME
+        message_text: str = str(oAgentRunResponse)  # pyright: ignore[reportUnknownArgumentType]
         oMessage: Message = new_agent_text_message(message_text)
         await event_queue.enqueue_event(oMessage)
 

@@ -1,5 +1,5 @@
 from agent_framework_sampler.a2a.cards.protocol import A2ACardsProtocol
-from agent_framework_sampler.agent_framework.agents.builtin.chat.protocol import AgentRunnerProtocol
+from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.protocol import AgentRunnerProtocol
 
 
 class A2AgentFrameworkRunnerProtocol(A2ACardsProtocol, AgentRunnerProtocol):
