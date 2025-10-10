@@ -2,7 +2,7 @@
   "name": "semantic-kernel-sampler",
   "private": true,
   "dependencies": {
-    "a2a-inspector": "https://github.com/a2aproject/a2a-inspector.git#db03a4480af003784810971ef5478403e273e116"
+    "a2a-inspector": "https://github.com/a2aproject/a2a-inspector.git#main"
   },
   "devDependencies": {
     "a2a-samples": "https://github.com/a2aproject/a2a-samples.git#main",

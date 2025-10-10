@@ -52,10 +52,12 @@ services:
     #
     # ISSUE
     # SRC: https://github.com/modelcontextprotocol/inspector/issues/788
-    environment:
-      - HOST=0.0.0.0
+    env_file:
+      - .env.development
+      - .env.local
 
-  semantic-app-py:
+
+  semantic-kernel-sampler-py:
     depends_on:
       - mcp-server.rest-app.posts
     build:
@@ -63,27 +65,35 @@ services:
       target: release
     ports:
       - 8082:9999
-    environment:
-      DEBUG: "True"
-      ENVIRONMENT: "docker"
-      A2A__HOST: "0.0.0.0"
-      A2A__PORT: "9999"
-      A2A__NEXT_URL: "http://host.docker.internal:8082"
+    env_file:
+      - .env.development
+      - .env.local
 
-  semantic-app.net:
+  agent-framework-sampler-py:
     depends_on:
-      - semantic-app-py
+      - mcp-server.rest-app.posts
+    build:
+      context: ./python/agent-framework-sampler-py
+      target: release
+    ports:
+      - 8082:9999
+    env_file:
+      - .env.development
+      - .env.local
+
+
+  semantic-kernel-sampler.net:
+    depends_on:
+      - semantic-kernel-sampler-py
     build:
       context: ./dotnet
       target: webapp
     ports:
       - 8083:8080
       - 8483:8081
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: "http://+:8080"
-      DOTNET_CONFIGURATION: DEBUG
-      DOTNET_RUNNING_IN_CONTAINER: "true"
+    env_file:
+      - .env.development
+      - .env.local
 
   # TODO? XXX? java-app:
 
@@ -95,5 +105,6 @@ services:
     ports:
       - 5001:8080
     depends_on:
-      - semantic-app-py
-      # - semantic-app-dotnet
+      - semantic-kernel-sampler-py
+      - agent-framework-sampler-py
+      # - semantic-kernel-sampler-dotnet
