@@ -3,7 +3,7 @@ from typing import Optional
 
 from agent_framework import AgentRunResponse, AgentThread, ChatAgent, ChatMessage
 
-from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.protocol import ChatAgentRunnerProtocol
+from agent_framework_sampler.agent_framework.builtin.agent.chat.runner.protocol import ChatAgentRunnerProtocol
 
 
 @dataclass

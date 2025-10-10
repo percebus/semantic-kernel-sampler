@@ -2,38 +2,23 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Optional
 
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
-from agent_framework import AgentRunResponse, AgentThread, ChatAgent, ChatMessage
 
 from agent_framework_sampler.a2a.cards.mixin import A2ACardsMixin
-from agent_framework_sampler.a2a.cards.protocol import A2ACardsProtocol
-from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.threaded import ThreadedChatAgentRunner
 from agent_framework_sampler.ai.modules.weather.a2a.skills.get_time import GetTimeAgentSkill
 from agent_framework_sampler.ai.modules.weather.a2a.skills.get_weather import GetWeatherAgentSkill
 from agent_framework_sampler.config.mixin import ConfigurableMixin
-from agent_framework_sampler.utils.lodash import noop
 
 if TYPE_CHECKING:
     from agent_framework_sampler.config.os_environ.a2a import A2ASettings
 
 
-noop(A2ACardsMixin)
-noop(ThreadedChatAgentRunner)
-
-
 @dataclass
-class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMixin, ThreadedChatAgentRunner):
-    chat_agent: ChatAgent = field()
-
+class WeatherA2AgentCards(ConfigurableMixin, A2ACardsMixin):
     extended_agent_card: Optional[AgentCard] = field(default=None)
 
     service_thread_id: Optional[str] = field(default=None)
 
     agent_card: AgentCard = field(init=False)
-
-    agent_thread: AgentThread = field(init=False)
-
-    async def run_async(self, messages: list[ChatMessage]) -> AgentRunResponse:
-        return await self.chat_agent.run(messages, thread=self.agent_thread)
 
     # TODO move to DI
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
@@ -73,5 +58,3 @@ class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMi
 
         self.agent_card = self.createAgentCard__public(skills=skills)
         self.extended_agent_card = self.createAgentCard__authenticated(skills=authenticated_skills)
-
-        self.agent_thread = self.chat_agent.get_new_thread(service_thread_id=self.service_thread_id)
