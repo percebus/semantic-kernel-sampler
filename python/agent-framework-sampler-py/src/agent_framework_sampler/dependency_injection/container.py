@@ -7,7 +7,7 @@ from a2a.server.request_handlers.request_handler import RequestHandler
 from a2a.server.tasks import InMemoryTaskStore
 from a2a.server.tasks.task_store import TaskStore
 from agent_framework import ChatClientProtocol, ConcurrentBuilder, Workflow
-from agent_framework.azure import AzureOpenAIChatClient
+from agent_framework.azure import AzureOpenAIChatClient, AzureOpenAIResponsesClient
 from azure.identity import AzureCliCredential
 from lagom import Container, Singleton
 from starlette.applications import Starlette
@@ -44,6 +44,7 @@ container[A2ASettings] = lambda c: c[Settings].a2a
 
 
 container[AzureCliCredential] = AzureCliCredential
+
 container[AzureOpenAIChatClient] = lambda c: AzureOpenAIChatClient(
     base_url=c[AzureOpenAISettings].base_url,
     api_key=c[AzureOpenAISettings].api_key,
@@ -52,9 +53,22 @@ container[AzureOpenAIChatClient] = lambda c: AzureOpenAIChatClient(
     credential=c[AzureCliCredential],
 )
 
-container[ChatClientProtocol] = lambda c: c[AzureOpenAIChatClient]
 
-### Chat Agents ###
+# OpenAI new Response API = Chat Completions API + Assistant API
+container[AzureOpenAIResponsesClient] = lambda c: AzureOpenAIResponsesClient(
+    base_url=c[AzureOpenAISettings].base_url,
+    api_key=c[AzureOpenAISettings].api_key,
+    deployment_name=c[AzureOpenAISettings].deployment_name,
+    api_version=c[AzureOpenAISettings].api_version,
+    credential=c[AzureCliCredential],
+)
+
+
+# Choose either or
+container[ChatClientProtocol] = lambda c: c[AzureOpenAIChatClient]
+# container[ChatClientProtocol] = lambda c: c[AzureOpenAIResponsesClient]
+
+### Chat Agents ###########################################################
 
 container[WeatherChatAgent_V2] = lambda c: WeatherChatAgent_V2(
     chat_client=c[ChatClientProtocol],
@@ -68,7 +82,7 @@ container[ChemistryExpertChatAgent] = lambda c: ChemistryExpertChatAgent(
     chat_client=c[ChatClientProtocol],
 )
 
-### Agent Runner(s) ###
+### Agent Runner(s) ###########################################################
 
 container[ThreadedChatAgentRunner] = lambda c: ThreadedChatAgentRunner(
     chat_agent=c[WeatherChatAgent_V2],
@@ -77,7 +91,7 @@ container[ThreadedChatAgentRunner] = lambda c: ThreadedChatAgentRunner(
 container[ChatAgentRunnerProtocol] = lambda c: c[ThreadedChatAgentRunner]
 
 
-### Orchestration ###
+### Orchestration ###########################################################
 
 container[ConcurrentBuilder] = ConcurrentBuilder
 
@@ -100,7 +114,7 @@ container[SimpleWorkflowRunner] = lambda c: SimpleWorkflowRunner(
 
 container[WorkflowRunnerProtocol] = lambda c: c[SimpleWorkflowRunner]
 
-### A2A Server ###
+### A2A Server ###########################################################
 
 container[WeatherA2AgentCards] = lambda c: WeatherA2AgentCards(configuration=c[Configuration])
 container[ExpertsPanelA2AgentCards] = lambda c: ExpertsPanelA2AgentCards(configuration=c[Configuration])
