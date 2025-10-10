@@ -80,7 +80,8 @@ services:
     env_file:
       - .env.development
     environment:
-      A2A__NEXT_URL: "http://host.docker.internal:8084"
+      A2A__NEXT_URL: "http://localhost:8084"
+      # A2A__NEXT_URL: "http://host.docker.internal:8084"
 
 
   semantic-kernel-sampler.net:
@@ -99,12 +100,13 @@ services:
 
   # TODO? XXX? typescript-app?:
 
-  a2a-inspector:
-    build:
-      context: ./repositories/a2a-inspector
-    ports:
-      - 5001:8080
-    depends_on:
-      - semantic-kernel-sampler-py
-      - agent-framework-sampler-py
-      # - semantic-kernel-sampler-dotnet
+  # TODO Dockerfile is broken in official repository
+  # a2a-inspector:
+  #   build:
+  #     context: ./repositories/a2a-inspector
+  #   ports:
+  #     - 5001:8080
+  #   depends_on:
+  #     - semantic-kernel-sampler-py
+  #     - agent-framework-sampler-py
+  #     # - semantic-kernel-sampler-dotnet
