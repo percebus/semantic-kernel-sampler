@@ -24,7 +24,7 @@ from agent_framework_sampler.ai.modules.chemistry_expert.agent_framework.agent.v
 from agent_framework_sampler.ai.modules.experts_panel.a2a.cards import ExpertsPanelA2AgentCards
 from agent_framework_sampler.ai.modules.physics_expert.agent_framework.agent.v1 import PhysicsExpertChatAgent
 from agent_framework_sampler.ai.modules.weather.a2a.cards import WeatherA2AgentCards
-from agent_framework_sampler.ai.modules.weather.agent_framework.agent.v1 import WeatherChatAgent
+from agent_framework_sampler.ai.modules.weather.agent_framework.agent.v2 import WeatherChatAgent_V2
 from agent_framework_sampler.config.configuration import Configuration
 from agent_framework_sampler.config.logs import LoggingConfig
 from agent_framework_sampler.config.os_environ.settings import A2ASettings, AzureOpenAISettings, Settings
@@ -56,7 +56,7 @@ container[ChatClientProtocol] = lambda c: c[AzureOpenAIChatClient]
 
 ### Chat Agents ###
 
-container[WeatherChatAgent] = lambda c: WeatherChatAgent(
+container[WeatherChatAgent_V2] = lambda c: WeatherChatAgent_V2(
     chat_client=c[ChatClientProtocol],
 )
 
@@ -71,7 +71,7 @@ container[ChemistryExpertChatAgent] = lambda c: ChemistryExpertChatAgent(
 ### Agent Runner(s) ###
 
 container[ThreadedChatAgentRunner] = lambda c: ThreadedChatAgentRunner(
-    chat_agent=c[WeatherChatAgent],
+    chat_agent=c[WeatherChatAgent_V2],
 )
 
 container[ChatAgentRunnerProtocol] = lambda c: c[ThreadedChatAgentRunner]

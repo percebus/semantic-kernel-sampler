@@ -3,7 +3,7 @@ from typing import Optional
 from a2a.types import AgentSkill
 from pydantic import BaseModel
 
-from agent_framework_sampler.ai.modules.weather.agent_framework.tools.weather.v1 import get_weather
+from agent_framework_sampler.ai.modules.weather.agent_framework.tools.weather.v2 import get_weather
 from agent_framework_sampler.utils.lodash import noop
 
 noop(BaseModel)
