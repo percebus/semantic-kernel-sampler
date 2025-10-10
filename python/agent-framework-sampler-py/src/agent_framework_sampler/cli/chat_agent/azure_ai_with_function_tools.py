@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from agent_framework import ChatMessage, Role
 
-from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.threaded import ThreadedChatAgentRunner
+from agent_framework_sampler.agent_framework.builtin.agent.chat.runner.threaded import ThreadedChatAgentRunner
 from agent_framework_sampler.ai.modules.weather.agent_framework.agent.v1 import WeatherChatAgent
 from agent_framework_sampler.dependency_injection.container import container
 

@@ -23,3 +23,5 @@ class Settings(BaseSettings):
 
     azure_openai: AzureOpenAISettings = Field(default_factory=AzureOpenAISettings)  # type: ignore[assignment]  # FIXME
     a2a: A2ASettings = Field(default_factory=A2ASettings)
+
+    multi_agent_delimiter: str = Field(default="\n\n---\n\nNEW CONVERSATION\n\n---\n\n")
