@@ -13,7 +13,7 @@ async def run_agent_framework_example(prompt: str) -> Sequence[list[ChatMessage]
     outputs: list[list[ChatMessage]] = []
     async for oWorkflowEvent in oWorkflow.run_stream(prompt):  # type: ignore  # FIXME
         if isinstance(oWorkflowEvent, WorkflowOutputEvent):
-            messages = cast("list[ChatMessage]", oWorkflowEvent.data)
+            messages: list[ChatMessage] = cast("list[ChatMessage]", oWorkflowEvent.data)
             outputs.append(messages)
 
     return outputs

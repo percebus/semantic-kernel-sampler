@@ -7,6 +7,8 @@ from agent_framework import AgentRunResponse, AgentThread, ChatAgent, ChatMessag
 from agent_framework_sampler.a2a.cards.mixin import A2ACardsMixin
 from agent_framework_sampler.a2a.cards.protocol import A2ACardsProtocol
 from agent_framework_sampler.agent_framework.agents.builtin.chat.runner.threaded import ThreadedChatAgentRunner
+from agent_framework_sampler.ai.modules.weather.a2a.skills.get_time import GetTimeAgentSkill
+from agent_framework_sampler.ai.modules.weather.a2a.skills.get_weather import GetWeatherAgentSkill
 from agent_framework_sampler.config.mixin import ConfigurableMixin
 from agent_framework_sampler.utils.lodash import noop
 
@@ -33,33 +35,7 @@ class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMi
     async def run_async(self, messages: list[ChatMessage]) -> AgentRunResponse:
         return await self.chat_agent.run(messages, thread=self.agent_thread)
 
-    def createAgentSkill__get_weather(self) -> AgentSkill:
-        # fmt: off
-        return AgentSkill(
-            id="get_weather",
-            name="get weather",
-            description="Get the weather for a given location.",
-            tags=["weather", "location"],
-            examples=[
-                "What's the weather like in New York?",
-                "What's the weather in London?"
-            ],
-        )
-        # fmt: on
-
-    def createAgentSkill__get_time(self) -> AgentSkill:
-        # fmt: off
-        return AgentSkill(
-            id="get_time",
-            name="get time",
-            description="Get the current UTC time.",
-            tags=["time", "utc"],
-            examples=[
-                "What's the current UTC time?",
-            ],
-        )
-        # fmt: on
-
+    # TODO move to DI
     def createAgentCard__public(self, skills: list[AgentSkill]) -> AgentCard:
         oA2ASettings: A2ASettings = self.configuration.settings.a2a
         oAgentCapabilities = AgentCapabilities(streaming=True)
@@ -89,10 +65,10 @@ class WeatherA2AgentRunner(ConfigurableMixin, A2ACardsProtocol):  # , A2ACardsMi
         # fmt: on
 
     def __post_init__(self):
-        get_weather_AgentSkill: AgentSkill = self.createAgentSkill__get_weather()
-        get_time_AgentSkill: AgentSkill = self.createAgentSkill__get_time()
+        get_weather_AgentSkill: AgentSkill = GetWeatherAgentSkill()
+        get_time_AgentSkill: AgentSkill = GetTimeAgentSkill()
 
-        skills = [get_weather_AgentSkill, get_time_AgentSkill]
+        skills: list[AgentSkill] = [get_weather_AgentSkill, get_time_AgentSkill]
         authenticated_skills = skills
 
         self.agent_card = self.createAgentCard__public(skills=skills)

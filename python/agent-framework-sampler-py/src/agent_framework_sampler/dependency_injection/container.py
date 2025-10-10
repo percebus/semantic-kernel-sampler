@@ -16,7 +16,7 @@ from agent_framework_sampler.ai.a2a.agent_framework.agent.executor import A2Agen
 from agent_framework_sampler.ai.a2a.agent_framework.agent.protocol import A2AgentFrameworkRunnerProtocol
 from agent_framework_sampler.ai.modules.chemistry_expert.agent_framework.agent.v1 import ChemistryExpertChatAgent
 from agent_framework_sampler.ai.modules.physics_expert.agent_framework.agent.v1 import PhysicsExpertChatAgent
-from agent_framework_sampler.ai.modules.weather.a2agent import WeatherA2AgentRunner
+from agent_framework_sampler.ai.modules.weather.a2a.agent import WeatherA2AgentRunner
 from agent_framework_sampler.ai.modules.weather.agent_framework.agent.v1 import WeatherChatAgent
 from agent_framework_sampler.config.configuration import Configuration
 from agent_framework_sampler.config.logs import LoggingConfig
