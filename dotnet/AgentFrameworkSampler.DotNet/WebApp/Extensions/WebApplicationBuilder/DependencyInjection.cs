@@ -8,10 +8,12 @@
     using Azure.Core;
     using Azure.Identity;
     using JCystems.AgentFrameworkSampler.Dotnet.Shared.Options;
+    using Microsoft.Agents.AI;
     using Microsoft.AspNetCore.Http.Json;
     using Microsoft.Extensions.AI;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
+    using OpenAI;
     using OpenAI.Chat;
     using Scrutor;
     using Serilog;
@@ -24,7 +26,6 @@
         {
             builder.Configuration.AddJsonFile("appsettings.json", optional: false);
             builder.Configuration.AddJsonFile("appsettings.ai.json", optional: false, reloadOnChange: true);
-            builder.Configuration.AddJsonFile("appsettings.copilotstudio.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
             builder.Configuration.AddEnvironmentVariables();
 
@@ -97,6 +98,15 @@
             builder.Services.AddTransient<ChatClient>(provider => provider
                 .GetRequiredService<AzureOpenAIClient>()
                 .GetChatClient(appSettings.AiModel.DeploymentId));
+
+            builder.Services.AddTransient<IChatClient>(provider => provider
+                .GetRequiredService<ChatClient>()
+                .AsIChatClient());
+
+            builder.Services.AddTransient<AIAgent>(provider => provider
+                .GetRequiredService<IChatClient>()
+                .CreateAIAgent(name: "Joker", instructions: "You are good at telling jokes."));
+
 
             // SRC: https://github.com/microsoft/semantic-kernel/blob/main/dotnet/samples/GettingStartedWithAgents/A2A/Step01_A2AAgent.cs
             builder.Services.TryAddTransient<HttpClientHandler>();
