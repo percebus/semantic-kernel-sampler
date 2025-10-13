@@ -86,7 +86,7 @@ services:
     depends_on:
       - semantic-kernel-sampler-py
     build:
-      context: ./dotnet
+      context: ./dotnet/SemanticKernelSampler.DotNet
       target: webapp
     ports:
       - 8083:8080

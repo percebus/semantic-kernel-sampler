@@ -37,7 +37,7 @@ env:
   DOCKER_TAG_VERSION: latest
 
 jobs:
-  node_projects_npm_test:
+  npm_test__matrix:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
@@ -74,7 +74,7 @@ jobs:
   npm_test:
     name: npm test
     runs-on: ubuntu-latest
-    needs: node_projects_npm_test
+    needs: npm_test__matrix
     steps:
       - name: node @ ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
@@ -132,6 +132,8 @@ jobs:
   dotnet_build:
     name: dotnet build
     runs-on: ubuntu-latest
+    env:
+      WORKSPACE: ./dotnet/SemanticKernelSampler.DotNet
     steps:
       - name: .NET @ ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
@@ -143,11 +145,11 @@ jobs:
 
       - name: ls
         run: ls -la
-        working-directory: ./dotnet
+        working-directory: ${{ env.WORKSPACE }}
 
       - name: dotnet restore
         run: dotnet restore ${{ env.DOTNET_PROJECT }}
-        working-directory: ./dotnet
+        working-directory: ${{ env.WORKSPACE }}
 
       - name: dotnet build
         run: |
@@ -155,13 +157,13 @@ jobs:
             --no-restore \
             --configuration ${{ env.DOTNET_CONFIGURATION }} \
             /p:TreatWarningsAsErrors=true
-        working-directory: ./dotnet
+        working-directory: ${{ env.WORKSPACE }}
 
       - name: bin.zip
         uses: actions/upload-artifact@v4
         with:
           name: SemanticKernelSampler.DotNet.WebApp.zip
-          path: ./dotnet/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
+          path: ${{ env.WORKSPACE }}/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   mvn_verify:
     name: mvn verify
@@ -194,7 +196,6 @@ jobs:
   docker_compose_build:
     name: docker compose build
     runs-on: ubuntu-latest
-    # if: false # XXX a2a-inspector fails on Mac/Linux
     needs:
       - npm_test
       - dotnet_build
