@@ -2,7 +2,7 @@ using JCystems.AgentFraweworkSampler.Dotnet.WebApp.Extensions.WebApplicationBuil
 
 var builder = WebApplication.CreateBuilder(args);
 
-// NOTE: See <see cref="DependencyInjection/ServiceRegistrar.cs"/> for more details
+// NOTE: See <see cref="Extensions/WebApplicationBuilder/DependencyInjection.cs"/> for more details
 builder.RegisterServices();
 
 var app = builder.Build();
