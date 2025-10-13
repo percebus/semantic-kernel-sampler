@@ -172,7 +172,7 @@ jobs:
       - name: bin.zip
         uses: actions/upload-artifact@v4
         with:
-          name: SemanticKernelSampler.DotNet.WebApp.zip
+          name: ${{ matrix.project }}.WebApp.zip
           path: ${{ env.WORKSPACE }}/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   mvn_verify:
