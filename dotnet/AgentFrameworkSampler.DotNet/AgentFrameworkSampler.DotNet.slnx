@@ -8,5 +8,7 @@
     <File Path="stylecop.json" />
   </Folder>
   <Project Path="Shared/Shared.csproj" />
-  <Project Path="WebApp/WebApp.csproj" />
+  <Project Path="WebApp/WebApp.csproj">
+    <BuildDependency Project="Shared/Shared.csproj" />
+  </Project>
 </Solution>
