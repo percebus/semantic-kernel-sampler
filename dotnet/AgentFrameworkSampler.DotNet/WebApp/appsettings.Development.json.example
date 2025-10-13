@@ -1,8 +1,17 @@
 {
+  "JCystems": {
+    "AgentFrameworkSampler.DotNet.WebApp": {
+      "AzureCredential": {
+        "TenantId": "FIXME",
+        "ClientId": "FIXME",
+        "ClientSecret": "FIXME"
+      }
+    }
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
+      "Microsoft.AspNetCore": "Debug"
     }
   }
 }
