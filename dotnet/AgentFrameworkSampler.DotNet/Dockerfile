@@ -23,11 +23,11 @@ FROM project AS publish
 RUN dotnet publish ./WebApp/WebApp.csproj --configuration $DOTNET_CONFIGURATION --property:PublishDir=/app/publish
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS webapp
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS webapp
 USER app
 WORKDIR /app
 COPY --from=publish /app/publish .
 RUN ls -la
 EXPOSE 8080
 EXPOSE 8081
-ENTRYPOINT ["dotnet", "JCystems.AgentFrameworkSampler.Dotnet.WebApp.dll"]
+ENTRYPOINT ["dotnet", "JCystems.AgentFrameworkSampler.DotNet.WebApp.dll"]
