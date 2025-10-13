@@ -102,12 +102,12 @@ services:
   # TODO? XXX? typescript-app?:
 
   # TODO Dockerfile is broken in official repository
-  a2a-inspector:
-    build:
-      context: ./repositories/a2a-inspector
-    ports:
-      - 5001:8080
-    depends_on:
-      - semantic-kernel-sampler-py
-      - agent-framework-sampler-py
-      # - semantic-kernel-sampler-dotnet
+  # a2a-inspector:
+  #   build:
+  #     context: ./repositories/a2a-inspector
+  #   ports:
+  #     - 5001:8080
+  #   depends_on:
+  #     - semantic-kernel-sampler-py
+  #     - agent-framework-sampler-py
+  #     # - semantic-kernel-sampler-dotnet
