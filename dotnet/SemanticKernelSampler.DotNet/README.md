@@ -13,5 +13,3 @@
     - [`/samples/dotnet`](https://github.com/microsoft/Agents/tree/main/samples/dotnet)
     - [`Agents-for-net`](https://github.com/microsoft/Agents-for-net)
       - [`/samples`](https://github.com/microsoft/Agents-for-net/tree/main/src/samples)
-  - [`agent-framework`](https://github.com/microsoft/agent-framework/tree/main/dotnet)
-    - [`/samples`](https://github.com/microsoft/agent-framework/tree/main/dotnet/samples)
