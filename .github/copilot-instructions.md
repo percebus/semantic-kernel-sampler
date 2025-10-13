@@ -11,8 +11,7 @@ Always reference these instructions first and fallback to search or bash command
 - Bootstrap the repository:
   - `npm run setup` -- installs global dependencies (1 second). NEVER CANCEL.
   - `npm install` -- installs all Node.js dependencies (25 seconds). NEVER CANCEL. Set timeout to 60+ seconds. Expect Node.js version warnings for @modelcontextprotocol/inspector.
-  - `bash scripts/pip/upgrade.ba.sh` -- upgrades pip and installs gil (3 seconds). NEVER CANCEL. May timeout due to network issues - this is normal.
-  - `gil clone` -- clones external repositories (6 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
+  - `bower install` -- clones external repositories (6 seconds). NEVER CANCEL. Set timeout to 60+ seconds.
 
 ### Language-Specific Builds
 
@@ -55,11 +54,6 @@ Always reference these instructions first and fallback to search or bash command
 
 ## Common Issues and Solutions
 
-### Network Timeouts
-
-- Python pip installs may timeout - this is normal in CI environments
-- If pip timeout occurs, document it but continue with other validations
-
 ### Missing Configuration
 
 - If REST validation tests fail with "Cannot find module '../../config/environments/environment'":
@@ -90,7 +84,7 @@ Always reference these instructions first and fallback to search or bash command
 │   └── WebApp/              # ASP.NET Core web application
 ├── java/                    # Java projects
 │   └── src/                 # Maven-based web application
-├── repositories/            # External repositories (via gil)
+├── repositories/            # External repositories (via bower)
 │   ├── a2a-inspector/       # A2A inspection tool
 │   ├── a2a-samples/         # A2A samples
 │   └── semantic-kernel/     # Microsoft Semantic Kernel
@@ -110,14 +104,14 @@ Always reference these instructions first and fallback to search or bash command
 
 ### External Dependencies
 
-- gil: For managing external git repositories
+- bower: For managing external git repositories
 - @modelcontextprotocol/inspector: Web-based MCP debugging tool
 - json-server: Provides REST API endpoints
 - Docker & Docker Compose: For full-stack orchestration
 
 ## Development Workflow
 
-1. **Initial Setup**: Run bootstrap commands (npm setup, npm install, pip upgrade, gil clone)
+1. **Initial Setup**: Run bootstrap commands (npm setup, npm install, bower installn)
 2. **Language-specific Build**: Build the component you're working on
 3. **Make Changes**: Edit code with your IDE
 4. **Local Testing**: Start relevant services and test manually
