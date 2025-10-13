@@ -130,10 +130,16 @@ jobs:
         working-directory: ./python/${{ matrix.project }}
 
   dotnet_build:
-    name: dotnet build
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 6
+      matrix:
+        project:
+          - SemanticKernelSampler.DotNet
+          - AgentFrameworkSampler.DotNet
     env:
-      WORKSPACE: ./dotnet/SemanticKernelSampler.DotNet
+      WORKSPACE: ./dotnet/${{ matrix.project }}
+    name: dotnet build @ ${{ matrix.project }}
     steps:
       - name: .NET @ ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
