@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName.Replace(" ", "_").Replace("-", "_"))</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+</Project>

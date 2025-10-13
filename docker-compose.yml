@@ -82,6 +82,7 @@ services:
       A2A__NEXT_URL: "http://localhost:8084"
       # A2A__NEXT_URL: "http://host.docker.internal:8084"
 
+  # XXX DELETE: Use AgentFrameworkSampler.DotNet instead
   semantic-kernel-sampler.net:
     depends_on:
       - semantic-kernel-sampler-py
@@ -91,6 +92,22 @@ services:
     ports:
       - 8083:8080
       - 8483:8081
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+      DOTNET_CONFIGURATION: DEBUG
+      DOTNET_RUNNING_IN_CONTAINER: "true"
+
+  agent-framework-sampler.net:
+    depends_on:
+      - semantic-kernel-sampler-py
+      - agent-framework-sampler-py
+    build:
+      context: ./dotnet/AgentFrameworkSampler.DotNet
+      target: webapp
+    ports:
+      - 8085:8080
+      - 8485:8081
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "http://+:8080"

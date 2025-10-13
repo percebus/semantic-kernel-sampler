@@ -21,9 +21,6 @@ env:
   PYRIGHT_PYTHON_FORCE_VERSION: latest
 
   # .NET
-  DOTNET_PROJECT: ./*.sln
-  DOTNET_VERSION: 8
-  DOTNET_TARGET_FRAMEWORK: net8.0
   DOTNET_CONFIGURATION: Release
 
   # Java
@@ -96,7 +93,7 @@ jobs:
       - name: npm test
         run: npm test
 
-  python_projects_test:
+  python_ci__matrix:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
@@ -129,11 +126,24 @@ jobs:
         run: bash scripts/ci.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
-  dotnet_build:
-    name: dotnet build
+  dotnet_build__matrix:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 6
+      matrix:
+        include:
+          - project: SemanticKernelSampler.DotNet
+            DOTNET_PROJECT: ./*.sln
+            DOTNET_VERSION: 8
+            DOTNET_TARGET_FRAMEWORK: net8.0
+
+          - project: AgentFrameworkSampler.DotNet
+            DOTNET_PROJECT: ./*.slnx
+            DOTNET_VERSION: 9
+            DOTNET_TARGET_FRAMEWORK: net9.0
     env:
-      WORKSPACE: ./dotnet/SemanticKernelSampler.DotNet
+      WORKSPACE: ./dotnet/${{ matrix.project }}
+    name: dotnet build @ ${{ matrix.project }}
     steps:
       - name: .NET @ ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
@@ -162,7 +172,7 @@ jobs:
       - name: bin.zip
         uses: actions/upload-artifact@v4
         with:
-          name: SemanticKernelSampler.DotNet.WebApp.zip
+          name: ${{ matrix.project }}.WebApp.zip
           path: ${{ env.WORKSPACE }}/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   mvn_verify:
@@ -198,8 +208,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - npm_test
-      - dotnet_build
-      - python_projects_test
+      - dotnet_build__matrix
+      - python_ci__matrix
       - mvn_verify
     steps:
       - name: checkout
