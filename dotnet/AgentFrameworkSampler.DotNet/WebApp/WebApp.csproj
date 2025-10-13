@@ -6,6 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName.Replace(" ", "_").Replace("-", "_"))</RootNamespace>
     <AssemblyName>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName)</AssemblyName>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1591;1633;1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1591;1633;1701;1702</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
