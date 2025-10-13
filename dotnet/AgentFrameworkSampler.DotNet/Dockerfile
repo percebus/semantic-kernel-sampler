@@ -20,7 +20,7 @@ RUN dotnet test $DOTNET_PROJECTS --filter "$DOTNET_TEST_FILTER"
 
 
 FROM project AS publish
-RUN dotnet publish ./WebApp/AgentFrameworkSampler.Dotnet.WebApp.csproj --configuration $DOTNET_CONFIGURATION --property:PublishDir=/app/publish
+RUN dotnet publish ./WebApp/WebApp.csproj --configuration $DOTNET_CONFIGURATION --property:PublishDir=/app/publish
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS webapp
