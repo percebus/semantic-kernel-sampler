@@ -21,9 +21,6 @@ env:
   PYRIGHT_PYTHON_FORCE_VERSION: latest
 
   # .NET
-  DOTNET_PROJECT: ./*.sln
-  DOTNET_VERSION: 8
-  DOTNET_TARGET_FRAMEWORK: net8.0
   DOTNET_CONFIGURATION: Release
 
   # Java
@@ -129,14 +126,21 @@ jobs:
         run: bash scripts/ci.ba.sh
         working-directory: ./python/${{ matrix.project }}
 
-  dotnet_build:
+  dotnet_build__matrix:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
       matrix:
-        project:
-          - SemanticKernelSampler.DotNet
-          - AgentFrameworkSampler.DotNet
+        include:
+          - project: SemanticKernelSampler.DotNet
+            DOTNET_PROJECT: ./*.sln
+            DOTNET_VERSION: 8
+            DOTNET_TARGET_FRAMEWORK: net8.0
+
+          - project: AgentFrameworkSampler.DotNet
+            DOTNET_PROJECT: ./*.slnx
+            DOTNET_VERSION: 9
+            DOTNET_TARGET_FRAMEWORK: net9.0
     env:
       WORKSPACE: ./dotnet/${{ matrix.project }}
     name: dotnet build @ ${{ matrix.project }}
@@ -204,7 +208,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - npm_test
-      - dotnet_build
+      - dotnet_build__matrix
       - python_projects_test
       - mvn_verify
     steps:
