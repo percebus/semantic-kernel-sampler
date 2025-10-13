@@ -14,12 +14,13 @@
 ### Agents
 
 - `dotnet/`
-  - [`SemanticKernelSampler.DotNet`](./dotnet/)
+  - ~~[`SemanticKernelSampler.DotNet`](./dotnet/SemanticKernelSampler.DotNet)~~ `DEPRECATED` use `AgentFrameworkSampler.DotNet` instead
+  - [`AgentFrameworkSampler.DotNet`](./dotnet/AgentFrameworkSampler.DotNet)
 - `java/`
   - TODO
 - `python/`
-  - [`agent-framework-sampler-py`](./python/agent-framework-sampler-py)
   - [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py): `DEPRECATED` use `agent-framework` instead
+  - [`agent-framework-sampler-py`](./python/agent-framework-sampler-py)
 
 ### MCP
 
