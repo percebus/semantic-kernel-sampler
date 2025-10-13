@@ -8,4 +8,8 @@
     <RootNamespace>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName.Replace(" ", "_").Replace("-", "_"))</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-namespace WebApp
+namespace JCystems.AgentFrameworkSampler.DotNet.WebApp
 {
     public class WeatherForecast
     {

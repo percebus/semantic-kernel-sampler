@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-
-namespace WebApp.Controllers
+namespace JCystems.AgentFrameworkSampler.DotNet.WebApp.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
