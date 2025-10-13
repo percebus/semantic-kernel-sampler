@@ -13,7 +13,6 @@
     using Microsoft.Extensions.AI;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
-    using OpenAI;
     using OpenAI.Chat;
     using Scrutor;
     using Serilog;
@@ -51,7 +50,6 @@
             }
 
             builder.Services.TryAddSingleton<AzureCliCredential>();
-
             builder.Services.TryAddSingleton<VisualStudioCredential>();
 
             builder.Services.TryAddSingleton<DefaultAzureCredential>(provider => new(
@@ -87,8 +85,8 @@
                 // return provider.GetRequiredService<ClientSecretCredential>();
             });
 
-            // SRC: https://github.com/microsoft/semantic-kernel/blob/dotnet-1.64.0/dotnet/samples/Concepts/Agents/ChatCompletion_ServiceSelection.cs
-            builder.Services.TryAddScoped<ApiKeyCredential>(provider => new AzureKeyCredential(appSettings.AiModel.ApiKey));
+
+            builder.Services.TryAddSingleton<ApiKeyCredential>(provider => new AzureKeyCredential(appSettings.AiModel.ApiKey));
             builder.Services.TryAddScoped<AzureOpenAIClient>(provider =>
             {
                 var oApiKeyCredential = provider.GetRequiredService<ApiKeyCredential>();
@@ -103,6 +101,7 @@
                 .GetRequiredService<ChatClient>()
                 .AsIChatClient());
 
+            // SRC: https://github.com/microsoft/agent-framework/blob/dotnet-1.0.0-preview.251009.1/dotnet/samples/GettingStarted/Agents/Agent_Step01_Running/Program.cs
             builder.Services.AddTransient<AIAgent>(provider => provider
                 .GetRequiredService<IChatClient>()
                 .CreateAIAgent(name: "Joker", instructions: "You are good at telling jokes."));
