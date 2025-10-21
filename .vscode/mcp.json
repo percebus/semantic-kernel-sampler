@@ -4,13 +4,27 @@
       "type": "stdio",
       "cwd": "${workspaceFolder}/node/mcp-server.examples.quick-start",
       "command": "npx",
-      "args": ["ts-node", "src/main.ts"]
+      "args": [
+        "ts-node",
+        "src/main.ts"
+      ]
     },
     "rest-app.posts": {
       "type": "stdio",
       "cwd": "${workspaceFolder}/node/mcp-server.rest-app.posts",
       "command": "npx",
-      "args": ["ts-node", "src/main.ts"]
+      "args": [
+        "ts-node",
+        "src/main.ts"
+      ]
+    },
+    "M365AgentsToolkit MCP Server": {
+      "command": "npx",
+      "args": [
+        "@microsoft/m365agentstoolkit-mcp@latest",
+        "server",
+        "start"
+      ]
     }
   },
   "inputs": []

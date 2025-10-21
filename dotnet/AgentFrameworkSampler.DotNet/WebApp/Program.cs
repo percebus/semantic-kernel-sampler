@@ -1,4 +1,4 @@
-using JCystems.AgentFraweworkSampler.Dotnet.WebApp.Extensions.WebApplicationBuilder;
+using JCystems.AgentFraweworkSampler.DotNet.WebApp.Extensions.WebApplicationBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 

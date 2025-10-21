@@ -1,4 +1,4 @@
-﻿namespace JCystems.AgentFraweworkSampler.Dotnet.WebApp.Extensions.WebApplicationBuilder
+﻿namespace JCystems.AgentFraweworkSampler.DotNet.WebApp.Extensions.WebApplicationBuilder
 {
     using System.ClientModel;
     using System.Diagnostics.CodeAnalysis;
@@ -7,7 +7,7 @@
     using Azure.AI.OpenAI;
     using Azure.Core;
     using Azure.Identity;
-    using JCystems.AgentFrameworkSampler.Dotnet.Shared.Options;
+    using JCystems.AgentFrameworkSampler.DotNet.Shared.Options;
     using Microsoft.Agents.AI;
     using Microsoft.AspNetCore.Http.Json;
     using Microsoft.Extensions.AI;

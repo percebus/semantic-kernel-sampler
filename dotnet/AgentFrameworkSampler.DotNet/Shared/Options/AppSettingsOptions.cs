@@ -1,8 +1,8 @@
-﻿namespace JCystems.AgentFrameworkSampler.Dotnet.Shared.Options
+﻿namespace JCystems.AgentFrameworkSampler.DotNet.Shared.Options
 {
     using System.ComponentModel.DataAnnotations;
     using Microsoft.Extensions.Options;
-    
+
     public class AppSettingsOptions
     {
         public const string Key = "JCystems:AgentFrameworkSampler.DotNet.WebApp";
