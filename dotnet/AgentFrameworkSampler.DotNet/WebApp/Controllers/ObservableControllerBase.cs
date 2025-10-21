@@ -1,4 +1,4 @@
-﻿namespace JCystems.AgentFrameworkSampler.Dotnet.WebApp.Controllers
+﻿namespace JCystems.AgentFraweworkSampler.DotNet.WebApp.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 

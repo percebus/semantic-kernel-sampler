@@ -1,13 +1,23 @@
-﻿namespace JCystems.AgentFrameworkSampler.Dotnet.WebApp.Controllers
+﻿namespace JCystems.AgentFraweworkSampler.DotNet.WebApp.Controllers
 {
     using System.Text.RegularExpressions;
-    using JCystems.AgentFrameworkSampler.Dotnet.WebApp.Models;
+    using JCystems.AgentFrameworkSampler.DotNet.Shared.Factories;
+    using JCystems.AgentFraweworkSampler.DotNet.WebApp.Models;
     using Microsoft.Agents.AI;
     using Microsoft.AspNetCore.Mvc;
 
-    public class MessagesController(ILogger<MessagesController> logger, AIAgent aiAgent) : AgentFrameworkSampler.Dotnet.WebApp.Controllers.ObservableControllerBase(logger)
+    public class MessagesController : ObservableControllerBase
     {
-        private AIAgent AIAgent => aiAgent;
+        private IA2AgentOrchestratorFactory AgentFactory { get; }
+
+        private Lazy<Task<AIAgent>> AIAgent { get; }
+
+        public MessagesController(ILogger<MessagesController> logger, IA2AgentOrchestratorFactory agentFactory)
+            : base(logger)
+        {
+            this.AgentFactory = agentFactory;
+            this.AIAgent = new Lazy<Task<AIAgent>>(async () => await this.AgentFactory.CreateAIAgentAsync());
+        }
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Request request)
@@ -22,7 +32,8 @@
             List<AgentRunResponseUpdate> responses = new();
             try
             {
-                await foreach (AgentRunResponseUpdate oAgentRunResponseUpdate in this.AIAgent.RunStreamingAsync(request.Message))
+                AIAgent oAIAgent = await this.AIAgent.Value;
+                await foreach (AgentRunResponseUpdate oAgentRunResponseUpdate in oAIAgent.RunStreamingAsync(request.Message))
                 {
                     this.Logger.LogInformation("Request message content item: {oAgentRunResponseUpdate}", oAgentRunResponseUpdate);
                     responses.Add(oAgentRunResponseUpdate);

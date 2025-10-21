@@ -3,12 +3,12 @@
     using System.ClientModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Text.Json;
+    using A2A;
     using Azure;
     using Azure.AI.OpenAI;
     using Azure.Core;
     using Azure.Identity;
     using JCystems.AgentFrameworkSampler.DotNet.Shared.Options;
-    using Microsoft.Agents.AI;
     using Microsoft.AspNetCore.Http.Json;
     using Microsoft.Extensions.AI;
     using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -16,6 +16,7 @@
     using OpenAI.Chat;
     using Scrutor;
     using Serilog;
+    using JokerChatClientAgent = Microsoft.Agents.AI.ChatClientAgent;
 
 
     [ExcludeFromCodeCoverage]
@@ -101,12 +102,6 @@
                 .GetRequiredService<ChatClient>()
                 .AsIChatClient());
 
-            // SRC: https://github.com/microsoft/agent-framework/blob/dotnet-1.0.0-preview.251009.1/dotnet/samples/GettingStarted/Agents/Agent_Step01_Running/Program.cs
-            builder.Services.AddTransient<AIAgent>(provider => provider
-                .GetRequiredService<IChatClient>()
-                .CreateAIAgent(name: "Joker", instructions: "You are good at telling jokes."));
-
-
             // SRC: https://github.com/microsoft/semantic-kernel/blob/main/dotnet/samples/GettingStartedWithAgents/A2A/Step01_A2AAgent.cs
             builder.Services.TryAddTransient<HttpClientHandler>();
             // builder.Services.TryAddTransient<LoggingHandler>(); // FIXME
@@ -116,6 +111,26 @@
                 // var oLoggingHandler = provider.GetRequiredService<LoggingHandler>(); // FIXME
                 return oHttpClientFactory.CreateClient();
             });
+
+            builder.Services.TryAddScoped<IEnumerable<A2ACardResolver>>(provider =>
+            {
+                return appSettings.A2A.AgentsUris.Select(agentUri =>
+                {
+                    // TODO? use IHttpClientFactory?
+                    var oHttpClient = new HttpClient
+                    {
+                        Timeout = TimeSpan.FromSeconds(60),
+                    };
+
+                    return new A2ACardResolver(agentUri, oHttpClient);
+                });
+            });
+
+            // SRC: https://github.com/microsoft/agent-framework/blob/dotnet-1.0.0-preview.251009.1/dotnet/samples/GettingStarted/Agents/Agent_Step01_Running/Program.cs
+            builder.Services.TryAddScoped<JokerChatClientAgent>(provider => provider
+                .GetRequiredService<IChatClient>()
+                .CreateAIAgent(name: "Joker", instructions: "You are good at telling jokes."));
+
 
             builder.Services.Scan(
                 s => s.FromAssemblyOf<Program>()

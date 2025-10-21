@@ -7,7 +7,7 @@
     {
         [Required(ErrorMessage = ErrorMessages.AgentsUrisRequired)]
         [NotEmptyCollection(ErrorMessage = ErrorMessages.SomeAgentUrisRequired)]
-        public List<Uri> AgentsUris { get; set; } = new();
+        public IEnumerable<Uri> AgentsUris { get; set; } = new List<Uri>();
 
         public static class ErrorMessages
         {
