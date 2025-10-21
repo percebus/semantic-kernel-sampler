@@ -8,9 +8,9 @@
     using Microsoft.Extensions.Logging;
 
     /// <see ref="https://github.com/microsoft/agent-framework/blob/main/dotnet/samples/A2AClientServer/A2AClient/HostClientAgent.cs"/>
-    public class A2AgentOrchestratorFactory(ILogger<IA2AgentOrchestratorFactory> logger, IChatClient chatClient, IEnumerable<A2ACardResolver> a2aCardResolvers) : IA2AgentOrchestratorFactory
+    public class A2AgentOrchestratorFactory(ILogger<A2AgentOrchestratorFactory> logger, IChatClient chatClient, IEnumerable<A2ACardResolver> a2aCardResolvers) : IA2AgentOrchestratorFactory
     {
-        public ILogger<IA2AgentOrchestratorFactory> Logger { get; } = logger;
+        private ILogger<A2AgentOrchestratorFactory> Logger { get; } = logger;
 
         private IChatClient ChatClient { get; } = chatClient;
 

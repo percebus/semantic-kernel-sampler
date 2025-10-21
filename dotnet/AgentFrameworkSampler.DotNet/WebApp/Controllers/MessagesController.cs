@@ -5,6 +5,7 @@
     using JCystems.AgentFraweworkSampler.DotNet.WebApp.Models;
     using Microsoft.Agents.AI;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.AI;
 
     public class MessagesController : ObservableControllerBase
     {
@@ -20,24 +21,34 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] Request request)
+        public async Task<IActionResult> PostAsync([FromBody] Request request, CancellationToken cancellationToken)
         {
             this.Logger.LogInformation("Received request: {Request}", request);
+
+            if (string.IsNullOrWhiteSpace(request.Message))
+            {
+                return this.StatusCode(400, "Request.Message is required");
+            }
 
             var response = new Response
             {
                 Request = request,
             };
 
-            List<AgentRunResponseUpdate> responses = new();
+            List<ChatMessage> messages = new();
             try
             {
                 AIAgent oAIAgent = await this.AIAgent.Value;
-                await foreach (AgentRunResponseUpdate oAgentRunResponseUpdate in oAIAgent.RunStreamingAsync(request.Message))
+                AgentThread oAgentThread = oAIAgent.GetNewThread(); // TODO pass request.ID
+
+                AgentRunResponse oAgentRunResponse = await oAIAgent.RunAsync(request.Message, oAgentThread, cancellationToken: cancellationToken);
+                this.Logger.LogInformation("Request message content item: {oAgentRunResponse}", oAgentRunResponse);
+                foreach (ChatMessage oChatMessage in oAgentRunResponse.Messages)
                 {
-                    this.Logger.LogInformation("Request message content item: {oAgentRunResponseUpdate}", oAgentRunResponseUpdate);
-                    responses.Add(oAgentRunResponseUpdate);
+                    this.Logger.LogDebug("Chat message: {oChatMessage}", oChatMessage);
+                    messages.Add(oChatMessage);
                 }
+
             }
             catch (Exception ex)
             {
@@ -48,7 +59,7 @@
             string responseMessages = string
                 .Join(
                     Environment.NewLine,
-                    responses
+                    messages
                         .Select(oAgentRunResponseUpdate => oAgentRunResponseUpdate.Text)
                         .Where(c => !string.IsNullOrWhiteSpace(c)))
                 .Trim();

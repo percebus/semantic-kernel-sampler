@@ -1,10 +1,11 @@
 !*.example
 !example.*
 
-# switch w/ different models
-# appsettings.ai*.json
-# appsettings.copilotstudio.json
+# appsettings.Development.json
+# apsettings.env.json
 # appsettings*.secrets.json
+# switch w/ different models
+# appsettings.ai*.json 
 
 
 # NOTE: vvv Do NOT add below this point

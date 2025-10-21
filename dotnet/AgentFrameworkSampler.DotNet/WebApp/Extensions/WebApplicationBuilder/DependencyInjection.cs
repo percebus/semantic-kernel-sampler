@@ -26,6 +26,7 @@
         {
             builder.Configuration.AddJsonFile("appsettings.json", optional: false);
             builder.Configuration.AddJsonFile("appsettings.ai.json", optional: false, reloadOnChange: true);
+            builder.Configuration.AddJsonFile("appsettings.env.json", optional: true, reloadOnChange: true);
             builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
             builder.Configuration.AddEnvironmentVariables();
 
@@ -131,9 +132,14 @@
                 .GetRequiredService<IChatClient>()
                 .CreateAIAgent(name: "Joker", instructions: "You are good at telling jokes."));
 
-
             builder.Services.Scan(
                 s => s.FromAssemblyOf<Program>()
+                      .AddClasses()
+                      .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                      .AsMatchingInterface());
+
+            builder.Services.Scan(
+                s => s.FromAssemblyOf<AppSettingsOptions>()
                       .AddClasses()
                       .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                       .AsMatchingInterface());

@@ -65,8 +65,9 @@ services:
       - 8082:9999
     env_file:
       - .env.development
+      - .env
     environment:
-      A2A__NEXT_URL: "http://host.docker.internal:8082"
+      A2A__NEXT_URL: "${BASE_URI}:8082"
 
   agent-framework-sampler-py:
     depends_on:
@@ -78,9 +79,9 @@ services:
       - 8084:9999
     env_file:
       - .env.development
+      - .env
     environment:
-      A2A__NEXT_URL: "http://localhost:8084"
-      # A2A__NEXT_URL: "http://host.docker.internal:8084"
+      A2A__NEXT_URL: "${BASE_URI}:8084"
 
   # XXX DELETE: Use AgentFrameworkSampler.DotNet instead
   semantic-kernel-sampler.net:
