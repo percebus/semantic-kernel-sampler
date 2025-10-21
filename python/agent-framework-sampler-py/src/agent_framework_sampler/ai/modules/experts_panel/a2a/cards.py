@@ -5,6 +5,7 @@ from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 from agent_framework_sampler.a2a.cards.mixin import A2ACardsMixin
 from agent_framework_sampler.ai.modules.chemistry_expert.a2a.skills.chat import ChemistryAgentSkill
+from agent_framework_sampler.ai.modules.experts_panel.a2a.skills.chat import MultiExpertPanelAgentSkill
 from agent_framework_sampler.ai.modules.physics_expert.a2a.skills.chat import PhysicsAgentSkill
 from agent_framework_sampler.config.mixin import ConfigurableMixin
 
@@ -44,12 +45,15 @@ class ExpertsPanelA2AgentCards(A2ACardsMixin, ConfigurableMixin):
         # fmt: on
 
     def __post_init__(self):
-        oPhysicsAgentSkill: AgentSkill = PhysicsAgentSkill()
-        oChemistryAgentSkill: AgentSkill = ChemistryAgentSkill()
+        oPhysicsAgentSkill = PhysicsAgentSkill()
+        oChemistryAgentSkill = ChemistryAgentSkill()
+        oMultiExpertPanelAgentSkill = MultiExpertPanelAgentSkill()
 
-        skills: list[AgentSkill] = [oPhysicsAgentSkill, oChemistryAgentSkill]
+        skills: list[AgentSkill] = [oPhysicsAgentSkill, oChemistryAgentSkill, oMultiExpertPanelAgentSkill]
 
         authenticated_skills = skills
 
         self.agent_card = self.createAgentCard__public(skills=skills)
+
+        # TODO only add oMultiExpertPanelAgentSkill for authenticated
         self.extended_agent_card = self.createAgentCard__authenticated(skills=authenticated_skills)
