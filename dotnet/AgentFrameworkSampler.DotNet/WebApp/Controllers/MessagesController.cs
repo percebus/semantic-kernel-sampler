@@ -3,7 +3,7 @@
     using System.Text.RegularExpressions;
     using JCystems.AgentFrameworkSampler.DotNet.Shared.Factories;
     using JCystems.AgentFraweworkSampler.DotNet.WebApp.Models;
-    using Microsoft.Agents.AI;
+    using Microsoft.Agents.AI.Workflows;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.AI;
 
@@ -11,13 +11,13 @@
     {
         private IA2AgentOrchestratorFactory AgentFactory { get; }
 
-        private Lazy<Task<AIAgent>> AIAgent { get; }
+        private Lazy<Task<Workflow>> Workflow { get; }
 
         public MessagesController(ILogger<MessagesController> logger, IA2AgentOrchestratorFactory agentFactory)
             : base(logger)
         {
             this.AgentFactory = agentFactory;
-            this.AIAgent = new Lazy<Task<AIAgent>>(async () => await this.AgentFactory.CreateAIAgentAsync());
+            // this.Workflow = new Lazy<Task<Workflow>>(async () => await this.AgentFactory.CreateWorkflowAsync());
         }
 
         [HttpPost]
@@ -38,15 +38,22 @@
             List<ChatMessage> messages = new();
             try
             {
-                AIAgent oAIAgent = await this.AIAgent.Value;
-                AgentThread oAgentThread = oAIAgent.GetNewThread(); // TODO pass request.ID
+                // Workflow oWorkflow = await this.Workflow.Value;
+                Workflow oWorkflow = await this.AgentFactory.CreateWorkflowAsync(); // XXX
 
-                AgentRunResponse oAgentRunResponse = await oAIAgent.RunAsync(request.Message, oAgentThread, cancellationToken: cancellationToken);
-                this.Logger.LogInformation("Request message content item: {oAgentRunResponse}", oAgentRunResponse);
-                foreach (ChatMessage oChatMessage in oAgentRunResponse.Messages)
+                await using StreamingRun oStreamingResult = await InProcessExecution.StreamAsync(oWorkflow, request.Message, cancellationToken: cancellationToken);
+                TurnToken oTurnToken = new(emitEvents: true);
+                await oStreamingResult.TrySendMessageAsync(oTurnToken);
+                await foreach (WorkflowEvent oWorkflowEvent in oStreamingResult.WatchStreamAsync())
                 {
-                    this.Logger.LogDebug("Chat message: {oChatMessage}", oChatMessage);
-                    messages.Add(oChatMessage);
+                    switch (oWorkflowEvent)
+                    {
+                        case WorkflowOutputEvent oWorkflowOutputEvent:
+                            this.Logger.LogInformation("Request message content item: {oWorkflowOutputEvent}", oWorkflowOutputEvent);
+                            List<ChatMessage> workflowMessages = oWorkflowOutputEvent.As<List<ChatMessage>>()!;
+                            messages.AddRange(workflowMessages);
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -59,8 +66,7 @@
                 .Join(
                     Environment.NewLine,
                     messages
-                        .Select(oAgentRunResponseUpdate => oAgentRunResponseUpdate.Text)
-                        .Where(c => !string.IsNullOrWhiteSpace(c)))
+                        .Select(oAgentRunResponseUpdate => oAgentRunResponseUpdate.Text))
                 .Trim();
 
             responseMessages = Regex.Replace(responseMessages, @"\r\n", string.Empty);
