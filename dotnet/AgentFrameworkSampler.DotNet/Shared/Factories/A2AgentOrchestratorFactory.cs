@@ -27,23 +27,18 @@
                     .ToList();
 
             // Create the agent that uses the remote agents as tools
-            // TODO Move to Options
             return this.ChatClient.CreateAIAgent(
                 name: "HostClient",
                 instructions: "You specialize in handling queries for users and using your tools to provide answers.",
                 tools: tools);
         }
 
-        // TODO REFACTOR move to DependencyInjection
-        private static async Task<AIAgent> CreateAIAgentAsync(A2ACardResolver a2aCardResolver)
-        {
-            return await a2aCardResolver.GetAIAgentAsync();
-        }
-
         private async Task<AIAgent[]> CreateA2AgentsAsAsync()
         {
             // Connect to the remote agents via A2A
-            IEnumerable<Task<AIAgent>> createAgentTasks = this.A2ACardResolvers.Select(CreateAIAgentAsync);
+            IEnumerable<Task<AIAgent>> createAgentTasks = this.A2ACardResolvers
+                .Select(async oA2ACardResolver => await oA2ACardResolver.GetAIAgentAsync());
+
             return await Task.WhenAll(createAgentTasks);
         }
     }
