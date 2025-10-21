@@ -1,14 +1,16 @@
 ﻿namespace JCystems.AgentFrameworkSampler.DotNet.Shared.Options.CustomValidationAttributes
 {
-
     using System.Collections;
     using System.ComponentModel.DataAnnotations;
 
     public class NotEmptyCollectionAttribute : ValidationAttribute
     {
-        public NotEmptyCollectionAttribute() : base("The {0} field must not be empty.") { }
+        public NotEmptyCollectionAttribute()
+            : base("The {0} field must not be empty.")
+        {
+        }
 
-        public override bool IsValid(object value)
+        public override bool IsValid(object? value)
         {
             if (value == null)
             {

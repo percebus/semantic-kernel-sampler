@@ -48,7 +48,6 @@
                     this.Logger.LogDebug("Chat message: {oChatMessage}", oChatMessage);
                     messages.Add(oChatMessage);
                 }
-
             }
             catch (Exception ex)
             {
