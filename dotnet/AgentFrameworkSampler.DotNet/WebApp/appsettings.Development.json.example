@@ -5,6 +5,9 @@
         "TenantId": "FIXME",
         "ClientId": "FIXME",
         "ClientSecret": "FIXME"
+      },
+      "A2A": {
+        "AgentsUris": ["http://localhost:8084", "http://localhost:8082"]
       }
     }
   },

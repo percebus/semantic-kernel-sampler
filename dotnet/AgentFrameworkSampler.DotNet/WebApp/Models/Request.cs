@@ -1,4 +1,4 @@
-﻿namespace JCystems.AgentFrameworkSampler.Dotnet.WebApp.Models
+﻿namespace JCystems.AgentFraweworkSampler.DotNet.WebApp.Models
 {
     public class Request
     {

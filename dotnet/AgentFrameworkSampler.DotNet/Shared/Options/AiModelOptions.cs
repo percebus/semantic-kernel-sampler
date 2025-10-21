@@ -1,4 +1,4 @@
-﻿namespace JCystems.AgentFrameworkSampler.Dotnet.Shared.Options
+﻿namespace JCystems.AgentFrameworkSampler.DotNet.Shared.Options
 {
     using System.ComponentModel.DataAnnotations;
 

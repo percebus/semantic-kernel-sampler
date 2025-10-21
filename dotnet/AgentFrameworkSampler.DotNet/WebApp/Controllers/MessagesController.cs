@@ -1,31 +1,52 @@
-﻿namespace JCystems.AgentFrameworkSampler.Dotnet.WebApp.Controllers
+﻿namespace JCystems.AgentFraweworkSampler.DotNet.WebApp.Controllers
 {
     using System.Text.RegularExpressions;
-    using JCystems.AgentFrameworkSampler.Dotnet.WebApp.Models;
+    using JCystems.AgentFrameworkSampler.DotNet.Shared.Factories;
+    using JCystems.AgentFraweworkSampler.DotNet.WebApp.Models;
     using Microsoft.Agents.AI;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.AI;
 
-    public class MessagesController(ILogger<MessagesController> logger, AIAgent aiAgent) : AgentFrameworkSampler.Dotnet.WebApp.Controllers.ObservableControllerBase(logger)
+    public class MessagesController : ObservableControllerBase
     {
-        private AIAgent AIAgent => aiAgent;
+        private IA2AgentOrchestratorFactory AgentFactory { get; }
+
+        private Lazy<Task<AIAgent>> AIAgent { get; }
+
+        public MessagesController(ILogger<MessagesController> logger, IA2AgentOrchestratorFactory agentFactory)
+            : base(logger)
+        {
+            this.AgentFactory = agentFactory;
+            this.AIAgent = new Lazy<Task<AIAgent>>(async () => await this.AgentFactory.CreateAIAgentAsync());
+        }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] Request request)
+        public async Task<IActionResult> PostAsync([FromBody] Request request, CancellationToken cancellationToken)
         {
             this.Logger.LogInformation("Received request: {Request}", request);
+
+            if (string.IsNullOrWhiteSpace(request.Message))
+            {
+                return this.StatusCode(400, "Request.Message is required");
+            }
 
             var response = new Response
             {
                 Request = request,
             };
 
-            List<AgentRunResponseUpdate> responses = new();
+            List<ChatMessage> messages = new();
             try
             {
-                await foreach (AgentRunResponseUpdate oAgentRunResponseUpdate in this.AIAgent.RunStreamingAsync(request.Message))
+                AIAgent oAIAgent = await this.AIAgent.Value;
+                AgentThread oAgentThread = oAIAgent.GetNewThread(); // TODO pass request.ID
+
+                AgentRunResponse oAgentRunResponse = await oAIAgent.RunAsync(request.Message, oAgentThread, cancellationToken: cancellationToken);
+                this.Logger.LogInformation("Request message content item: {oAgentRunResponse}", oAgentRunResponse);
+                foreach (ChatMessage oChatMessage in oAgentRunResponse.Messages)
                 {
-                    this.Logger.LogInformation("Request message content item: {oAgentRunResponseUpdate}", oAgentRunResponseUpdate);
-                    responses.Add(oAgentRunResponseUpdate);
+                    this.Logger.LogDebug("Chat message: {oChatMessage}", oChatMessage);
+                    messages.Add(oChatMessage);
                 }
             }
             catch (Exception ex)
@@ -37,7 +58,7 @@
             string responseMessages = string
                 .Join(
                     Environment.NewLine,
-                    responses
+                    messages
                         .Select(oAgentRunResponseUpdate => oAgentRunResponseUpdate.Text)
                         .Where(c => !string.IsNullOrWhiteSpace(c)))
                 .Trim();
