@@ -41,7 +41,7 @@
         {
             AIAgent triageAIAgent = this.ChatClient.CreateAIAgent(
                 name: "triage_agent",
-                instructions: "You determine which a2aAIAgent to use based on the user's homework question. ALWAYS handoff to another a2aAIAgent.",
+                instructions: "You determine which agent to use based on the user's homework question. ALWAYS handoff to another agent.",
                 description: "Routes messages to the appropriate specialist a2aAIAgent");
 
             AIAgent[] agents = await this.CreateA2AgentsAsAsync();
