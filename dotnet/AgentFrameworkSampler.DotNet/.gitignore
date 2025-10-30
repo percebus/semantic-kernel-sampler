@@ -2,7 +2,7 @@
 !example.*
 
 appsettings.Development.json
-apsettings.env.json
+appsettings.env.json
 appsettings*.secrets.json
 # switch w/ different models
 appsettings.ai*.json

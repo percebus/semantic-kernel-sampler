@@ -41,6 +41,7 @@
                 Workflow oWorkflow = await this.Workflow.Value;
                 ChatMessage requestChatMessage = new ChatMessage(ChatRole.User, request.Message);
                 List<ChatMessage> requestChatMessages = new List<ChatMessage> { requestChatMessage };
+                this.Logger.LogDebug("Starting workflow execution for request: '{request}'", request);
                 await using StreamingRun oStreamingResult = await InProcessExecution.StreamAsync(oWorkflow, requestChatMessages, cancellationToken: cancellationToken);
                 TurnToken oTurnToken = new(emitEvents: true);
                 await oStreamingResult.TrySendMessageAsync(oTurnToken);
