@@ -10,7 +10,7 @@
 
 
     /// <summary>A2 Agent Orchestrator Factory.</summary>
-    /// <see ref="https://github.com/microsoft/a2aAIAgent-framework/blob/main/dotnet/samples/A2AClientServer/A2AClient/HostClientAgent.cs"/>
+    /// <see ref="https://github.com/microsoft/agent-framework/blob/main/dotnet/samples/A2AClientServer/A2AClient/HostClientAgent.cs"/>
     public class A2AgentOrchestratorFactory(ILogger<A2AgentOrchestratorFactory> logger, IChatClient chatClient, IEnumerable<A2ACardResolver> a2aCardResolvers) : IA2AgentOrchestratorFactory
     {
         private ILogger<A2AgentOrchestratorFactory> Logger { get; } = logger;
@@ -22,14 +22,14 @@
         // XXX this treats A2Aagents as MCP tools of sorts
         public async Task<AIAgent> CreateAIAgentAsync()
         {
-            this.Logger.LogInformation("Creating Agent Framework a2aAIAgent");
+            this.Logger.LogInformation("Creating Agent Framework agent");
 
             AIAgent[] agents = await this.CreateA2AgentsAsAsync();
             IList<AITool> tools = agents
                     .Select(agent => (AITool)agent.AsAIFunction())
                     .ToList();
 
-            // Create the a2aAIAgent that uses the remote agents as tools
+            // Create the agent that uses the remote agents as tools
             return this.ChatClient.CreateAIAgent(
                 name: "HostClient",
                 instructions: "You specialize in handling queries for users and using your tools to provide answers.",
