@@ -17,7 +17,7 @@
             : base(logger)
         {
             this.AgentFactory = agentFactory;
-            // this.Workflow = new Lazy<Task<Workflow>>(async () => await this.AgentFactory.CreateWorkflowAsync());
+            this.Workflow = new Lazy<Task<Workflow>>(async () => await this.AgentFactory.CreateWorkflowAsync());
         }
 
         [HttpPost]
@@ -38,9 +38,7 @@
             List<ChatMessage> messages = new();
             try
             {
-                // Workflow oWorkflow = await this.Workflow.Value;
-                Workflow oWorkflow = await this.AgentFactory.CreateWorkflowAsync(); // XXX
-
+                Workflow oWorkflow = await this.Workflow.Value;
                 ChatMessage requestChatMessage = new ChatMessage(ChatRole.User, request.Message);
                 List<ChatMessage> requestChatMessages = new List<ChatMessage> { requestChatMessage };
                 await using StreamingRun oStreamingResult = await InProcessExecution.StreamAsync(oWorkflow, requestChatMessages, cancellationToken: cancellationToken);
@@ -53,7 +51,7 @@
                     {
                         case WorkflowOutputEvent oWorkflowOutputEvent:
                             List<ChatMessage> workflowMessages = oWorkflowOutputEvent.As<List<ChatMessage>>()!;
-                            // messages.AddRange(workflowMessages);
+                            messages.AddRange(workflowMessages);
                             break;
                     }
                 }
