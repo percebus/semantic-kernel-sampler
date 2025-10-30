@@ -46,10 +46,11 @@
                 await oStreamingResult.TrySendMessageAsync(oTurnToken);
                 await foreach (WorkflowEvent oWorkflowEvent in oStreamingResult.WatchStreamAsync())
                 {
-                    this.Logger.LogCritical("EVENT: Request message content item: {oWorkflowEvent}", oWorkflowEvent);
+                    this.Logger.LogDebug("WorkflowEvent: {oWorkflowEvent}", oWorkflowEvent);
                     switch (oWorkflowEvent)
                     {
                         case WorkflowOutputEvent oWorkflowOutputEvent:
+                            this.Logger.LogInformation("WorkflowOutputEvent: {oWorkflowOutputEvent}", oWorkflowOutputEvent);
                             List<ChatMessage> workflowMessages = oWorkflowOutputEvent.As<List<ChatMessage>>()!;
                             messages.AddRange(workflowMessages);
                             break;
