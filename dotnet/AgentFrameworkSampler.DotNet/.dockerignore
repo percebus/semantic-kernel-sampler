@@ -1,11 +1,11 @@
 !*.example
 !example.*
 
-# appsettings.Development.json
-# apsettings.env.json
+appsettings.Development.json
+# appsettings.env.json
 # appsettings*.secrets.json
 # switch w/ different models
-# appsettings.ai*.json 
+# appsettings.ai*.json
 
 
 # NOTE: vvv Do NOT add below this point
