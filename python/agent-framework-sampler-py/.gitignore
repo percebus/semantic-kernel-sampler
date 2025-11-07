@@ -1,5 +1,5 @@
 !*.env
-.env.*.local
+.env*.local
 
 
 # NOTE: vvv Do NOT add below this point
