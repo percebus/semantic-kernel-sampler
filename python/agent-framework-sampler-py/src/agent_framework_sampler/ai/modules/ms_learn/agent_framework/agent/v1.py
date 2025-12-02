@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from agent_framework import ChatAgent
 from agent_framework._clients import ChatClientProtocol
 
-from agent_framework_sampler.ai.modules.ms_learn.agent_framework.tools.ms_learn import MSLearnMCPStreamableHttpTool
+from agent_framework_sampler.ai.modules.ms_learn.agent_framework.tools.mcp.v1 import MSLearnMCPStreamableHttpTool
 
 
 # SRC: https://github.com/microsoft/agent-framework/blob/python-1.0.0b251007/python/samples/getting_started/tools/ai_tool_with_approval.py

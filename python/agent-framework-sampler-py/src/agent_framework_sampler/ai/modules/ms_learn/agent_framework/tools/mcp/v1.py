@@ -11,6 +11,7 @@ class MSLearnMCPStreamableHttpTool(MCPStreamableHTTPTool):
 
     description: str = field(default="MCP tool description")
 
+    # TODO? move to Settings?
     url: str = field(default="https://learn.microsoft.com/api/mcp")
 
     def __post_init__(self) -> None:

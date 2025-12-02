@@ -1,7 +1,7 @@
 import asyncio
 
 from agent_framework_sampler.ai.modules.ms_learn.agent_framework.agent.v1 import MSLearnChatAgent
-from agent_framework_sampler.ai.modules.ms_learn.agent_framework.tools.ms_learn import MSLearnMCPStreamableHttpTool
+from agent_framework_sampler.ai.modules.ms_learn.agent_framework.tools.mcp.v1 import MSLearnMCPStreamableHttpTool
 from agent_framework_sampler.dependency_injection.container import container
 
 
