@@ -22,6 +22,8 @@ from agent_framework_sampler.ai.a2a.executors.agent_framework.workflow.simple im
 from agent_framework_sampler.ai.a2a.executors.agent_framework.workflow.streaming import StreamingWorkflowA2AgentFrameworkExecutor
 from agent_framework_sampler.ai.modules.chemistry_expert.agent_framework.agent.v1 import ChemistryExpertChatAgent
 from agent_framework_sampler.ai.modules.experts_panel.a2a.cards import ExpertsPanelA2AgentCards
+from agent_framework_sampler.ai.modules.ms_learn.agent_framework.agent.v1 import MSLearnChatAgent
+from agent_framework_sampler.ai.modules.ms_learn.agent_framework.tools.mcp.v1 import MSLearnMCPStreamableHttpTool
 from agent_framework_sampler.ai.modules.physics_expert.agent_framework.agent.v1 import PhysicsExpertChatAgent
 from agent_framework_sampler.ai.modules.weather.a2a.cards import WeatherA2AgentCards
 from agent_framework_sampler.ai.modules.weather.agent_framework.agent.v2 import WeatherChatAgent_V2
@@ -68,6 +70,8 @@ container[AzureOpenAIResponsesClient] = lambda c: AzureOpenAIResponsesClient(
 container[ChatClientProtocol] = lambda c: c[AzureOpenAIChatClient]
 # container[ChatClientProtocol] = lambda c: c[AzureOpenAIResponsesClient]
 
+container[MSLearnMCPStreamableHttpTool] = lambda c: MSLearnMCPStreamableHttpTool(configuration=c[Configuration])
+
 ### Chat Agents ###########################################################
 
 container[WeatherChatAgent_V2] = lambda c: WeatherChatAgent_V2(
@@ -80,6 +84,11 @@ container[PhysicsExpertChatAgent] = lambda c: PhysicsExpertChatAgent(
 
 container[ChemistryExpertChatAgent] = lambda c: ChemistryExpertChatAgent(
     chat_client=c[ChatClientProtocol],
+)
+
+container[MSLearnChatAgent] = lambda c: MSLearnChatAgent(
+    chat_client=c[ChatClientProtocol],
+    ms_learn_tool=c[MSLearnMCPStreamableHttpTool],
 )
 
 ### Agent Runner(s) ###########################################################
