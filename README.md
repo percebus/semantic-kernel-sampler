@@ -1,7 +1,7 @@
 # agent-framework-sampler
 
 - [![[C]ontinuous [I]ntegration: PR](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/pull_request.yml/badge.svg?event=pull_request)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/pull_request.yml)
-- [![[C]ontinuous [I]ntegration @ main](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml)
+- [![[C]ontinuous [I]ntegration @ main](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/main.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/main.yml)
 
 ~~Semantic-Kernel~~ `agent-framework` monorepo sampler
 
