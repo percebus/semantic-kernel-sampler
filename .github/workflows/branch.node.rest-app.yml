@@ -13,11 +13,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 22
-  NODE_PROJECT: rest-app
   WORKSPACE: node/rest-app
-  NPM_CLI_OPTS: --prefix node/rest-app
 
 jobs:
   npm_test:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      script: test
+      project_path: ${{ env.WORKSPACE }}
