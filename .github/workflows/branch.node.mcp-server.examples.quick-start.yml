@@ -6,12 +6,6 @@ on:
     paths:
       - "node/mcp-server.examples.quick-start/**"
       - ".github/workflows/branch.node.mcp-server.examples.quick-start.yml"
-  push:
-    branches-ignore:
-      - "main"
-    paths:
-      - "node/mcp-server.examples.quick-start/**"
-      - ".github/workflows/branch.node.mcp-server.examples.quick-start.yml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

@@ -7,13 +7,6 @@ on:
       - "python/agent-framework-sampler-py/**"
       - ".github/workflows/branch.python.agent-framework-sampler-py.yml"
 
-  push:
-    branches-ignore:
-      - "main"
-    paths:
-      - "python/agent-framework-sampler-py/**"
-      - ".github/workflows/branch.python.agent-framework-sampler-py.yml"
-
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true

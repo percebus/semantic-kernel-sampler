@@ -7,13 +7,6 @@ on:
       - "package*.json"
       - "node/**"
       - ".github/workflows/branch.node.yml"
-  push:
-    branches-ignore:
-      - "main"
-    paths:
-      - "package*.json"
-      - "node/**"
-      - ".github/workflows/branch.node.yml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
