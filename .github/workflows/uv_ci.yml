@@ -32,6 +32,8 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
+      - uses: percebus/github-actions-pip/.github/actions/freeze@main
+
       - name: ci.ba.sh
         working-directory: ${{ inputs.working-directory }}
         run: bash scripts/ci.ba.sh
