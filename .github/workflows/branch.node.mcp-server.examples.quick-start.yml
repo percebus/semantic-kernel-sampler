@@ -12,31 +12,9 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
-env:
-  WORKSPACE: ./node/mcp-server.examples.quick-start
-  NODE_VERSION: 22
-  NPM_CLI_OPTS: --prefix ${{ env.WORKSPACE }}
-
 jobs:
   npm_test:
-    runs-on: ubuntu-latest
-    name: npm test @  ${{ env.WORKSPACE }}
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: ls
-        run: ls -la ./node/ ${{ env.WORKSPACE }}
-
-      - name: node @ ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: npm run setup:ci
-        run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
-      - name: npm install
-        run: npm ci ${{ env.NPM_CLI_OPTS }}
-      - name: ls node_modules
-        run: ls -la ${{ env.WORKSPACE }}/node_modules
-
-      - name: npm test
-        run: npm test ${{ env.NPM_CLI_OPTS }}
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      # script: test
+      working-directory: node/mcp-server.examples.quick-start
