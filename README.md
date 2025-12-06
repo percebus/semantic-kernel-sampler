@@ -1,6 +1,7 @@
 # agent-framework-sampler
 
-[![[C]ontinuous [I]ntegration](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml)
+- [![[C]ontinuous [I]ntegration: PR](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/pull_request.yml/badge.svg?event=pull_request)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/pull_request.yml)
+- [![[C]ontinuous [I]ntegration @ main](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/always.yml)
 
 ~~Semantic-Kernel~~ `agent-framework` monorepo sampler
 
@@ -8,7 +9,7 @@
 
 ### REST API
 
-- `node/`
+- `node/` [![[C]ontinuous [I]ntegration: node/*](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml)
   - [`rest-app`](./node/rest-app) [![[C]ontinuous [I]ntegration: rest-app](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml)
 
 ### Agents
