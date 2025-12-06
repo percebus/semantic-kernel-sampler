@@ -19,4 +19,4 @@ jobs:
   uv_ci:
     uses: ./.github/workflows/uv_ci.yml
     with:
-        working-directory: python/ai-evaluator-py
+      working-directory: python/ai-evaluator-py

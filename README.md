@@ -7,39 +7,20 @@
 
 ## Sub-Projecs/Repos
 
-### REST API
-
-- `node/` [![[C]ontinuous [I]ntegration: node/*](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml)
-  - [`rest-app`](./node/rest-app) [![[C]ontinuous [I]ntegration: rest-app](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml)
-
-### Agents
-
-- `dotnet/`
-  - ~~[`SemanticKernelSampler.DotNet`](./dotnet/SemanticKernelSampler.DotNet)~~ `DEPRECATED` use `AgentFrameworkSampler.DotNet` instead
-  - [`AgentFrameworkSampler.DotNet`](./dotnet/AgentFrameworkSampler.DotNet)
-- `java/`
-  - TODO
-- `python/`
-  - [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py): `DEPRECATED` use `agent-framework` instead
-  - [`agent-framework-sampler-py`](./python/agent-framework-sampler-py)
-
-### MCP
-
-- `node/`
-  - [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start) [![[C]ontinuous [I]ntegration: mcp-server.examples.quick-start](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml)
-  - [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts) [![[C]ontinuous [I]ntegration: mcp-server.rest-app.posts](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml)
-    - Uses [`rest-app`](./node/rest-app)
-
-### AI Evaluation
-
-- `python/`
-  - [`ai-evaluator-py`](./python/ai-evaluator-py)
-
-### External
-
-- [`a2a-inspector`](https://github.com/a2aproject/a2a-inspector)
-- [`@modelcontextprotocol/inspector`](./package.json):
-  - `$> npm start:mcp:inspector`
+| Folder          | Project                                                                     | Type         | CI                                                                                                                                                                                                                                                                                           |
+| --------------- | --------------------------------------------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `repositories/` | [`a2a-inspector`](./repositories/a2a-inspector)                             | A2A Client   | N/A                                                                                                                                                                                                                                                                                          |
+| `repositories/` | [`@modelcontextprotocol/inspector`](./package.json)                         | MCP CLient   | N/A                                                                                                                                                                                                                                                                                          |
+| `node/`         | `*`                                                                         | `node`       | [![node/*](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml)                                                                                          |
+| `node/`         | [`rest-app`](./node/rest-app)                                               | RESTful API  | [![rest-app](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml)                                                                      |
+| `node/`         | [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start) | MCP          | [![mcp-server.examples.quick-start](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml) |
+| `node/`         | [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts)             | MCP          | [![mcp-server.rest-app.posts](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml)                   |
+| `dotnet/`       | [`SemanticKernelSampler.DotNet`](./dotnet/SemanticKernelSampler.DotNet)     | Agent        | TBD                                                                                                                                                                                                                                                                                          |
+| `dotnet/`       | [`AgentFrameworkSampler.DotNet`](./dotnet/AgentFrameworkSampler.DotNet)     | Agent        | TBD                                                                                                                                                                                                                                                                                          |
+| `java/`         | TODO                                                                        | Agent        | TBD                                                                                                                                                                                                                                                                                          |
+| `python/`       | [`semantic-kernel-sampler-py`](./python/semantic-kernel-sampler-py)         | Agent        | [![ai-evaluator-py](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.python.ai-evaluator-py.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.python.ai-evaluator-py.yml)                                             |
+| `python/`       | [`agent-framework-sampler-py`](./python/agent-framework-sampler-py)         | Agent        | [![agent-framework-sampler-py](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.python.agent-framework-sampler-py.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.python.agent-framework-sampler-py.yml)            |
+| `python/`       | [`ai-evaluator-py`](./python/ai-evaluator-py)                               | AI Evaluator | [![semantic-kernel-sampler-py](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.python.semantic-kernel-sampler-py.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.python.semantic-kernel-sampler-py.yml)            |
 
 ## R&D
 
