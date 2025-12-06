@@ -3,6 +3,10 @@ name: "[C]ontinuous [I]ntegration: node/*"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
+    paths:
+      - "package*.json"
+      - "node/**"
+  push:
     branches-ignore:
       - "main"
     paths:

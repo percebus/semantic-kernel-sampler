@@ -3,6 +3,10 @@ name: "[C]ontinuous [I]ntegration: mcp-server.rest-app.posts"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
+    paths:
+      - "node/rest-app/**"
+      - "node/mcp-server.rest-app.posts/**"
+  push:
     branches-ignore:
       - "main"
     paths:

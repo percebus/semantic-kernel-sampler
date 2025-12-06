@@ -3,6 +3,9 @@ name: "[C]ontinuous [I]ntegration: rest-app"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
+    paths:
+      - "node/rest-app/**"
+  push:
     branches-ignore:
       - "main"
     paths:

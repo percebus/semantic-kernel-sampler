@@ -3,6 +3,9 @@ name: "[C]ontinuous [I]ntegration: mcp-server.examples.quick-start"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
+    paths:
+      - "node/mcp-server.examples.quick-start/**"
+  push:
     branches-ignore:
       - "main"
     paths:
