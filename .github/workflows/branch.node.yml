@@ -1,0 +1,42 @@
+name: "[C]ontinuous [I]ntegration: node/*"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  push:
+    paths:
+      - "package*.json"
+      - "node/**"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 22
+
+  WORKSPACE: ./node/mcp-server.examples.quick-start
+
+jobs:
+  npm_test:
+    name: npm test
+    runs-on: ubuntu-latest
+    steps:
+      - name: node @ ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: ls
+        run: ls -la
+
+      - name: npm run setup:ci
+        run: npm run setup:ci --if-present
+      - name: npm install
+        run: npm ci
+      - name: ls node_modules
+        run: ls -la ./node_modules
+
+      - name: npm test
+        run: npm test
