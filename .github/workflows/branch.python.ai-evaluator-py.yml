@@ -1,15 +1,15 @@
-name: "semantic-kernel-sampler-py"
+name: "ai-evaluator-py"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     # paths:
-    #   - "python/semantic-kernel-sampler-py/**"
+    #   - "python/ai-evaluator-py/**"
   push:
     branches-ignore:
       - "main"
     # paths:
-    #   - "python/semantic-kernel-sampler-py/**"
+    #   - "python/ai-evaluator-py/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -19,4 +19,4 @@ jobs:
   uv_ci:
     uses: ./.github/workflows/uv_ci.yml
     with:
-        working-directory: python/semantic-kernel-sampler-py
+        working-directory: python/ai-evaluator-py
