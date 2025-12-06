@@ -33,6 +33,10 @@ jobs:
       - uses: percebus/github-actions-uv/.github/actions/tool_install@main
       - uses: percebus/github-actions-uv/.github/actions/python_install@main
         with:
+          requirements-file: ${{ env.WORKSPACE }}/requirements.uv.tool.txt
+
+      - uses: percebus/github-actions-uv/.github/actions/python_install@main
+        with:
           working-directory: ${{ env.WORKSPACE }}
 
       - uses: percebus/github-actions-uv/.github/actions/sync@main
