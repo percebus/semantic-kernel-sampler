@@ -16,7 +16,7 @@ env:
   NODE_VERSION: 22
   NODE_PROJECT: rest-app
   WORKSPACE: node/rest-app
-  NPM_CLI_OPTS: --prefix rest-app
+  NPM_CLI_OPTS: --prefix node/rest-app
 
 jobs:
   npm_test:
