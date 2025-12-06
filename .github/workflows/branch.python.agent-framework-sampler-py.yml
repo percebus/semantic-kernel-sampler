@@ -18,6 +18,11 @@ concurrency:
 env:
   WORKSPACE: python/agent-framework-sampler-py
 
+  # python
+  PYTHON_VERSION: 3.12.8
+  PYRIGHT_PYTHON_FORCE_VERSION: latest
+
+
 jobs:
   poe_ci:
     name: "poe ci"
@@ -26,9 +31,10 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-uv/.github/actions/setup@main
       - uses: percebus/github-actions-uv/.github/actions/tool_install@main
-      - uses: percebus/github-actions-uv/.github/actions/python_install@main
-        with:
-          working-directory: ${{ env.WORKSPACE }}
+
+      - name: uv python install
+        working-directory: ${{ env.WORKSPACE }}
+        run: uv python install --python-version ${{ env.PYTHON_VERSION }}
 
       # TODO? included in poe ci
       # - uses: percebus/github-actions-uv/.github/actions/sync@main
