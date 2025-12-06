@@ -5,8 +5,8 @@ on:
   push:
     branches-ignore:
       - "main"
-    # paths:
-    #   - "node/rest-app/**"
+    paths:
+      - "node/rest-app/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -16,5 +16,5 @@ jobs:
   npm_test:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
-      # script: test
+      # script: test  # default
       working-directory: node/rest-app

@@ -37,7 +37,6 @@ env:
 
 jobs:
   npm_test__matrix:
-    runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
       matrix:
@@ -46,54 +45,17 @@ jobs:
           - rest-app
           - mcp-server.rest-app.posts
 
-    env:
-      WORKSPACE: ./node/${{ matrix.project }}
-      NPM_CLI_OPTS: --prefix ./node/${{ matrix.project }}
-    name: npm test @ ${{ matrix.project }}
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: ls
-        run: ls -la ./node/${{ matrix.project }}
-
-      - name: node @ ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: npm run setup:ci
-        run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
-      - name: npm install
-        run: npm ci ${{ env.NPM_CLI_OPTS }}
-      - name: ls node_modules
-        run: ls -la ${{ env.WORKSPACE }}/node_modules
-
-      - name: npm test
-        run: npm test ${{ env.NPM_CLI_OPTS }}
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      # script: test  # default
+      working-directory: ./node/${{ matrix.project }}
 
   npm_test:
     name: npm test
-    runs-on: ubuntu-latest
     needs: npm_test__matrix
-    steps:
-      - name: node @ ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: ls
-        run: ls -la
-
-      - name: npm run setup:ci
-        run: npm run setup:ci --if-present
-      - name: npm install
-        run: npm ci
-      - name: ls node_modules
-        run: ls -la ./node_modules
-
-      - name: npm test
-        run: npm test
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    # with:
+    #   script: test  # default
 
   python_ci__matrix:
     runs-on: ubuntu-latest

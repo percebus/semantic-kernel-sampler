@@ -5,9 +5,9 @@ on:
   push:
     branches-ignore:
       - "main"
-    # paths:
-    #   - "node/rest-app/**"
-    #   - "node/mcp-server.rest-app.posts/**"
+    paths:
+      - "node/rest-app/**"
+      - "node/mcp-server.rest-app.posts/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -17,5 +17,5 @@ jobs:
   npm_test:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
-      # script: test
+      # script: test  # default
       working-directory: node/mcp-server.rest-app.posts

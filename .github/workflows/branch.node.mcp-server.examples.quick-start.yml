@@ -5,8 +5,8 @@ on:
   push:
     branches-ignore:
       - "main"
-    # paths:
-    #   - "node/mcp-server.examples.quick-start/**"
+    paths:
+      - "node/mcp-server.examples.quick-start/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -16,5 +16,5 @@ jobs:
   npm_test:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
-      # script: test
+      # script: test  # default
       working-directory: node/mcp-server.examples.quick-start
