@@ -5,11 +5,14 @@ on:
   pull_request:
     paths:
       - "python/ai-evaluator-py/**"
+      - ".github/workflows/branch.python.ai-evaluator-py.yml"
+
   push:
     branches-ignore:
       - "main"
     paths:
       - "python/ai-evaluator-py/**"
+      - ".github/workflows/branch.python.ai-evaluator-py.yml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

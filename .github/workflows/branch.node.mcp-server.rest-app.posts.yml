@@ -6,12 +6,14 @@ on:
     paths:
       - "node/rest-app/**"
       - "node/mcp-server.rest-app.posts/**"
+      - ".github/workflows/branch.node.mcp-server.rest-app.posts.yml"
   push:
     branches-ignore:
       - "main"
     paths:
       - "node/rest-app/**"
       - "node/mcp-server.rest-app.posts/**"
+      - ".github/workflows/branch.node.mcp-server.rest-app.posts.yml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

@@ -5,11 +5,14 @@ on:
   pull_request:
     paths:
       - "node/rest-app/**"
+      - ".github/workflows/branch.node.rest-app.yml"
+
   push:
     branches-ignore:
       - "main"
     paths:
       - "node/rest-app/**"
+      - ".github/workflows/branch.node.rest-app.yml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
