@@ -14,19 +14,20 @@ concurrency:
 
 env:
   NODE_VERSION: 22
-  NODE_PROJECT: ./node/rest-app
+  NODE_PROJECT: rest-app
+  WORKSPACE: node/$(NODE_PROJECT)
 
 jobs:
   npm_test:
-    name: npm test @ $NODE_PROJECT
+    name: npm test @ $(NODE_PROJECT)
     runs-on: ubuntu-latest
     env:
-      NPM_CLI_OPTS: --prefix $(NODE_PROJECT)
+      NPM_CLI_OPTS: --prefix $(WORKSPACE)
     steps:
       - name: checkout
         uses: actions/checkout@v3
       - name: ls
-        run: ls -la ./node/${{ env.NODE_PROJECT }}
+        run: ls -la ${{ env.WORKSPACE }}
 
       - name: node @ ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
@@ -37,7 +38,7 @@ jobs:
       - name: npm install
         run: npm ci ${{ env.NPM_CLI_OPTS }}
       - name: ls node_modules
-        run: ls -la ${{ env.NODE_PROJECT }}/node_modules
+        run: ls -la ${{ env.WORKSPACE }}/node_modules
 
       - name: npm test
         run: npm test ${{ env.NPM_CLI_OPTS }}
