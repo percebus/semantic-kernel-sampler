@@ -12,12 +12,9 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
-env:
-  WORKSPACE: node/rest-app
-
 jobs:
   npm_test:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
       script: test
-      project_path: ${{ env.WORKSPACE }}
+      project_path: node/rest-app
