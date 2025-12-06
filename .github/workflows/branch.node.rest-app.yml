@@ -20,7 +20,7 @@ env:
 jobs:
   npm_test:
     runs-on: ubuntu-latest
-    name: npm test @  ${{ env.WORKSPACE }}
+    name: npm test @  ${WORKSPACE}
     steps:
       - name: checkout
         uses: actions/checkout@v3
