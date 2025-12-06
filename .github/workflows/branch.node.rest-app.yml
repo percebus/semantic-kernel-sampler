@@ -16,5 +16,5 @@ jobs:
   npm_test:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
-      script: test
-      project_path: node/rest-app
+      # script: test
+      working-directory: node/rest-app
