@@ -32,7 +32,13 @@ env:
   DOCKER_TAG_VERSION: latest
 
 jobs:
+  lint:
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      script: lint
+
   npm_test__matrix:
+    needs: lint
     strategy:
       max-parallel: 6
       matrix:
@@ -54,6 +60,7 @@ jobs:
     #   script: test  # default
 
   python_ci__matrix:
+    needs: lint
     strategy:
       max-parallel: 6
       matrix:
@@ -67,6 +74,7 @@ jobs:
       working-directory: python/${{ matrix.project }}
 
   dotnet_build__matrix:
+    needs: lint
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
@@ -116,6 +124,7 @@ jobs:
           path: ${{ env.WORKSPACE }}/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
 
   mvn_verify:
+    needs: lint
     name: mvn verify
     runs-on: ubuntu-latest
     steps:
