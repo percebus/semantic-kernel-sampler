@@ -3,45 +3,20 @@ name: "agent-framework-sampler-py"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
-    # paths:
-    #   - "python/agent-framework-sampler-py/**"
+    paths:
+      - "python/agent-framework-sampler-py/**"
   push:
     branches-ignore:
       - "main"
-    # paths:
-    #   - "python/agent-framework-sampler-py/**"
+    paths:
+      - "python/agent-framework-sampler-py/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
-env:
-  WORKSPACE: python/agent-framework-sampler-py
-
-  # python
-  PYTHON_VERSION: 3.12.8
-  PYRIGHT_PYTHON_FORCE_VERSION: latest
-
-
 jobs:
   verify:
-    name: Verify
-    runs-on: ubuntu-latest
-    steps:
-      - uses: percebus/github-actions-common/.github/actions/checkout@main
-      - uses: percebus/github-actions-uv/.github/actions/setup@main
-      - uses: percebus/github-actions-uv/.github/actions/tool_install@main
-        with:
-          requirements-file: ${{ env.WORKSPACE }}/requirements.uv.tool.txt
-
-      - uses: percebus/github-actions-uv/.github/actions/python_install@main
-        with:
-          working-directory: ${{ env.WORKSPACE }}
-
-      - uses: percebus/github-actions-uv/.github/actions/sync@main
-        with:
-          working-directory: ${{ env.WORKSPACE }}
-
-      - name: ci.ba.sh
-        working-directory: ${{ env.WORKSPACE }}
-        run: bash scripts/ci.ba.sh
+    uses: ./.github/workflows/ci_uv.yml
+    with:
+        working-directory: python/agent-framework-sampler-py

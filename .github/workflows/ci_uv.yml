@@ -1,0 +1,38 @@
+name: "agent-framework-sampler-py"
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      working-directory:
+        description: "Working directory"
+        required: true
+        type: string
+
+env:
+  # python
+  PYTHON_VERSION: 3.12.8
+  PYRIGHT_PYTHON_FORCE_VERSION: latest
+
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: percebus/github-actions-uv/.github/actions/setup@main
+      - uses: percebus/github-actions-uv/.github/actions/tool_install@main
+        with:
+          requirements-file: ${{ inputs.working-directory }}/requirements.uv.tool.txt
+
+      - uses: percebus/github-actions-uv/.github/actions/python_install@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-uv/.github/actions/sync@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: ci.ba.sh
+        working-directory: ${{ inputs.working-directory }}
+        run: bash scripts/ci.ba.sh
