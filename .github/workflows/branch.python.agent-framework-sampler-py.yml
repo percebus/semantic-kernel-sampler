@@ -42,6 +42,6 @@ jobs:
         with:
           working-directory: ${{ env.WORKSPACE }}
 
-      - name: poe ci
+      - name: ci.ba.sh
         working-directory: ${{ env.WORKSPACE }}
         run: bash scripts/ci.ba.sh
