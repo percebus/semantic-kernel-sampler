@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  npm_test:
+  verify:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     # with:
     #   script: test

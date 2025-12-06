@@ -24,17 +24,16 @@ env:
 
 
 jobs:
-  poe_ci:
-    name: "poe ci"
+  verify:
+    name: Verify
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-uv/.github/actions/setup@main
       - uses: percebus/github-actions-uv/.github/actions/tool_install@main
-
-      - name: uv python install
-        working-directory: ${{ env.WORKSPACE }}
-        run: uv python install ${{ env.PYTHON_VERSION }}
+      - uses: percebus/github-actions-uv/.github/actions/python_install@main
+        with:
+          working-directory: ${{ env.WORKSPACE }}
 
       - uses: percebus/github-actions-uv/.github/actions/sync@main
         with:
