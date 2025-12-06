@@ -36,10 +36,9 @@ jobs:
         working-directory: ${{ env.WORKSPACE }}
         run: uv python install ${{ env.PYTHON_VERSION }}
 
-      # TODO? included in poe ci
-      # - uses: percebus/github-actions-uv/.github/actions/sync@main
-      #   with:
-      #     working-directory: ${{ env.WORKSPACE }}
+      - uses: percebus/github-actions-uv/.github/actions/sync@main
+        with:
+          working-directory: ${{ env.WORKSPACE }}
 
       - name: poe ci
         working-directory: ${{ env.WORKSPACE }}
