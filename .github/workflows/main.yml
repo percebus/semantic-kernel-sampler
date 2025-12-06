@@ -1,4 +1,4 @@
-name: "[C]ontinuous [I]ntegration"
+name: "[C]ontinuous [I]ntegration @ main"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab

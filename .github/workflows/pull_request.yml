@@ -1,11 +1,8 @@
-name: "[C]ontinuous [I]ntegration"
+name: "[C]ontinuous [I]ntegration: PR"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
-  push:
-    branches-ignore:
-      - main
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
