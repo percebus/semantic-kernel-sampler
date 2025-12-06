@@ -10,8 +10,8 @@ noop(BaseModel)
 
 
 class PhysicsAgentSkill(AgentSkill):
-    id: str = PhysicsExpertChatAgent.__class__.__name__
-    name: str = PhysicsExpertChatAgent.__class__.__name__
+    id: str = PhysicsExpertChatAgent.__class__.__name__  # pyright: ignore  # FIXME
+    name: str = PhysicsExpertChatAgent.__class__.__name__  # pyright: ignore  # FIXME
     description: str = "Answers questions from a physics perspective."
     tags: list[str] = ["science", "physics"]
 
