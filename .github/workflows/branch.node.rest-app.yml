@@ -15,14 +15,14 @@ concurrency:
 env:
   NODE_VERSION: 22
   NODE_PROJECT: rest-app
-  WORKSPACE: node/$(NODE_PROJECT)
+  WORKSPACE: node/${{ NODE_PROJECT }}
 
 jobs:
   npm_test:
-    name: npm test @ $(NODE_PROJECT)
     runs-on: ubuntu-latest
     env:
       NPM_CLI_OPTS: --prefix $(WORKSPACE)
+    name: npm test @ ${{ NODE_PROJECT }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
