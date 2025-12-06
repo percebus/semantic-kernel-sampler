@@ -41,4 +41,4 @@ jobs:
 
       - name: poe ci
         working-directory: ${{ env.WORKSPACE }}
-        run: uv run poe ci
+        run: uvx poe ci
