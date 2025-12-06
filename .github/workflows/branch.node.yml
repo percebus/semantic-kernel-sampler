@@ -2,7 +2,7 @@ name: "[C]ontinuous [I]ntegration: node/*"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-  push:
+  pull_request:
     branches-ignore:
       - "main"
     paths:
