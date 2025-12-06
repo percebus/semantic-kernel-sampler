@@ -12,9 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 22
-
   WORKSPACE: ./node/mcp-server.examples.quick-start
+  NODE_VERSION: 22
 
 jobs:
   npm_test:

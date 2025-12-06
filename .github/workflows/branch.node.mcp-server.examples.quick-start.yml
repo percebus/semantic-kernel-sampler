@@ -13,15 +13,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 22
-
   WORKSPACE: ./node/mcp-server.examples.quick-start
+  NODE_VERSION: 22
+  NPM_CLI_OPTS: --prefix ${{ env.WORKSPACE }}
 
 jobs:
   npm_test:
     runs-on: ubuntu-latest
-    env:
-      NPM_CLI_OPTS: --prefix ${{ env.WORKSPACE }}
     name: npm test @  ${{ env.WORKSPACE }}
     steps:
       - name: checkout
