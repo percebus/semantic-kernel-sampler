@@ -44,4 +44,4 @@ jobs:
 
       - name: poe ci
         working-directory: ${{ env.WORKSPACE }}
-        run: uvx poe ci
+        run: bash scripts/ci.ba.sh
