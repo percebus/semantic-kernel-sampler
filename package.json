@@ -25,7 +25,6 @@
     "jest:ci": "jest --ci",
     "jest:ci:unit": "npm run jest:ci -- unit.spec.js",
     "jest:ci:rest": "npm run jest:ci -- rest.spec.js",
-    "pretest": "npm run lint",
     "_test": "npm run jest:ci:unit && bash scripts/node/workspaces/npm_run.ba.sh test",
     "test": "npm run _test",
     "predev": "npm run format",

@@ -30,8 +30,14 @@ env:
   DOCKER_TAG_VERSION: latest
 
 jobs:
+  lint:
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      script: lint
+
   dotnet_build__matrix:
     runs-on: ubuntu-latest
+    needs: lint
     strategy:
       max-parallel: 6
       matrix:
@@ -81,6 +87,7 @@ jobs:
 
   mvn_verify:
     name: mvn verify
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: JDK @ ${{ env.JAVA_VERSION }}
