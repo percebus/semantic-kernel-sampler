@@ -11,14 +11,14 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
-env:
-  WORKSPACE: ./node/mcp-server.examples.quick-start
-  NODE_VERSION: 22
 
 jobs:
   npm_test:
     name: npm test
     runs-on: ubuntu-latest
+    env:
+      WORKSPACE: ./node/mcp-server.examples.quick-start
+      NODE_VERSION: 22
     steps:
       - name: node @ ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
