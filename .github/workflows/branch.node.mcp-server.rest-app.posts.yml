@@ -5,9 +5,9 @@ on:
   push:
     branches-ignore:
       - "main"
-    paths:
-      - "node/rest-app/**"
-      - "node/mcp-server.rest-app.posts/**"
+    # paths:
+    #   - "node/rest-app/**"
+    #   - "node/mcp-server.rest-app.posts/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

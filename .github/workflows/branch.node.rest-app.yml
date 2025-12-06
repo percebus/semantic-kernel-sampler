@@ -5,8 +5,8 @@ on:
   push:
     branches-ignore:
       - "main"
-    paths:
-      - "node/rest-app/**"
+    # paths:
+    #   - "node/rest-app/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

@@ -5,8 +5,8 @@ on:
   push:
     branches-ignore:
       - "main"
-    paths:
-      - "node/mcp-server.examples.quick-start/**"
+    # paths:
+    #   - "node/mcp-server.examples.quick-start/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

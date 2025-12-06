@@ -5,9 +5,9 @@ on:
   push:
     branches-ignore:
       - "main"
-    paths:
-      - "package*.json"
-      - "node/**"
+    # paths:
+    #   - "package*.json"
+    #   - "node/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
