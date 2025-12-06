@@ -25,7 +25,7 @@
 ### MCP
 
 - `node/`
-  - [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start)
+  - [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start) [![[C]ontinuous [I]ntegration: mcp-server.examples.quick-start](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml)
   - [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts)
     - Uses [`rest-app`](./node/rest-app)
 

@@ -1,5 +1,7 @@
 # modelcontextprotocol-typescript-sdk-example
 
+[![[C]ontinuous [I]ntegration: mcp-server.examples.quick-start](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml)
+
 [`HISTORY`](./HISTORY.md)
 
 ## Setup
