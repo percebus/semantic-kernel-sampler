@@ -1,15 +1,15 @@
-name: "agent-framework-sampler-py"
+name: "semantic-kernel-sampler-py"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     # paths:
-    #   - "python/agent-framework-sampler-py/**"
+    #   - "python/semantic-kernel-sampler-py/**"
   push:
     branches-ignore:
       - "main"
     # paths:
-    #   - "python/agent-framework-sampler-py/**"
+    #   - "python/semantic-kernel-sampler-py/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -19,4 +19,4 @@ jobs:
   uv_ci:
     uses: ./.github/workflows/ci_uv.yml
     with:
-        working-directory: python/agent-framework-sampler-py
+        working-directory: python/semantic-kernel-sampler-py
