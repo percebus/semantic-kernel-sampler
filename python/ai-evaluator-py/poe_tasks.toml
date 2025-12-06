@@ -31,23 +31,37 @@
         help = "Checks linting"
         sequence = ["uv-sort_check", "ruff_check", "pyright"]
 
-    [tasks.style]
+    [tasks.format]
         help = "Reformat"
         sequence = ["uv-sort", "ruff_format", "ruff_check-fix", "lint"]
 
+    [tasks.style]
+    help = "Alias for format"
+    sequence = ["format"]
 
-    [tasks.ci]
-    help = "Run the CI pipeline tasks"
-    sequence = ["lint"]
 
     [tasks.dev]
     help = "Run the development tasks"
-    sequence = ["clean", "style"]
+    sequence = ["clean", "format"]
 
     [tasks.build]
     help = "Build the project"
     cmd = "uv build --all-packages --wheel"
 
-    [tasks.sync]
+
+    [tasks.sync_all]
     help = "uv sync everything"
     cmd = "uv sync --locked --all-extras"
+
+    [tasks.sync_release]
+    help = "uv sync only needed"
+    cmd = "uv sync --locked"
+
+    [tasks.sync]  # default alias
+    help = "uv sync"
+    sequence = ["sync_all"]
+
+
+    [tasks.ci]
+    help = "Run the CI pipeline tasks"
+    sequence = ["sync_all", "lint", "build"]

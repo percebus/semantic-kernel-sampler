@@ -3,13 +3,13 @@ name: "semantic-kernel-sampler-py"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
-    # paths:
-    #   - "python/semantic-kernel-sampler-py/**"
+    paths:
+      - "python/semantic-kernel-sampler-py/**"
   push:
     branches-ignore:
       - "main"
-    # paths:
-    #   - "python/semantic-kernel-sampler-py/**"
+    paths:
+      - "python/semantic-kernel-sampler-py/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

@@ -3,13 +3,13 @@ name: "agent-framework-sampler-py"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
-    # paths:
-    #   - "python/agent-framework-sampler-py/**"
+    paths:
+      - "python/agent-framework-sampler-py/**"
   push:
     branches-ignore:
       - "main"
-    # paths:
-    #   - "python/agent-framework-sampler-py/**"
+    paths:
+      - "python/agent-framework-sampler-py/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

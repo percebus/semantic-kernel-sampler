@@ -64,4 +64,4 @@
 
     [tasks.ci]
     help = "Run the CI pipeline tasks"
-    sequence = ["sync", "lint", "build"]
+    sequence = ["sync_all", "lint", "build"]
