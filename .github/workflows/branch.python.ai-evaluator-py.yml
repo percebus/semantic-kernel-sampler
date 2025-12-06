@@ -1,24 +1,22 @@
-name: "node/*"
+name: "ai-evaluator-py"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     paths:
-      - "package*.json"
-      - "node/**"
+      - "python/ai-evaluator-py/**"
   push:
     branches-ignore:
       - "main"
     paths:
-      - "package*.json"
-      - "node/**"
+      - "python/ai-evaluator-py/**"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
-  verify:
-    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
-    # with:
-    #   script: test
+  uv_ci:
+    uses: ./.github/workflows/uv_ci.yml
+    with:
+      working-directory: python/ai-evaluator-py

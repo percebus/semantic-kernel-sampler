@@ -11,11 +11,11 @@ steps:
         path: .
         clean: True
         sync: True
-        build: True
         style: True
         lint: True
         test: True
         integration: False
+        build: True
         stats: True
 
   - name: pypyr.steps.shell
@@ -27,11 +27,6 @@ steps:
     run: "{sync}"
     in:
       cmd: "uvx -- pypyr sync path={path} release=False"
-
-  - name: pypyr.steps.shell
-    run: "{build}"
-    in:
-      cmd: "uvx -- pypyr build path={path} sync=False"
 
   - name: pypyr.steps.shell
     run: "{style}"
@@ -52,3 +47,8 @@ steps:
     run: "{integration}"
     in:
       cmd: "uvx -- pypyr test path={path} integration=True stats=False lint=False"
+
+  - name: pypyr.steps.shell
+    run: "{build}"
+    in:
+      cmd: "uvx -- pypyr build path={path} sync=False"

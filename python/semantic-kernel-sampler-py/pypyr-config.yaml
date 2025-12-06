@@ -5,11 +5,11 @@ shortcuts:
       path: .
       clean: False
       sync: True
-      build: True
       style: True
       lint: True
       test: True
       integration: False
+      build: True
       stats: False
 
   ci:
@@ -18,9 +18,9 @@ shortcuts:
       path: .
       clean: True
       sync: True
-      build: True
       style: False
       lint: True
       test: True
       integration: False
+      build: True
       stats: True

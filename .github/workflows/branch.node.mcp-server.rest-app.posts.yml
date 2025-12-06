@@ -1,4 +1,4 @@
-name: "[C]ontinuous [I]ntegration: mcp-server.rest-app.posts"
+name: "mcp-server.rest-app.posts"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  npm_test:
+  verify:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
       # script: test  # default

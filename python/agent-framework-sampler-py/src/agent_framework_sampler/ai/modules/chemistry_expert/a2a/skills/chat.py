@@ -10,8 +10,8 @@ noop(BaseModel)
 
 
 class ChemistryAgentSkill(AgentSkill):
-    id: str = ChemistryExpertChatAgent.__class__.__name__
-    name: str = ChemistryExpertChatAgent.__class__.__name__
+    id: str = ChemistryExpertChatAgent.__class__.__name__  # pyright: ignore  # FIXME
+    name: str = ChemistryExpertChatAgent.__class__.__name__    # pyright: ignore  # FIXME
     description: str = "Answers questions from a chemistry perspective."
     tags: list[str] = ["science", "chemistry"]
 

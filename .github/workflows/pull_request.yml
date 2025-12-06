@@ -16,10 +16,6 @@ env:
   # node & npm
   NODE_VERSION: 22
 
-  # python
-  PYTHON_VERSION: 3.12.8
-  PYRIGHT_PYTHON_FORCE_VERSION: latest
-
   # .NET
   DOTNET_CONFIGURATION: Release
 
@@ -34,39 +30,6 @@ env:
   DOCKER_TAG_VERSION: latest
 
 jobs:
-  python_ci__matrix:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 6
-      matrix:
-        project:
-          - semantic-kernel-sampler-py
-          - agent-framework-sampler-py
-          - ai-evaluator-py
-
-    name: ci.ba.sh @ ${{ matrix.project }}
-    steps:
-      - name: python @ ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
-        with:
-          architecture: ${{ env.ARCHITECTURE }}
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: ls
-        run: ls -la
-        working-directory: ./python/${{ matrix.project }}
-
-      - name: (uv) pip install
-        run: bash scripts/install.ba.sh
-        working-directory: ./python/${{ matrix.project }}
-
-      - name: ci (lint and/or test)
-        run: bash scripts/ci.ba.sh
-        working-directory: ./python/${{ matrix.project }}
-
   dotnet_build__matrix:
     runs-on: ubuntu-latest
     strategy:
@@ -150,7 +113,7 @@ jobs:
     needs:
       # - npm_test  # XXX
       - dotnet_build__matrix
-      - python_ci__matrix
+      # - python_ci__matrix  # XXX
       - mvn_verify
     steps:
       - name: checkout

@@ -3,7 +3,7 @@ name = "agent-framework-sampler-py"
 version = "0.1.0"
 readme = "README.md"
 description = "agent-framework sampler"
-requires-python = ">=3.13.6,<4.0.0"
+requires-python = ">=3.12.8,<4.0.0"
 authors = [
     {name = "JCystems"}
 ]
