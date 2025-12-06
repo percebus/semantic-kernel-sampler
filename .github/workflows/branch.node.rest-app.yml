@@ -21,7 +21,7 @@ jobs:
     name: npm test @ $NODE_PROJECT
     runs-on: ubuntu-latest
     env:
-      NPM_CLI_OPTS: --prefix ${{ env.NODE_PROJECT }}
+      NPM_CLI_OPTS: --prefix $(NODE_PROJECT)
     steps:
       - name: checkout
         uses: actions/checkout@v3
