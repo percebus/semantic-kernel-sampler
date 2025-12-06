@@ -1,4 +1,4 @@
-name: "[C]ontinuous [I]ntegration: mcp-server.examples.quick-start"
+name: "mcp-server.examples.quick-start"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab

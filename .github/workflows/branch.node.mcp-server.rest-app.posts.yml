@@ -1,4 +1,4 @@
-name: "[C]ontinuous [I]ntegration: mcp-server.rest-app.posts"
+name: "mcp-server.rest-app.posts"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab

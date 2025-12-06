@@ -1,4 +1,4 @@
-name: "[C]ontinuous [I]ntegration: rest-app"
+name: "rest-app"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab

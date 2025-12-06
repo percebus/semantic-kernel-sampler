@@ -1,0 +1,40 @@
+name: "agent-framework-sampler-py"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    # paths:
+    #   - "python/agent-framework-sampler-py/**"
+  push:
+    branches-ignore:
+      - "main"
+    # paths:
+    #   - "python/agent-framework-sampler-py/**"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  WORKSPACE: python/agent-framework-sampler-py
+
+jobs:
+  poe_ci:
+    name: "poe ci"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: percebus/github-actions-uv/.github/actions/setup@main
+      - uses: percebus/github-actions-uv/.github/actions/tool_install@main
+      - uses: percebus/github-actions-uv/.github/actions/python_install@main
+        with:
+          working-directory: ${{ env.WORKSPACE }}
+
+      # TODO? included in poe ci
+      # - uses: percebus/github-actions-uv/.github/actions/sync@main
+      #   with:
+      #     working-directory: ${{ env.WORKSPACE }}
+
+      - name: poe ci
+        working-directory: ${{ env.WORKSPACE }}
+        run: uv run poe ci

@@ -41,7 +41,7 @@ jobs:
       matrix:
         project:
           - semantic-kernel-sampler-py
-          - agent-framework-sampler-py
+          # - agent-framework-sampler-py
           - ai-evaluator-py
 
     name: ci.ba.sh @ ${{ matrix.project }}
