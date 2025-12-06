@@ -19,7 +19,7 @@ env:
 jobs:
   npm_test:
     runs-on: ubuntu-latest
-    name: npm test @  ${{ WORKSPACE }}
+    name: npm test @  $WORKSPACE
     env:
       WORKSPACE: ${{ env.WORKSPACE }}
       NPM_CLI_OPTS: --prefix ${{ env.WORKSPACE }}
