@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-uv/.github/actions/setup@main
-      - uses: percebus/github-actions-uv/.github/actions/tool_install@@main
+      - uses: percebus/github-actions-uv/.github/actions/tool_install@main
         with:
           requirements-file: ${{ env.WORKSPACE }}/requirements.uv.tool.txt
 
