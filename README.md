@@ -9,7 +9,7 @@
 ### REST API
 
 - `node/`
-  - [`rest-app`](./node/rest-app)
+  - [`rest-app`](./node/rest-app) [![[C]ontinuous [I]ntegration: rest-app](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml)
 
 ### Agents
 
@@ -25,8 +25,8 @@
 ### MCP
 
 - `node/`
-  - [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start)
-  - [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts)
+  - [`mcp-server.examples.quick-start`](./node/mcp-server.examples.quick-start) [![[C]ontinuous [I]ntegration: mcp-server.examples.quick-start](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.examples.quick-start.yml)
+  - [`mcp-server.rest-app.posts`](./node/mcp-server.rest-app.posts) [![[C]ontinuous [I]ntegration: mcp-server.rest-app.posts](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml)
     - Uses [`rest-app`](./node/rest-app)
 
 ### AI Evaluation

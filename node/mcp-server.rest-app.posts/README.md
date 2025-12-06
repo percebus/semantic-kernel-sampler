@@ -1,5 +1,7 @@
 # mcp-server.rest-app.posts
 
+[![[C]ontinuous [I]ntegration: mcp-server.rest-app.posts](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.mcp-server.rest-app.posts.yml)
+
 [`HISTORY`](./HISTORY.md)
 
 ## Setup

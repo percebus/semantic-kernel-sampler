@@ -1,0 +1,23 @@
+name: "[C]ontinuous [I]ntegration: rest-app"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    paths:
+      - "node/rest-app/**"
+  push:
+    branches-ignore:
+      - "main"
+    paths:
+      - "node/rest-app/**"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  npm_test:
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      # script: test  # default
+      working-directory: node/rest-app
