@@ -19,7 +19,7 @@ jobs:
   verify:
     uses: ./.github/workflows/uv_ci.yml
     with:
-      working-directory: ${{ env.WORKSPACE }}
+      working-directory: $WORKSPACE
 
   docker_build__matrix:
     needs: verify
@@ -41,6 +41,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-docker/.github/actions/build@main
         with:
-          working-directory: ${{ env.WORKSPACE }}
+          repository-name: ${{ github.event.repository.name }}.$WORKSPACE
+          working-directory: $WORKSPACE
           target: ${{ matrix.target }}
           scan-image: "false"
