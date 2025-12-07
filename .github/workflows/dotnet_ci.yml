@@ -1,0 +1,71 @@
+name: dotnet
+permissions:
+  contents: read
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      dotnet-project-name:
+        description: Project name
+        required: true
+        type: string
+
+      dotnet-version:
+        description: dotnet version
+        required: true
+        type: string
+
+      dotnet-target-framework:
+        description: dotnet target framework
+        required: true
+        type: string
+
+      dotnet-project:
+        description: dotnet project
+        required: false
+        type: string
+        default: "./*.sln*"
+
+      dotnet-configuration:
+        description: dotnet configuration
+        required: false
+        default: Release
+        type: string
+
+env:
+  # .NET
+  WORKSPACE: ./dotnet/${{ inputs.dotnet-project-name }}
+
+jobs:
+  dotnet:
+    name: dotnet * ${{ inputs.dotnet-project-name }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+
+      - name: .NET @ ${{ inputs.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: ls
+        run: ls -la
+        working-directory: ${{ env.WORKSPACE }}
+
+      - name: dotnet restore
+        run: dotnet restore ${{ inputs.dotnet-project }}
+        working-directory: ${{ env.WORKSPACE }}
+
+      - name: dotnet build
+        run: |
+          dotnet build ${{ inputs.dotnet-project }} \
+            --no-restore \
+            --configuration ${{ inputs.dotnet-configuration }} \
+            /p:TreatWarningsAsErrors=true
+        working-directory: ${{ env.WORKSPACE }}
+
+      - name: bin.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.dotnet-project-name }}.WebApp.zip
+          path: ${{ env.WORKSPACE }}/WebApp/bin/${{ inputs.dotnet-configuration }}/${{ inputs.dotnet-target-framework }}

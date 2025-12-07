@@ -1,0 +1,48 @@
+name: "[C]ontinuous [I]ntegration: PR"
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  REPOSITORY_NAME: ${{ github.event.repository.name }}
+
+  # node & npm
+  NODE_VERSION: 22
+
+  # Dockerfile(s) & docker compose
+  DOCKER_BUILDKIT: 1
+  DOCKER_TAG_VERSION: latest
+
+jobs:
+  lint:
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    with:
+      script: lint
+
+  docker_compose_build:
+    name: docker compose build
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: percebus/github-actions-node/.github/actions/setup@main
+      - uses: percebus/github-actions-npm/.github/actions/install@main
+
+      - name: bower install
+        run: npm run bower:install:production
+
+      - name: config
+        run: |
+          cd node/mcp-server.rest-app.posts/src/config/
+          cp docker.windows.ts active.ts
+          cd ../../../..
+
+      - name: docker compose build
+        run: docker compose build

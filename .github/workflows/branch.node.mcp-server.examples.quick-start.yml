@@ -1,11 +1,11 @@
-name: "mcp-server.examples.quick-start"
+name: mcp-server.examples.quick-start
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     paths:
-      - "node/mcp-server.examples.quick-start/**"
-      - ".github/workflows/branch.node.mcp-server.examples.quick-start.yml"
+      - node/mcp-server.examples.quick-start/**
+      - .github/workflows/branch.node.mcp-server.examples.quick-start.yml
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
