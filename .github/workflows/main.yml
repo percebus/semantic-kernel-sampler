@@ -105,6 +105,7 @@ jobs:
 
     uses: .github/workflows/dotnet_ci.yml
     with:
+      dotnet-project-name: ${{ matrix.project }}
       dotnet-project: ${{ matrix.DOTNET_PROJECT }}
       dotnet-version: ${{ matrix.DOTNET_VERSION }}
       dotnet-target-framework: ${{ matrix.DOTNET_TARGET_FRAMEWORK }}

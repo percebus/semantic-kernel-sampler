@@ -3,8 +3,8 @@ name: dotnet
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
-      dotnet-project:
-        description: dotnet project
+      dotnet-project-name:
+        description: Project name
         required: true
         type: string
 
@@ -18,6 +18,12 @@ on:
         required: true
         type: string
 
+      dotnet-project:
+        description: dotnet project
+        required: false
+        type: string
+        default: './*.sln*'
+
       dotnet-configuration:
         description: dotnet configuration
         required: false
@@ -26,11 +32,11 @@ on:
 
 env:
   # .NET
-  WORKSPACE: ./dotnet/${{ inputs.dotnet-project }}
+  WORKSPACE: ./dotnet/${{ inputs.dotnet-project-name }}
 
 jobs:
   dotnet:
-    name: dotnet * ${{ inputs.dotnet-project}}
+    name: dotnet * ${{ inputs.dotnet-project-name }}
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -59,5 +65,5 @@ jobs:
       - name: bin.zip
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.project }}.WebApp.zip
+          name: ${{ inputs.dotnet-project-name }}.WebApp.zip
           path: ${{ env.WORKSPACE }}/WebApp/bin/${{ inputs.dotnet-configuration }}/${{ inputs.dotnet-target-framework }}
