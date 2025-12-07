@@ -22,7 +22,7 @@ on:
         description: dotnet project
         required: false
         type: string
-        default: './*.sln*'
+        default: "./*.sln*"
 
       dotnet-configuration:
         description: dotnet configuration

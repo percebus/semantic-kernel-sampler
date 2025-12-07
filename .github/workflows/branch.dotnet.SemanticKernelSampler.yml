@@ -17,7 +17,7 @@ jobs:
   uv_ci:
     uses: ./.github/workflows/dotnet_ci.yml
     with:
-      dotnet-project-name: dotnet/SemanticKernelSampler.DotNet
+      dotnet-project-name: SemanticKernelSampler.DotNet
       dotnet-project: ./*.sln
       dotnet-version: 8
       dotnet-target-framework: net8.0
