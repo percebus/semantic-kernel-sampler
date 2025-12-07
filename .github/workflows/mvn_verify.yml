@@ -1,4 +1,4 @@
-name: "agent-framework-sampler-py"
+name: SemanticKernelSampler.Java
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows

@@ -103,7 +103,7 @@ jobs:
             DOTNET_VERSION: 9
             DOTNET_TARGET_FRAMEWORK: net9.0
 
-    uses: .github/workflows/dotnet_ci.yml
+    uses: ./.github/workflows/dotnet_ci.yml
     with:
       dotnet-project-name: ${{ matrix.project }}
       dotnet-project: ${{ matrix.DOTNET_PROJECT }}
