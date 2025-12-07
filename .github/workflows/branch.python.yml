@@ -1,4 +1,4 @@
-name: python/*
+name: python
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
