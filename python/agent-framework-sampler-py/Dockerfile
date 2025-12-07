@@ -18,6 +18,9 @@ RUN uvx --from poethepoet poe sync
 RUN uvx --from poethepoet poe build
 CMD [ "uvx", "--from", "poethepoet", "poe", "ci" ]
 
+FROM dev AS tested
+RUN uvx --from poethepoet poe ci
+
 FROM uv AS built
 RUN uvx --from poethepoet poe sync_release
 RUN uvx --from poethepoet poe build

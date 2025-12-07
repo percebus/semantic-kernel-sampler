@@ -19,7 +19,7 @@ jobs:
   verify:
     uses: ./.github/workflows/uv_ci.yml
     with:
-      working-directory: ${{ env.WORKSPACE }}
+      working-directory: python/agent-framework-sampler-py
 
   docker_build__matrix:
     needs: verify
@@ -29,8 +29,8 @@ jobs:
       max-parallel: 10
       matrix:
         include:
-          # base > uv > dev
-          - target: dev
+          # base > uv > dev > tested
+          - target: tested
 
           # final release
           # base > uv > built
@@ -41,6 +41,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-docker/.github/actions/build@main
         with:
+          repository-name: ${{ github.event.repository.name }}.${{ env.WORKSPACE }}
           working-directory: ${{ env.WORKSPACE }}
           target: ${{ matrix.target }}
-          scan-image: 'false'
+          scan-image: "false"
