@@ -141,7 +141,7 @@ jobs:
         run: docker compose build
 
   docker_build__matrix:
-    needs: verify
+    needs: docker_compose_build
     continue-on-error: true
     strategy:
       max-parallel: 10
