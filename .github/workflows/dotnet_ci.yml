@@ -1,4 +1,6 @@
 name: dotnet
+permissions:
+  contents: read
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
