@@ -17,7 +17,7 @@ RUN bash scripts/uv/tool/install.ba.sh
 RUN uvx -- pypyr build release=False
 CMD [ "uvx", "--", "pypyr", "ci", "stats=False" ]
 
-FROM dev as tested
+FROM dev AS tested
 RUN uvx -- pypyr ci stats=False
 
 FROM uv AS built
