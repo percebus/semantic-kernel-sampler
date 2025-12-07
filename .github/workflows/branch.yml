@@ -1,4 +1,6 @@
 name: "[C]ontinuous [I]ntegration: PR"
+permissions:
+  contents: read
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
