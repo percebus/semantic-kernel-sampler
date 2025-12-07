@@ -13,19 +13,11 @@ concurrency:
 env:
   REPOSITORY_NAME: ${{ github.event.repository.name }}
 
-  ARCHITECTURE: x64
-
   # node & npm
   NODE_VERSION: 22
 
   # .NET
   DOTNET_CONFIGURATION: Release
-
-  # Java
-  JDK_VERSION: 11
-  JAVA_VERSION: 17
-  JAVA_DISTRIBUTION: temurin
-  MAVEN_CLI_OPTS: --batch-mode --update-snapshots
 
   # Dockerfile(s) & docker compose
   DOCKER_BUILDKIT: 1
@@ -36,6 +28,28 @@ jobs:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
       script: lint
+
+  codeQL:
+    needs: lint
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - actions
+          - python
+          - javascript
+          # - csharp  # TODO
+          # - java  # TODO
+
+    name: "CodeQL: ${{ matrix.language }}"
+    uses: percebus/github-actions-compliance/.github/workflows/codeql_analyze.yml@main
+    with:
+      language: ${{ matrix.language }}
 
   npm_test__matrix:
     needs: lint
@@ -75,7 +89,6 @@ jobs:
 
   dotnet_build__matrix:
     needs: lint
-    runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
       matrix:
@@ -89,68 +102,16 @@ jobs:
             DOTNET_PROJECT: ./*.slnx
             DOTNET_VERSION: 9
             DOTNET_TARGET_FRAMEWORK: net9.0
-    env:
-      WORKSPACE: ./dotnet/${{ matrix.project }}
-    name: dotnet build @ ${{ matrix.project }}
-    steps:
-      - name: .NET @ ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: ls
-        run: ls -la
-        working-directory: ${{ env.WORKSPACE }}
-
-      - name: dotnet restore
-        run: dotnet restore ${{ env.DOTNET_PROJECT }}
-        working-directory: ${{ env.WORKSPACE }}
-
-      - name: dotnet build
-        run: |
-          dotnet build ${{ env.DOTNET_PROJECT }} \
-            --no-restore \
-            --configuration ${{ env.DOTNET_CONFIGURATION }} \
-            /p:TreatWarningsAsErrors=true
-        working-directory: ${{ env.WORKSPACE }}
-
-      - name: bin.zip
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.project }}.WebApp.zip
-          path: ${{ env.WORKSPACE }}/WebApp/bin/${{ env.DOTNET_CONFIGURATION }}/${{ env.DOTNET_TARGET_FRAMEWORK }}
+    uses: .github/workflows/dotnet_ci.yml
+    with:
+      dotnet-project: ${{ matrix.DOTNET_PROJECT }}
+      dotnet-version: ${{ matrix.DOTNET_VERSION }}
+      dotnet-target-framework: ${{ matrix.DOTNET_TARGET_FRAMEWORK }}
 
   mvn_verify:
     needs: lint
-    name: mvn verify
-    runs-on: ubuntu-latest
-    steps:
-      - name: JDK @ ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          architecture: ${{ env.ARCHITECTURE }}
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: ls
-        run: ls -la
-        working-directory: ./java
-
-      - name: mvn verify
-        run: mvn ${{ env.MAVEN_CLI_OPTS }} verify
-        working-directory: ./java
-
-      - name: target.zip
-        uses: actions/upload-artifact@v4
-        with:
-          name: SemanticKernelSampler.Java.WebApp.zip
-          path: ./java/target
+    uses: .github/workflows/mvn_verify.yml
 
   docker_compose_build:
     name: docker compose build
@@ -161,15 +122,10 @@ jobs:
       - python_ci__matrix
       - mvn_verify
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: percebus/github-actions-node/.github/actions/setup@main
+      - uses: percebus/github-actions-npm/.github/actions/install@main
 
-      - name: node @ ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: npm run setup:ci
-        run: npm run setup:ci --if-present ${{ env.NPM_CLI_OPTS }}
       - name: bower install
         run: npm run bower:install:production
 

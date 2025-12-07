@@ -1,11 +1,11 @@
-name: "rest-app"
+name: rest-app
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     paths:
-      - "node/rest-app/**"
-      - ".github/workflows/branch.node.rest-app.yml"
+      - node/rest-app/**
+      - .github/workflows/branch.node.rest-app.yml
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

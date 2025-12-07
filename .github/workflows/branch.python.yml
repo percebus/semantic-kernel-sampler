@@ -1,25 +1,17 @@
-name: node/*
+name: CodeQL python
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     paths:
-      - package*.json
-      - node/**
-      - .github/workflows/branch.node.yml
+      - python/**
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
-  verify:
-    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
-    # with:
-    #   script: test  # default
-
   codeQL:
-    needs: verify
     permissions:
       actions: read
       contents: read
@@ -28,4 +20,4 @@ jobs:
     name: CodeQL
     uses: percebus/github-actions-compliance/.github/workflows/codeql_analyze.yml@main
     with:
-      language: javascript
+      language: python

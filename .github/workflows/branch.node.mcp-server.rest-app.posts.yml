@@ -1,12 +1,12 @@
-name: "mcp-server.rest-app.posts"
+name: mcp-server.rest-app.posts
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     paths:
-      - "node/rest-app/**"
-      - "node/mcp-server.rest-app.posts/**"
-      - ".github/workflows/branch.node.mcp-server.rest-app.posts.yml"
+      - node/rest-app/**
+      - node/mcp-server.rest-app.posts/**
+      - .github/workflows/branch.node.mcp-server.rest-app.posts.yml
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

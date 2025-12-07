@@ -1,0 +1,41 @@
+name: "agent-framework-sampler-py"
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+
+env:
+  ARCHITECTURE: x64
+
+  # Java
+  JDK_VERSION: 11
+  JAVA_VERSION: 17
+  JAVA_DISTRIBUTION: temurin
+  MAVEN_CLI_OPTS: --batch-mode --update-snapshots
+
+jobs:
+  mvn_verify:
+    name: mvn verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+
+      - name: JDK @ ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          architecture: ${{ env.ARCHITECTURE }}
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      - name: ls
+        run: ls -la
+        working-directory: ./java
+
+      - name: mvn verify
+        run: mvn ${{ env.MAVEN_CLI_OPTS }} verify
+        working-directory: ./java
+
+      - name: target.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: SemanticKernelSampler.Java.WebApp.zip
+          path: ./java/target

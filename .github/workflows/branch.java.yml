@@ -1,0 +1,16 @@
+name: java
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    paths:
+      - java/**
+      - .github/workflows/mvn-verify.yml
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  mvn_verify:
+    uses: .github/workflows/mvn-verify.yml
