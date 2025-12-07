@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  PROJECT_NAME: semantic-kernel-sampler-py
   WORKSPACE: python/semantic-kernel-sampler-py
 
 jobs:
@@ -41,7 +42,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-docker/.github/actions/build@main
         with:
-          repository_name: ${{ github.event.repository.name }}.${{ env.WORKSPACE }}
+          repository_name: ${{ github.event.repository.name }}.${{ env.PROJECT_NAME }}
           working-directory: ${{ env.WORKSPACE }}
           target: ${{ matrix.target }}
           scan-image: "false"
