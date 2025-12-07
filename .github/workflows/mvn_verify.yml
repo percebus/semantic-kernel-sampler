@@ -1,4 +1,4 @@
-name: "Re-Usable mvn verify"
+name: "Re-Usable: mvn verify"
 
 permissions:
   contents: read
