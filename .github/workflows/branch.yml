@@ -1,4 +1,5 @@
 name: "[C]ontinuous [I]ntegration: PR"
+
 permissions:
   contents: read
 

@@ -6,7 +6,8 @@ on:
   pull_request:
     paths:
       - java/**
-      - .github/workflows/mvn-verify.yml
+      - .github/workflows/mvn_verify.yml
+      - .github/workflows/branch.java.yml
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
