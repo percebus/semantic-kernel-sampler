@@ -140,4 +140,50 @@ jobs:
       - name: docker compose build
         run: docker compose build
 
-  # TODO add all Dockerfiles
+  docker_build__matrix:
+    needs: verify
+    continue-on-error: true
+    strategy:
+      max-parallel: 10
+      matrix:
+        include:
+          #
+          # root
+          - working-directory: .
+            target: modelcontextprotocol.inspector
+            scan-image: false
+
+          - working-directory: .
+            target: tested
+            scan-image: false
+
+          #
+          # semantic-kernel-sampler-py
+          - working-directory: python/semantic-kernel-sampler-py
+            target: tested
+            scan-image: false
+
+          - working-directory: python/semantic-kernel-sampler-py
+            target: release
+            scan-image: ${{ github.ref == 'refs/heads/main' }}
+
+          #
+          # agent-framework-sampler-py
+          - working-directory: python/agent-framework-sampler-py
+            target: tested
+            scan-image: false
+
+          - working-directory: python/agent-framework-sampler-py
+            target: release
+            scan-image: ${{ github.ref == 'refs/heads/main' }}
+
+    name: docker build ${{ matrix.working-directory }}.${{ matrix.target }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: percebus/github-actions-docker/.github/actions/build@main
+        with:
+          repository-name: ${{ github.event.repository.name }}.${{ matrix.working-directory }}
+          working-directory: ${{ matrix.working-directory }}
+          target: ${{ matrix.target }}
+          scan-image: ${{ matrix.scan-image }}
