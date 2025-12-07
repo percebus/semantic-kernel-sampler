@@ -43,4 +43,4 @@ jobs:
         with:
           working-directory: ${{ env.WORKSPACE }}
           target: ${{ matrix.target }}
-          scan-image: 'false'
+          scan-image: "false"
