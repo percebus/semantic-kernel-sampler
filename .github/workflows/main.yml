@@ -143,15 +143,20 @@ jobs:
   docker_build__matrix:
     needs: docker_compose_build
     continue-on-error: true
+    permissions:
+      contents: read
+      security-events: write
+
     strategy:
       max-parallel: 10
       matrix:
         include:
           #
           # root
-          - working-directory: .
-            target: modelcontextprotocol.inspector
-            scan-image: false
+          # NOTE: Tested in docker compose
+          # - working-directory: .
+          #   target: modelcontextprotocol.inspector
+          #   scan-image: false
 
           - working-directory: .
             target: tested
@@ -183,7 +188,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-docker/.github/actions/build@main
         with:
-          repository-name: ${{ github.event.repository.name }}.${{ matrix.working-directory }}
+          repository-name: ${{ github.event.repository.name }}:${{ matrix.working-directory }}
           working-directory: ${{ matrix.working-directory }}
           target: ${{ matrix.target }}
           scan-image: ${{ matrix.scan-image }}
