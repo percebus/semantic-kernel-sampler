@@ -16,9 +16,7 @@ FROM uv AS dev
 RUN bash scripts/uv/tool/install.ba.sh
 RUN uvx --from poethepoet poe sync
 RUN uvx --from poethepoet poe build
-
-FROM dev AS tested
-RUN uvx --from poethepoet poe ci
+CMD [ "uvx", "--from", "poethepoet", "poe", "ci" ]
 
 FROM uv AS built
 RUN uvx --from poethepoet poe sync_release

@@ -12,8 +12,35 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
+env:
+  WORKSPACE: python/semantic-kernel-sampler-py
+
 jobs:
-  uv_ci:
+  verify:
     uses: ./.github/workflows/uv_ci.yml
     with:
-      working-directory: python/semantic-kernel-sampler-py
+      working-directory: ${{ env.WORKSPACE }}
+
+  docker_build__matrix:
+    needs: verify
+    name: docker build --target
+    continue-on-error: true
+    strategy:
+      max-parallel: 10
+      matrix:
+        include:
+          # base > uv > dev
+          - target: dev
+
+          # final release
+          # base > uv > built
+          - target: release
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: percebus/github-actions-docker/.github/actions/build@main
+        with:
+          working-directory: ${{ env.WORKSPACE }}
+          target: ${{ matrix.target }}
+          scan-image: 'false'

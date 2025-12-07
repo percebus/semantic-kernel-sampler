@@ -12,6 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  # XXX? not being used
   REPOSITORY_NAME: ${{ github.event.repository.name }}
 
   # node & npm

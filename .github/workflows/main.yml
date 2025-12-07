@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  # XXX? not being used
   REPOSITORY_NAME: ${{ github.event.repository.name }}
 
   # node & npm
@@ -138,3 +139,5 @@ jobs:
 
       - name: docker compose build
         run: docker compose build
+
+  # TODO add all Dockerfiles

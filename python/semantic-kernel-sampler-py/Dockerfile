@@ -15,9 +15,7 @@ ENV PATH="/usr/app/.venv/bin:$PATH"
 FROM uv AS dev
 RUN bash scripts/uv/tool/install.ba.sh
 RUN uvx -- pypyr build release=False
-
-FROM dev AS tested
-RUN uvx -- pypyr ci stats=False
+CMD [ "uvx", "--", "pypyr", "ci", "stats=False" ]
 
 FROM uv AS built
 RUN uvx -- pypyr build release=True
