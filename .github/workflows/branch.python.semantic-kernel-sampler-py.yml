@@ -41,7 +41,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-docker/.github/actions/build@main
         with:
-          repository-name: ${{ github.event.repository.name }}.${{ env.WORKSPACE }}
+          repository_name: ${{ github.event.repository.name }}.${{ env.WORKSPACE }}
           working-directory: ${{ env.WORKSPACE }}
           target: ${{ matrix.target }}
           scan-image: "false"
