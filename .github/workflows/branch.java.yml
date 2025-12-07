@@ -14,4 +14,4 @@ concurrency:
 
 jobs:
   mvn_verify:
-    uses: ./.github/workflows/mvn-verify.yml
+    uses: ./.github/workflows/mvn_verify.yml
