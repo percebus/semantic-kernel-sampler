@@ -1,4 +1,5 @@
-name: SemanticKernelSampler.Java
+name: "Re-Usable: mvn verify"
+
 permissions:
   contents: read
 

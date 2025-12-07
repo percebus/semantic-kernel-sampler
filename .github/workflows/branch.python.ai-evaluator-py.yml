@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - python/ai-evaluator-py/**
+      - .github/workflows/uv_ci.yml
       - .github/workflows/branch.python.ai-evaluator-py.yml
 
 concurrency:

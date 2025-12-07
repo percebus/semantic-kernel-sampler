@@ -1,4 +1,5 @@
-name: dotnet
+name: "Re-Usable: dotnet"
+
 permissions:
   contents: read
 

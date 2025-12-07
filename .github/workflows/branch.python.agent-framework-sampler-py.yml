@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - python/agent-framework-sampler-py/**
+      - .github/workflows/uv_ci.yml
       - .github/workflows/branch.python.agent-framework-sampler-py.yml
 
 concurrency:

@@ -1,4 +1,4 @@
-name: poe ci
+name: "Re-Usable: poe ci"
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows

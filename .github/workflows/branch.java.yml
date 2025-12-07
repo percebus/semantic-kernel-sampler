@@ -1,12 +1,14 @@
-name: java
-permissions: {}
+name: SemanticKernelSampler.Java
+permissions:
+  contents: read
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
     paths:
       - java/**
-      - .github/workflows/mvn-verify.yml
+      - .github/workflows/mvn_verify.yml
+      - .github/workflows/branch.java.yml
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -14,4 +16,4 @@ concurrency:
 
 jobs:
   mvn_verify:
-    uses: ./.github/workflows/mvn-verify.yml
+    uses: ./.github/workflows/mvn_verify.yml
