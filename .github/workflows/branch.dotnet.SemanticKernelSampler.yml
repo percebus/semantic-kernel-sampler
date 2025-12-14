@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   dotnet_ci:
+    name: dotnet build
     uses: ./.github/workflows/dotnet_ci.yml
     with:
       dotnet-project-name: SemanticKernelSampler.DotNet
