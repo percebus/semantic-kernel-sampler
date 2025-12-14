@@ -4,8 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName.Replace(" ", "_").Replace("-", "_"))</RootNamespace>
-    <AssemblyName>JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace
+    >JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName.Replace(" ", "_").Replace("-", "_"))</RootNamespace>
+    <AssemblyName
+    >JCystems.AgentFrameworkSampler.DotNet.$(MSBuildProjectName)</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -29,7 +31,10 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.1.0" />
     <PackageReference Include="Azure.Identity" Version="1.17.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.10.0-preview.1.25513.3" />
+    <PackageReference
+      Include="Microsoft.Extensions.AI.OpenAI"
+      Version="9.10.0-preview.1.25513.3"
+    />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
     <PackageReference Include="NSwag.AspNetCore" Version="14.6.1" />
     <PackageReference Include="Scrutor" Version="6.1.0" />
@@ -39,7 +44,8 @@
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets
+      >runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 

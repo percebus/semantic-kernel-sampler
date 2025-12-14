@@ -44,26 +44,20 @@ jobs:
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
 
-      - name: .NET @ ${{ inputs.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - uses: percebus/github-actions-dotnet/.github/actions/setup@main
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
 
-      - name: ls
-        run: ls -la
-        working-directory: ${{ env.WORKSPACE }}
+      - uses: percebus/github-actions-dotnet/.github/actions/restore@main
+        with:
+          working-directory: ${{ env.WORKSPACE }}
+          dotnet_project: ${{ inputs.dotnet-project }}
 
-      - name: dotnet restore
-        run: dotnet restore ${{ inputs.dotnet-project }}
-        working-directory: ${{ env.WORKSPACE }}
-
-      - name: dotnet build
-        run: |
-          dotnet build ${{ inputs.dotnet-project }} \
-            --no-restore \
-            --configuration ${{ inputs.dotnet-configuration }} \
-            /p:TreatWarningsAsErrors=true
-        working-directory: ${{ env.WORKSPACE }}
+      - uses: percebus/github-actions-dotnet/.github/actions/build@main
+        with:
+          working-directory: ${{ env.WORKSPACE }}
+          dotnet_project: ${{ inputs.dotnet-project }}
+          dotnet_configuration: ${{ inputs.dotnet-configuration }}
 
       - name: bin.zip
         uses: actions/upload-artifact@v4
