@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 jobs:
-  uv_ci:
+  dotnet_ci:
     uses: ./.github/workflows/dotnet_ci.yml
     with:
       dotnet-project-name: AgentFrameworkSampler.DotNet
