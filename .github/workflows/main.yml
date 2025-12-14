@@ -63,12 +63,13 @@ jobs:
           - mcp-server.rest-app.posts
 
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    name: ${{ matrix.project }}
     with:
       # script: test  # default
       working-directory: ./node/${{ matrix.project }}
 
   npm_test:
-    name: npm test
+    name: node
     needs: npm_test__matrix
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     # with:
@@ -85,6 +86,7 @@ jobs:
           - ai-evaluator-py
 
     uses: ./.github/workflows/uv_ci.yml
+    name: ${{ matrix.project }}
     with:
       working-directory: python/${{ matrix.project }}
 
@@ -105,6 +107,7 @@ jobs:
             DOTNET_TARGET_FRAMEWORK: net9.0
 
     uses: ./.github/workflows/dotnet_ci.yml
+    name: ${{ matrix.project }}
     with:
       dotnet-project-name: ${{ matrix.project }}
       dotnet-project: ${{ matrix.DOTNET_PROJECT }}
@@ -114,6 +117,7 @@ jobs:
   mvn_verify:
     needs: lint
     uses: ./.github/workflows/mvn_verify.yml
+    name: SemanticKernelSampler.Java
 
   docker_compose_build:
     name: docker compose build
