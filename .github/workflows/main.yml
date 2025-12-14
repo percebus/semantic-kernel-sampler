@@ -191,7 +191,31 @@ jobs:
             target: release
             scan-image: ${{ github.ref == 'refs/heads/main' }}
 
-    name: docker build ${{ matrix.working-directory }}.${{ matrix.target }}
+          #
+          # SemanticKernelSampler.DotNet
+          - project-name: SemanticKernelSampler.DotNet
+            working-directory: dotnet/SemanticKernelSampler.DotNet
+            target: tested
+            scan-image: false
+
+          - project-name: SemanticKernelSampler.DotNet
+            working-directory: dotnet/SemanticKernelSampler.DotNet
+            target: webapp
+            scan-image: ${{ github.ref == 'refs/heads/main' }}
+
+          #
+          # AgentFrameworkSampler.DotNet
+          - project-name: AgentFrameworkSampler.DotNet
+            working-directory: dotnet/AgentFrameworkSampler.DotNet
+            target: tested
+            scan-image: false
+
+          - project-name: AgentFrameworkSampler.DotNet
+            working-directory: dotnet/AgentFrameworkSampler.DotNet
+            target: webapp
+            scan-image: ${{ github.ref == 'refs/heads/main' }}
+
+    name: docker build ${{ matrix.project-name }}.${{ matrix.target }}
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main

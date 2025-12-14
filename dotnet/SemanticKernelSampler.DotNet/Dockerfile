@@ -11,22 +11,22 @@ ARG DOTNET_TEST_FILTER="TestCategory!=Integration & TestCategory!=Flaky"
 RUN dotnet restore $DOTNET_PROJECTS
 
 
-FROM project AS build
+FROM project AS built
 RUN dotnet build $DOTNET_PROJECTS --configuration $DOTNET_CONFIGURATION -o /app/build
 
 
-FROM build AS test
+FROM built AS tested
 RUN dotnet test $DOTNET_PROJECTS --filter "$DOTNET_TEST_FILTER"
 
 
-FROM project AS publish
+FROM project AS published
 RUN dotnet publish ./WebApp/SemanticKernelSampler.Dotnet.WebApp.csproj --configuration $DOTNET_CONFIGURATION --property:PublishDir=/app/publish
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS webapp
 USER app
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=published /app/publish .
 RUN ls -la
 EXPOSE 8080
 EXPOSE 8081
