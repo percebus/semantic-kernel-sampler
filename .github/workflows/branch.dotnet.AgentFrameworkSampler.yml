@@ -1,6 +1,4 @@
 name: AgentFrameworkSampler.DotNet
-permissions:
-  contents: read
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -14,8 +12,12 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
-  uv_ci:
+  dotnet_ci:
+    name: dotnet build
     uses: ./.github/workflows/dotnet_ci.yml
     with:
       dotnet-project-name: AgentFrameworkSampler.DotNet
