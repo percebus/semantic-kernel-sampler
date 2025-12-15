@@ -162,66 +162,66 @@ jobs:
           #   target: modelcontextprotocol.inspector
           #   scan-image: false
 
-          - project-name: node
+          - image-name: node
             working-directory: .
             target: tested
             scan-image: false
 
           #
           # semantic-kernel-sampler-py
-          - project-name: semantic-kernel-sampler-py
+          - image-name: semantic-kernel-sampler-py
             working-directory: python/semantic-kernel-sampler-py
             target: tested
             scan-image: false
 
-          - project-name: semantic-kernel-sampler-py
+          - image-name: semantic-kernel-sampler-py
             working-directory: python/semantic-kernel-sampler-py
             target: release
             scan-image: ${{ github.ref == 'refs/heads/main' }}
 
           #
           # agent-framework-sampler-py
-          - project-name: agent-framework-sampler-py
+          - image-name: agent-framework-sampler-py
             working-directory: python/agent-framework-sampler-py
             target: tested
             scan-image: false
 
-          - project-name: agent-framework-sampler-py
+          - image-name: agent-framework-sampler-py
             working-directory: python/agent-framework-sampler-py
             target: release
             scan-image: ${{ github.ref == 'refs/heads/main' }}
 
           #
           # SemanticKernelSampler.DotNet
-          - project-name: SemanticKernelSampler.DotNet
+          - image-name: semantic-kernel-sampler-dotnet
             working-directory: dotnet/SemanticKernelSampler.DotNet
             target: tested
             scan-image: false
 
-          - project-name: SemanticKernelSampler.DotNet
+          - image-name: semantic-kernel-sampler-dotnet
             working-directory: dotnet/SemanticKernelSampler.DotNet
             target: webapp
             scan-image: ${{ github.ref == 'refs/heads/main' }}
 
           #
           # AgentFrameworkSampler.DotNet
-          - project-name: AgentFrameworkSampler.DotNet
+          - image-name: agent-framework-sampler-dotnet
             working-directory: dotnet/AgentFrameworkSampler.DotNet
             target: tested
             scan-image: false
 
-          - project-name: AgentFrameworkSampler.DotNet
+          - image-name: agent-framework-sampler-dotnet
             working-directory: dotnet/AgentFrameworkSampler.DotNet
             target: webapp
             scan-image: ${{ github.ref == 'refs/heads/main' }}
 
-    name: docker build ${{ matrix.project-name }}.${{ matrix.target }}
+    name: docker build ${{ matrix.image-name }}.${{ matrix.target }}
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: percebus/github-actions-docker/.github/actions/build@main
         with:
-          repository_name: ${{ github.event.repository.name }}.${{ matrix.project-name }}
+          repository_name: ${{ github.event.repository.name }}.${{ matrix.image-name }}
           working-directory: ${{ matrix.working-directory }}
           target: ${{ matrix.target }}
           scan-image: ${{ matrix.scan-image }}
