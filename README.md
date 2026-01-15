@@ -47,9 +47,6 @@ TODO
 #### Setup
 
 ```bash
-# git clone a2a-instpector ./submodules
-$> bower install
-
 $> cd submodules/a2a-inspector
 ```
 
