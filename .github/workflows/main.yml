@@ -132,6 +132,9 @@ jobs:
         with:
           submodules: "true"
 
+      - name: ls a2a-inspector
+        run: ls -la ./submodules/a2a-inspector/
+
       - uses: percebus/github-actions-node/.github/actions/setup@main
       - uses: percebus/github-actions-npm/.github/actions/install@main
 
