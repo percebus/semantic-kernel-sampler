@@ -28,7 +28,6 @@ jobs:
   lint:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
-      submodules: "true"
       script: lint
 
   codeQL:
@@ -131,8 +130,6 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
           submodules: "true"
-      - name: ls a2a-inspector
-        run: ls -la ./submodules/a2a-inspector/
 
       - uses: percebus/github-actions-node/.github/actions/setup@main
       - uses: percebus/github-actions-npm/.github/actions/install@main
