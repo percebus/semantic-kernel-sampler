@@ -44,7 +44,7 @@ services:
     #
     # List all MCP servers so that the inspector can connect to them
     depends_on:
-      # - mcp-server.examples.quick-start  # TODO
+      # - mcp-server.examples.quick-start  # XXX
       - mcp-server.rest-app.posts
     ports:
       - 6274:6274
@@ -119,13 +119,13 @@ services:
 
   # TODO? XXX? typescript-app?:
 
-  # TODO Dockerfile is broken in official repository
-  # a2a-inspector:
-  #   build:
-  #     context: ./repositories/a2a-inspector
-  #   ports:
-  #     - 5001:8080
-  #   depends_on:
-  #     - semantic-kernel-sampler-py
-  #     - agent-framework-sampler-py
-  #     # - semantic-kernel-sampler-dotnet
+  a2a-inspector:
+    build:
+      # context: ./repositories/a2a-inspector # FIXME always use main. But its broken
+      context: ./submodules/a2a-inspector # XXX
+    ports:
+      - 5001:8080
+    depends_on:
+      - semantic-kernel-sampler-py
+      - agent-framework-sampler-py
+      # - semantic-kernel-sampler-dotnet
