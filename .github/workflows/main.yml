@@ -131,7 +131,6 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
           submodules: "true"
-
       - name: ls a2a-inspector
         run: ls -la ./submodules/a2a-inspector/
 
