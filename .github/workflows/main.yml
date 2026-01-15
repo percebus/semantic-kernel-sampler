@@ -83,7 +83,6 @@ jobs:
         project:
           - semantic-kernel-sampler-py
           - agent-framework-sampler-py
-          - ai-evaluator-py
 
     uses: ./.github/workflows/uv_ci.yml
     name: ${{ matrix.project }}
