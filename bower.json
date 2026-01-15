@@ -2,7 +2,8 @@
   "name": "semantic-kernel-sampler",
   "private": true,
   "dependencies": {
-    "a2a-inspector": "https://github.com/a2aproject/a2a-inspector.git#main"
+    "a2a-inspector": "https://github.com/a2aproject/a2a-inspector.git#main",
+    "azure-foundry-ai-evaluator-py": "https://github.com/percebus/azure-foundry-ai-evaluator-py.git#main"
   },
   "devDependencies": {
     "a2a-samples": "https://github.com/a2aproject/a2a-samples.git#main",

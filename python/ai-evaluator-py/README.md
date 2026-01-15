@@ -1,3 +1,0 @@
-# ai-evaluator-py
-
-TODO
