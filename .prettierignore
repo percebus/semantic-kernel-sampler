@@ -1,6 +1,10 @@
 .vscode/
 .vs/
 
+# External
+repositories/
+submodules/
+
 # python
 __pycache__/
 .pytest_cache/

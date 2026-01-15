@@ -85,9 +85,10 @@ Always reference these instructions first and fallback to search or bash command
 ├── java/                    # Java projects
 │   └── src/                 # Maven-based web application
 ├── repositories/            # External repositories (via bower)
-│   ├── a2a-inspector/       # A2A inspection tool
 │   ├── a2a-samples/         # A2A samples
 │   └── semantic-kernel/     # Microsoft Semantic Kernel
+├── submodules
+│   └── a2a-inspector/       # A2A inspection tool
 └── __tests__/               # Integration tests
     └── config/environments/ # Test environment configurations
 ```

@@ -9,7 +9,7 @@
 
 | Folder          | Project                                                                     | Type        | CI                                                                                                                                                                                                                                                                                           |
 | --------------- | --------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `repositories/` | [`a2a-inspector`](./repositories/a2a-inspector)                             | A2A Client  | N/A                                                                                                                                                                                                                                                                                          |
+| `submodules/`   | [`a2a-inspector`](./submodules/a2a-inspector)                               | A2A Client  | N/A                                                                                                                                                                                                                                                                                          |
 | `repositories/` | [`@modelcontextprotocol/inspector`](./package.json)                         | MCP CLient  | N/A                                                                                                                                                                                                                                                                                          |
 | `node/`         | `*`                                                                         | `node`      | [![node/*](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.yml)                                                                                          |
 | `node/`         | [`rest-app`](./node/rest-app)                                               | RESTful API | [![rest-app](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml/badge.svg)](https://github.com/percebus/semantic-kernel-sampler/actions/workflows/branch.node.rest-app.yml)                                                                      |
@@ -47,10 +47,10 @@ TODO
 #### Setup
 
 ```bash
-# git clone a2a-instpector ./repositories
+# git clone a2a-instpector ./submodules
 $> bower install
 
-$> cd repositories/a2a-inspector
+$> cd submodules/a2a-inspector
 ```
 
 ##### python
